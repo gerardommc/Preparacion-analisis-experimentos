@@ -1,0 +1,17 @@
+---
+title: "Réplica, control y pseudo-replicación"
+author: "Gerardo Martín"
+date: "3/2/2021"
+output: 
+      bookdown::html_document2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+
+
+[Regresar al índice del curso](index.html)

@@ -1,16 +1,22 @@
 ---
 title: "Preparación y análisis de experimentos"
 description: |
-  Contenidos
+  Curso de la licenciatura en Majo Sustentable de la Zona Costera
+author: Gerardo Martín
 output:
   distill::distill_article:
     self_contained: false
+theme: jekyll-theme-cayman
 ---
 
 # Introducción al diseño experimental
 
-## [Tipos de experimentos y observaciones](Tipo-exper-observ.html)
+1. [Tipos de experimentos y observaciones](Tipo-exper-observ.html)
 
-## [Concepto de dato](Concepto-dato.html)
+2. [Concepto de dato](Concepto-dato.html)
 
-## [Unidades experimentales](Unidad-exper.html)
+3. [Unidades experimentales](Unidad-exper.html)
+
+4. [Réplica, control y pseudo-replicación](Replica-control.html)
+
+5. [Bloques y balance](Bloques-balance.html)
