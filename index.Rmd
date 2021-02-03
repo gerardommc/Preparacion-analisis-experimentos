@@ -1,0 +1,8 @@
+---
+title: "Preparación y análisis de experimentos"
+description: |
+  Contenidos
+output:
+  distill::distill_article:
+    self_contained: false
+---
