@@ -12,7 +12,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción 
 
-La unidad experimental es aquella
+En la sección de [Tipos de experimentos y observaciones](Tipo-exper-observ.html) vimos brevemente que las observaciones que analizaremos pueden representar registros de individuos o grupos de individuos (plantas). En la sección [El concepto de dato] vimos que un dato es la descripción de las unidades experimentales, es decir que éstas pueden representar individuos o grupos de individuos, por lo que podemos definirla como:
+
+- **Unidad experimental** Entidad sujeta a la intervención o tratamiento y que es *independiente* de las otras entidades dentro del estudio.
+
+En esta definición hay que resaltar la palagra *independiente* pues es un supuesto muy importante en la mayoría de los métodos estadísticos. Esta última se refiere a que el comportamiento de cada unidad experimental no afecta el comportamiento de las otras. Esto es muy difícil de lograr pues la proximidad espacial puede crear muchos artefactos que anulan los efectos de los tratamientos. Es por ello que en los análisis estadísticos es necesario tomar en cuenta los efectos del diseño sobre las hipótesis que queremos probar.
+
+Tal como vimos que hay estudios observacionales, experimentales e intermedios, hay diseños experimentales donde las unidades comprenden observaciones de individuos y grupos. Veamos unos ejemplos.
+
+## Ejemplo 1
+
 
 
 [Regresar al índice del curso](index.html)
