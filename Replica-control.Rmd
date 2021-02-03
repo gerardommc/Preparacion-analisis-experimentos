@@ -12,6 +12,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
+El objetivo principal de los experimentos es encontrar respuestas correctas (*verdaderas*) a las preguntas que nos hacemos. Encontrar las respuestas verdaderas a las preguntas es más fácil si tenemos más información (más datos) sobre el fenómeno que nos interesa. Sin embargo, siempre hay muchas limitaciones (logísticas, financieras, de tiempo) para hacer experimentos lo suficientemente grandes, de modo que es necesario optimizar el diseño experimental para encontrar las respuestas correctas con el mínimo de recursos. Es con este objetivo que se ha diseñado el uso de réplicas y controles. La Pseudo-replicación, como su nombre lo indica es una *replicación falsa* que debemos aprender a identificar pues representa un obstáculo en la identificación de respuestas correctas.
+
+Aquí es necesario hablar del tipo de errores de inferencia a que nos podemos enfrentar. Cuando hacemos un análisis estadístico de datos experimentales, estamos poniendo a prueba la hipótesis nula ($H_0$) de que no hay diferencias entre los tratamientos. El **Error tipo I** consiste en el rechazo de $H_0$ cuando deberíamos haberla aceptado. Es decir, los tratamientos experimentales **NO** tuvieron un efecto significativo (sobre la producción de las plantas por ejemplo), pero el análisis de los datos (o el diseño experimental) fue deficiente y determinamos que los tratamientos sí funcionaron. El **Error tipo II** consiste en el fenómeno inverso, la aceptación de $H_0$ cuando debimos rechazarla (los tratamientos sí funcionaron pero estadísticamente no lo pudimos demostrar). La presencia de pseudo-replicación puede aumentar la probabilidad de ambos tipos de errores, pero particularmente el tipo **I**.
+
+Ahora ya estamos en condiciones de entender mejor las diferencias entre **réplica**, **control** y **pseudo-réplica**:
+
+- **Réplica** 
+- **Control** 
+- **Pseudo-réplica** 
+
+## Ejemplo 1
 
 
 [Regresar al índice del curso](index.html)
