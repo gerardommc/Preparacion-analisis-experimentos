@@ -6,7 +6,6 @@ author: Gerardo Martín
 output:
   distill::distill_article:
     self_contained: false
-theme: jekyll-theme-cayman
 ---
 
 # Introducción al diseño experimental
