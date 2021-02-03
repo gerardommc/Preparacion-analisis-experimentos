@@ -47,7 +47,7 @@ Donde $x$ (variable dependiente) es una función de $y$ (variable independiente)
 
 A continuación se expone una serie de ejemplos para dejar de manifiesto las implicaciones experimentales de las cualidades matemáticas y estadísticas de las variables.
 
-## Aplicación de dos fertilizantes
+## Aplicación de dos fertilizantes {#fert}
 
 Estamos trabajando con una especie de planta y nos interesa saber qué fertilizante funciona mejor para que produzca más fruto. Entonces creamos dos parcelas dentro de un invernadero, donde colocamos 100 plantas, a 50 de ellas les aplicaremos el fertilizante *A* y a las otras 50 el fertilizante *B*. Durante una temporada de producción medimos la producción de fruto.
 
@@ -103,7 +103,7 @@ ggplot(df) + geom_point(aes(x = temp, y = prod)) +
 
 ```
 
-## Discusión de los ejemplos
+## Discusión de los ejemplos {#disc}
 
 Aquí vimos dos ejemplos sumamente sencillos, uno con un factor categórigo a dos niveles, y un factor contínuo a do niveles. En la práctica es necesario tomar en cuenta muchos otros factores externos que pueden afectar los resultados que obtenemos. Por ejemplo, en el experimento de los fertilizantes, es posible que si dividimos el invernadero tal como se muestra en la figura, un lado de este tenga más sol que el otro, afectando la producción del mismo modo que el fertilizante. Por lo tanto tendríamos que introducir un modo diferente de arreglar las parcelas o las plantas. Una alternativa, quizás más robusta, sería poner las plantas en macetas del tamaño suficiente e intercalar los tratamientos *A* y *B*, como en un tablero de ajedrez con dos cuadros del mismo color intercalados, para eliminar el posible efecto del lado del invernadero:
 
@@ -151,7 +151,12 @@ Generalmente, es más fácil interpretar los resultados de los experimentos con 
 
 ## Tipos de observaciones 
 
-Durante un experimento registramos sistemáticamente lo que está sucediendo. A estos registros les llamamos observaciones, de modo que durante un experimento obtendremos observaciones tanto de las cantidades que estamos investigando como de aquellas cuyo efecto sobre el objeto de estudio nos interesa entender. Como vimos en la discusión de los ejemplos de diseños experimentales (Figuras \@ref(fig:fisher-plots), \@ref(fig:cuadrado-latino)), las condiciones del lugar donde hacemos los experimentos pueden afectar el desempeño de las unidades de estudio, anulando el efecto de los tratamientos. Estos efectos del diseño experimental son muy comunes, por lo que es necesario tener registros precisos de las condiciones experimentales. Es importante tener un vocabulario consistente para describir los componentes de los diseños experimentales, pues estos componentes forman parte del análisis estadístico. Por lo general:
+En la sección \@ref(fert) vimos un experimento donde acomodábamos 100 plantas en dos parcelas, cada una con 50. En la discusión de esta sección (\@ref(disc)) vimos otras alternativas de diseño experimental. La principal diferencia entre estas fue que en la primera (Figura \@ref(fig:fisher-plots)) no hubo parcela, sino contenedores para cada planta, mientras que en la segunda (Figura \@ref(fig:cuadrado-latino)) acomodamos las plantas en dos parcelas, como en un cuadrado latino. En la primera alternativa, estaríamos registrando la producción por planta, mientras que en la segunda se registraría la producción por parcela. De aquí que tengamos dos tipos de observaciones, una por planta, y otra donde agregamos la producción de las plantas por parcela o bloque. Cada registro que hacemos lo denominamos observación, y los tipos de observaciones aquí descritas son:
+
+1. **Individuales** 
+2. **Agrupadas**
+
+Los tipos de observaciones tienen implicaciones importantes para el análisis de los datos colectados, pues durante un experimento obtendremos observaciones tanto de las cantidades que estamos investigando como de aquellas que afectan los datos que analizaremos. Como vimos en la sección \@ref(disc) las condiciones del lugar donde hacemos los experimentos pueden afectar el desempeño de las unidades de estudio (planta individual o parcela/bloque), anulando el efecto de los tratamientos. Estos efectos del diseño experimental son muy comunes, por lo que es necesario tener registros precisos de las condiciones experimentales. Es importante tener un vocabulario consistente para describir los componentes de los diseños experimentales, pues estos componentes forman parte del análisis estadístico. Por lo general:
 
 - **Tratamiento** Es la variable independiente que afecta el comportamiento de la variable dependiente.
 - **Bloque** Unidad de réplica del diseño experimental que afecta la dispersión de la variable dependiente.
@@ -163,7 +168,8 @@ $$ Observación_{i(j)} = Media_i + Bloque_j + Tratamiento_i + Error_{i(j)}$$
 
 Es decir que el promedio de las observaciones del tratamiento $i$ ($i = (A, B)$) es la suma del promedio global, el promedio del bloque $j$ y el tratamiento $i$.
 
-Aquí podemos ver por qué es necesario que cada observación de la producción de las plantas del ejemplo esté debidamente acompaña de registros de su obicación en los bloques y tratamiento.
+Aquí podemos ver por qué es necesario tomar en cuenta el tipo de observaciones que obtendremos con el diseño experimental elegido, y de registrar adecuadamente su obicación en los bloques y tratamientos. 
 
 ### Verificación del aprendizaje
 
+[Regresar al índice del curso](index.html)

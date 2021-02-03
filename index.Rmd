@@ -6,3 +6,11 @@ output:
   distill::distill_article:
     self_contained: false
 ---
+
+# Introducción al diseño experimental
+
+## [Tipos de experimentos y observaciones](Tipo-exper-observ.html)
+
+## [Concepto de dato](Concepto-dato.html)
+
+## [Unidades experimentales](Unidad-exper.html)
