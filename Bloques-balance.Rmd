@@ -16,6 +16,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-
+En la sección [Tipos de experimentos y observaciones](Tipo-exper-observ.html)
 
 [Regresar al índice del curso](index.html)

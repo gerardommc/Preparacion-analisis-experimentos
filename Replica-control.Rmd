@@ -97,6 +97,8 @@ De modo que si colectamos los datos una vez a la semana agregándolos como en \@
 
 En al realidad en muy difícil asegurarnos de que las réplicas y unidades experimentales son independientes unas de otras, por lo que existen métodos estadísticos para estimar el grado de dependencia entre observaciones. Sin embargo hay diseños experimentales muy deficientes para los que no existe solución estadística como el de la figura \@ref(fig:fertilizante).
 
-[Regresar al índice del curso](index.html)
+Por otra parte, como hemos visto aquí la agrupación puede representar un problema de pseudo-replicación, pero también hemos visto (sección de [Unidades experimentales](Unidad-exper.html)) que a veces es necesario agrupar las observaciones.
 
 # Verificación del aprendizaje
+
+[Regresar al índice del curso](index.html)
