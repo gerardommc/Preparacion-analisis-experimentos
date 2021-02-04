@@ -7,7 +7,7 @@ output:
             toc: true 
             number_sections: true
             toc_float: true
-            theme: cerulean
+            theme: journal
 ---
 
 ```{r setup, include=FALSE}
@@ -68,16 +68,35 @@ knitr::include_graphics("Fertilizante-cuadrado.png")
 
 De este modo sí se obtienen 3 réplicas verdaderas, con base en qué tratamiento es vecino de qué tratamiento. Aún así es necesario tomar en cuenta la identidad de cada parcela en el análisis estadístico.
 
-## Pseudo-replicación sacrificial
+## Pseudo-replicación sacrificial {#sacr}
 
+En muchas ocasiones este tipo de pseudo-replicación es una decisión de procesamiento de datos pues es resultado de agregar las observaciones (ver [sección 1](Tipo-exper-observ.html)). Una manera común de agregación de datos es promediando las observaciones, de modo que los datos de todos los individuos dentro de cada bloque experimental son representados con sólo un número. Suele ocurrir durante el análisis de diseños experimentales como el cuadrado latino (figura \@ref(fig:fert-cuad)).
 
+En caso de agregar las observaciones del experimento de los fertilizantes ¡tendríamos 9 observaciones en lugar 300!:
 
-```{r}
-
+```{r sacrificial, echo=F, results="asis"}
+df <- data.frame(Producción = c(rnorm(3, 30, 8), rnorm(3, 32, 8), rnorm(3, 33, 10)),
+                  Tratamiento = rep(c("Control", "Fertlilizante A", "Fertilizante B"), each = 3),
+                  Bloque = 1:9)
+knitr::kable(df, caption = "Datos experimentales agregados por promedio de bloque.")
 ```
 
-## Control
+Este tipo de pseudo-replicación **sacrifica** toda la varibilidad que pudimos hacer utilizado para rechazar la hipótesis nula.
 
-## Pseudo-replicación
+## Pseudo-replicación temporal
+
+Si tomamos en cuenta que algunos experimentos pueden tomar mucho tiempo en llevarse a cabo, resulta muy tentador comenzar a analizar las observaciones registradas conforme avanza el experimento. Más tentador aún es asumir que cada registro puede analizarse como un dato más, sin embargo este método puede anular la validez de las conclusiones a las que lleguemos. Veamos en este esquema a qué se refiere la pseudo-replicación temporal:
+
+```{r fert-cuad-temp, echo = F, out.width="90%", fig.cap="Cuadrado latino con medidas repetidas en el tiempo.", fig.align="center"}
+knitr::include_graphics("Fertilizante-cuadrado-tiempo.png")
+```
+
+De modo que si colectamos los datos una vez a la semana agregándolos como en \@ref(sacr), asumiendo que cada colecta es independiente, tendríamos una base de datos como la tabla \@ref(tab:sacrificial) con 36 filas, pero donde los bloques 1-9 se repiten cuatro veces. El resultado sería pseudo-replicación temporal y sacrificial.
+
+# Discusión
+
+En al realidad en muy difícil asegurarnos de que las réplicas y unidades experimentales son independientes unas de otras, por lo que existen métodos estadísticos para estimar el grado de dependencia entre observaciones. Sin embargo hay diseños experimentales muy deficientes para los que no existe solución estadística como el de la figura \@ref(fig:fertilizante).
 
 [Regresar al índice del curso](index.html)
+
+# Verificación del aprendizaje
