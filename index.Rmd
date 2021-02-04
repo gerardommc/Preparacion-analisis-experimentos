@@ -6,6 +6,7 @@ author: Gerardo Martín
 output:
   distill::distill_article:
     self_contained: false
+    theme: cerulean
 ---
 
 # Introducción al diseño experimental
@@ -19,3 +20,6 @@ output:
 4. [Réplica, control y pseudo-replicación](Replica-control.html)
 
 5. [Bloques y balance](Bloques-balance.html)
+
+# El modelo ANOVA 1
+

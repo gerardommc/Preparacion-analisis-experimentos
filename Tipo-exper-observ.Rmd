@@ -3,7 +3,11 @@ title: "Tipos de experimentos y observaciones"
 author: "Gerardo Martín"
 date: "2/2/2021"
 output: 
-      bookdown::html_document2
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: cerulean
 ---
 
 ```{r setup, include=FALSE}
