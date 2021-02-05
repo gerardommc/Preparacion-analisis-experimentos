@@ -7,7 +7,7 @@ output:
             toc: true 
             number_sections: true
             toc_float: true
-            theme: journal
+            theme: paper
 ---
 
 ```{r setup, include=FALSE}
@@ -28,7 +28,7 @@ Tal como vimos que hay estudios observacionales, experimentales e intermedios, h
 
 Estos ejemplos de unidades experimentales los he tomado de la [Iniciativa para reducir el uso de animales experimentales](http://www.3rs-reduction.co.uk/), sección de [unidades experimentales](http://www.3rs-reduction.co.uk/html/3__the_experimental_unit.html). La iniciativa contiene numerosos recursos para aprender y probar nuestros conocimientos y habilidades en diseño experimental, y fue creada co motivo de la publicación del libro [The Design of Animal Experiments](https://uk.sagepub.com/en-gb/eur/the-design-of-animal-experiments/book252408) (Festing et al. 2002). 
 
-## Tratamientos en ratones {#raton}
+## Unidades con observaciones agrupadas o individuos {#raton}
 
 Las imágenes a continuación representan dos diseños experimentales similares pero con unidades experimentales muy diferentes:
 
@@ -38,13 +38,13 @@ Las imágenes a continuación representan dos diseños experimentales similares 
 
 En el primer caso, todos los ratones están en el mismo contenedor, pero debido a que se aplica el tratamiento a cada individuo, existen **8 unidades experimentales**. En el segundo, hay cuatro contenedores cada uno con dos ratones y como el tratamiento se da en la comida, en este diseño sólo hay **4 unidades experimentales**.
 
-## Tratamientos secuenciales
+## Unidades con tratamientos secuenciales
 
 Es posible aplicar tratamientos secuenciales en los mismos individuos, siempre y cuando éstos últimos no tengan efectos posteriores sobre los tratamientos subsecuentes. En la imágen de abajo, se tienen tres individuos, a los que se aplican cuatro tratamientos, por lo que hay **12 unidades experimentales**:
 
 ![Tratamientos subsecuentes aplicados de manera aleatoria](http://www.3rs-reduction.co.uk/assets/images/expU302.JPG)
 
-## Tratamientos en ratonas preñadas {#pren}
+## Unidades con observaciones estrictamente agrupadas {#pren}
 
 El siguiente caso representa un tratamiento sobre dos hembras preñadas, pero los efectos se miden sobre la camada:
 
