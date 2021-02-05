@@ -23,7 +23,7 @@ La ecología y biología son cada vez más sofisticadas, por lo que es imposible
 
 Como es de esperarse, hay grados intermedios pues, por ejemplo, se puede hacer experimentos a gran escala (ecosistemas enteros) donde tenemos poco control sobre muchos de los factores que afectan el comportamiento del sistema de estudio.
 
-Es importante tener en cuenta esta burda clasificación, porque durante nuestra carrera podremos vernos en la necesidad de diseñar ambos tipos de estudios. Tal como mencionamos anteriormente, para diseñar experimenton hay que considerar factores biológicos, estadísticos, éticos y logísticos. Cuando decidimos si hacemos estudios observacionales o experimentales, debemos de tomar en cuenta los mismos factores y otros adicionales, pues ambos tipos de estudios tienen ventajas y desventajas tanto biol\'ogicas como estadísticas:
+Es importante tener en cuenta esta burda clasificación, porque durante nuestra carrera podremos vernos en la necesidad de diseñar ambos tipos de estudios. Tal como mencionamos anteriormente, para diseñar experimenton hay que considerar factores biológicos, estadísticos, éticos y logísticos. Cuando decidimos si hacemos estudios observacionales o experimentales, debemos de tomar en cuenta los mismos factores y otros adicionales, pues ambos tipos de estudios tienen ventajas y desventajas tanto biológicas como estadísticas:
 
 - **Biológicas** Los estudios experimentales son versiones muy simplificadas del mundo, por lo que podremos registrar con mayor certeza el fenómeno que nos interesa. Sin embargo, la ventaja de los estudios observacionales es que son mucho más realistas que los estudios experimentales. Por otra parte, los estudios experimentales pueden ser tan simplistas que los resultados obtenidos pueden tener implicaciones insignificantes en el mundo real. De igual manera, los estudios observacionales están afectados por tantos procesos paralelos que la variabildiad (error) es muy alta, resultando muy difícil haer generalizaciones a partir de lo que veamos.
 - **Estadísticas** Debido a que los estudios experimentales son más sencillos que los observacionales es más fácil estimar adecuadamente los errores y explicar la variabildiad que en los estudios observacionales. Por lo tanto los métodos estadísticos utilizados para los estudios experimentales son generalmente más sencillos. Por otra parte, mientras que en los estudios observacionales es más complicado probar hipótesis o estimar efectos, estos se prestan más para expandir los límites de los métodos estadésticos.
@@ -149,11 +149,7 @@ En el primer ejemplo probamos si un fertilizante es mejor que otro, es decir: di
 
 Generalmente, es más fácil interpretar los resultados de los experimentos con variables contínuas, por lo que nos centraremos en profundizar en los experimentos donde las variables independientes son categóricas ($1^{er}$ ejemplo).
 
-### Verifiación del aprendizaje
-
-
-
-## Tipos de observaciones 
+# Tipos de observaciones 
 
 En la sección \@ref(fert) vimos un experimento donde acomodábamos 100 plantas en dos parcelas, cada una con 50. En la discusión de esta sección (\@ref(disc)) vimos otras alternativas de diseño experimental. La principal diferencia entre estas fue que en la primera (Figura \@ref(fig:fisher-plots)) no hubo parcela, sino contenedores para cada planta, mientras que en la segunda (Figura \@ref(fig:cuadrado-latino)) acomodamos las plantas en dos parcelas, como en un cuadrado latino. En la primera alternativa, estaríamos registrando la producción por planta, mientras que en la segunda se registraría la producción por parcela. De aquí que tengamos dos tipos de observaciones, una por planta, y otra donde agregamos la producción de las plantas por parcela o bloque. Cada registro que hacemos lo denominamos observación, y los tipos de observaciones aquí descritas son:
 
@@ -174,6 +170,8 @@ Es decir que el promedio de las observaciones del tratamiento $i$ ($i = (A, B)$)
 
 Aquí podemos ver por qué es necesario tomar en cuenta el tipo de observaciones que obtendremos con el diseño experimental elegido, y de registrar adecuadamente su obicación en los bloques y tratamientos. 
 
-### Verificación del aprendizaje
+# Verificación del aprendizaje
+
+Dirígete al google classroom y completa el formulario:
 
 [Regresar al índice del curso](index.html)
