@@ -16,17 +16,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-La ecología y biología son cada vez más sofisticadas, por lo que es imposible aprender todos los tipos de estudios que existen. En general, con motivo de diseño podemos clasificar a los estudios en tos tipos:
+La ecología y biología son cada vez más sofisticadas, por lo que es imposible aprender todos los tipos de estudios que existen. En general, con base en el **grado de manipulación** del objeto de estudio podemos clasificarlos dos tipos:
 
 - **Observacionales** Consisten en el registro sistemático de acontecimientos del mundo natural (ejemplo de la ardilla).
 - **Experimentales** Están basados en la creación de un ambiente donde podemos controlar los factores que afectan el objeto de estudio.
 
-Como es de esperarse, hay grados intermedios pues, por ejemplo, se puede hacer experimentos a gran escala (ecosistemas enteros) donde tenemos poco control sobre muchos de los factores que afectan el comportamiento del sistema de estudio.
+Como es de esperarse, hay grados intermedios pues, por ejemplo, hay experimentos a gran escala (ecosistemas enteros) donde tenemos poco control sobre muchos de los factores que afectan el comportamiento del sistema de estudio.
 
 Es importante tener en cuenta esta burda clasificación, porque durante nuestra carrera podremos vernos en la necesidad de diseñar ambos tipos de estudios. Tal como mencionamos anteriormente, para diseñar experimenton hay que considerar factores biológicos, estadísticos, éticos y logísticos. Cuando decidimos si hacemos estudios observacionales o experimentales, debemos de tomar en cuenta los mismos factores y otros adicionales, pues ambos tipos de estudios tienen ventajas y desventajas tanto biológicas como estadísticas:
 
 - **Biológicas** Los estudios experimentales son versiones muy simplificadas del mundo, por lo que podremos registrar con mayor certeza el fenómeno que nos interesa. Sin embargo, la ventaja de los estudios observacionales es que son mucho más realistas que los estudios experimentales. Por otra parte, los estudios experimentales pueden ser tan simplistas que los resultados obtenidos pueden tener implicaciones insignificantes en el mundo real. De igual manera, los estudios observacionales están afectados por tantos procesos paralelos que la variabildiad (error) es muy alta, resultando muy difícil haer generalizaciones a partir de lo que veamos.
 - **Estadísticas** Debido a que los estudios experimentales son más sencillos que los observacionales es más fácil estimar adecuadamente los errores y explicar la variabildiad que en los estudios observacionales. Por lo tanto los métodos estadísticos utilizados para los estudios experimentales son generalmente más sencillos. Por otra parte, mientras que en los estudios observacionales es más complicado probar hipótesis o estimar efectos, estos se prestan más para expandir los límites de los métodos estadésticos.
+
+Existen otras clasificaciones de los estudios con base en la naturaleza de los tratamientos aplicados. Cuando los tratamientos tienen como objetivo identificar el efecto de tratamientos categóricos (diferentes medicamentos, tipo de alimento) les llamamos **factoriales**. En ocasiones, el objetivo del estudio es más bien estimar la magnitud de efectos, por ejemplo medir respuestas de los objetos de estudio al aumento de la temperatura.
 
 A partir de aquí veremos una clasificación más profunda de los estudios (experimentos) con base en sus cualidades estadísticas, las cuales determinarán la naturaleza de las observaciones que obtendremos y el tipo de análisis que se puede hacer de ellas.
 
@@ -51,7 +53,9 @@ Donde $x$ (variable dependiente) es una función de $y$ (variable independiente)
 
 A continuación se expone una serie de ejemplos para dejar de manifiesto las implicaciones experimentales de las cualidades matemáticas y estadísticas de las variables.
 
-## Aplicación de dos fertilizantes {#fert}
+## Ejemplos
+
+### Aplicación de dos fertilizantes {#fert}
 
 Estamos trabajando con una especie de planta y nos interesa saber qué fertilizante funciona mejor para que produzca más fruto. Entonces creamos dos parcelas dentro de un invernadero, donde colocamos 100 plantas, a 50 de ellas les aplicaremos el fertilizante *A* y a las otras 50 el fertilizante *B*. Durante una temporada de producción medimos la producción de fruto.
 
@@ -78,7 +82,7 @@ ggplot(df) + geom_boxplot(aes(x = tratamiento, y = prod))
 
 ```
 
-## Efecto de la temperatura
+### Efecto de la temperatura
 
 Estamos interesados en determinar si la temperatura afecta la productividad de la planta. Por lo que diseñamos un experimento para medir la producción de fruto a diferentes temperaturas (10-25 °C). Entonces decidimos que vamos a aplicar cuatro tratamientos con 12 plantas cada uno: 10, 15, 20 y 25 °C. Como pueden ver, aquí sería posible haber seleccionado más temperaturas intermedias, pues la temperatura es una variable **contínua**.
 
