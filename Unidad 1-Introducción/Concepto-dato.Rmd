@@ -1,0 +1,49 @@
+---
+title: "El concepto de dato"
+author: "Gerardo Martín"
+date: "3/2/2021"
+output: 
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+En estadística hay varios conceptos relacionados entre sí:
+
+1. Variable
+2. Observación
+3. Dato
+
+Es importante saberlos distinguir pues aunque son similares, tienen diferencias importantes. Para comenzar, una **variable** es un conjunto de observaciones que describen de diferentes objetos. Algo que caracteriza a una variable es que puede tomar muchos valores distintos pero todos aquellos son de la misma naturaleza matemática:
+
+- Contínua
+- Discreta
+- Ordinal
+- Categórica
+
+Cada uno de los valores posibles de las variables son **observaciones** que hemos registrado para describir los objetos de estudio. De modo que si registramos tres variables para describir diez objetos, cada variable tendrá diez observaciones:
+
+```{r base-datos, echo = F, results="asis"}
+library(knitr)
+df <- data.frame(individuo = as.character(1:10), color = c("rojo", "verde", "azul", "rojo", "café", "verde",
+                                          "amarillo", "azul", "rojo", "verde"),
+                 largo = runif(10), anillos = rpois(10, 5))
+kable(df, caption = "Base de datos")
+```
+
+Entonces, tenemos que una variable es categórica (*color*), una es contínua (*largo*) y otra es discreta (*anillos*). Cada renglón de esta base de datos contiene el *color*, *largo* y número de *anillos* de los objetos identificados con número en la columna *id*. Entonces, cada renglón de la tabla \@ref(tab:base-datos) es un **dato**, por lo que **dato** es la descripción de cada unidad de estudio con las variables de interés (dependientes e independientes). Suponiendo que estamos viendo si número de *anillos* aumenta con la *longitud* y difiere entre *colores*, la variable dependiente es *anillos*, y las independientes son *longitud* y *color*.
+
+# Verificación del conocimiento
+
+
+
+
+[Regresar al índice del curso](index.html)

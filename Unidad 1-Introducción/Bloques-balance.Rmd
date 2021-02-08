@@ -1,0 +1,49 @@
+---
+title: "Bloques y balance"
+author: "Gerardo Martín"
+date: "3/2/2021"
+output: 
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+## Bloques
+
+En la sección [Tipos de experimentos y observaciones](Tipo-exper-observ.html) construimos una pequeña lista con tipos de experimentos:
+
+1. Diseño completamente aleatorizado
+2. Diseño de bloques aleatorizados
+3. Diseño de parcelas divididas (split plot)
+4. Cuadrado latino
+
+Brevemente, sel término **bloque** se ha mencionado, particularmente cuando hablamos de [unidades experimentales](Unidad-exper.html) y de [réplicas y controles](Replica-control.html). A estas alturas ya estamos familiarizados con muchos conceptos básicos, por lo que hablar de aspectos del diseño experimental que consisten en la agrupación de unidades experimentales nos resultará fácil de entender, justamente eso es un **bloque**. El siguiente cuadrado latino por ejemplo:
+
+```{r fert-cuad, echo = F, out.width="75%", fig.cap="Cuadrado latino.", fig.align="center"}
+knitr::include_graphics("Fertilizante-cuadrado.png")
+```
+
+consiste de tres bloques para cada tratamiento, cada bloque contiene 1/3 de las plantas utilizadas en cada tratamiento (control, fertilizante A y B). Este diseño tuvo como finalidad contar con verdaderas réplicas, sin embargo, los datos obtenidos dentro de cada bloque no pueden ser considerados independientes entre sí, por lo que debemos de tomar en cuenta los bloques como factor de agrupación en el análisis estadístico.
+
+Otros diseños experimentales que utilizan bloques para que existan réplicas verdaderas son los números 2 y 3 de la lista de arriba. El número 2 difiere del cuadrado latino en que la ubicación de los bloques es aleatoria y se presta más para diseños experimentales con muchos tratamientos. En el diseño **split plot** los bloques contienen dos tipos de unidades experimentales (animales o plantas hembra y macho, p. ej.). Existen además diseños experimentales para tratamientos multi-factoriales, es decir, tratamientos con dos o más factores cada uno con un número específico de niveles.
+
+## Balance
+
+Este se refiere a que el número de unidades experimentales obtenidas ($n$) por cada bloque y tratamiento debe ser igual. La razón principal se puede encontrar en la fórmula de la varianza ($\sigma^2$):
+
+$$ \sigma^2 = \sum_{i = 1} ^ n \frac{x_i - \bar{x}}{n}$$
+donde $\bar{x}$ es la media aritmética de la muestra $X$ y $n$ es el tamaño de la muestra. Aquí podemos ver que la varianza de una muestra tenderá a ser más pequeña cuanto mayor sea el tamaño de muestra $n$. Entonces si tenemos diseños experimentales sin balance, las comparaciones de varianza entre tratamientos y bloques serán más complicadas.
+
+Existen ajustes estadísticos para corregir las estimaciones probabilísticas a la hora de probar las hipótesis, pero éstos los veremos más adelante. Asimismo, la estadística Bayesiana es filosóficamente distinta de la que veremos en este curso, y no requiere de supuestos de balance experimental como la frecuentista. Basta decir por ahora que siempre que estemos diseñando experimentos deberemos buscar el balance entre tratamientos y bloques.
+
+# Verificación del conocimiento
+
+[Regresar al índice del curso](index.html)
