@@ -41,6 +41,4 @@ kable(df, caption = "Base de datos")
 
 Entonces, tenemos que una variable es categórica (*color*), una es contínua (*largo*) y otra es discreta (*anillos*). Cada renglón de esta base de datos contiene el *color*, *largo* y número de *anillos* de los objetos identificados con número en la columna *id*. Entonces, cada renglón de la tabla \@ref(tab:base-datos) es un **dato**, por lo que **dato** es la descripción de cada unidad de estudio con las variables de interés (dependientes e independientes). Suponiendo que estamos viendo si número de *anillos* aumenta con la *longitud* y difiere entre *colores*, la variable dependiente es *anillos*, y las independientes son *longitud* y *color*.
 
-# Verificación del conocimiento
-
 [Regresar al índice del curso](../index.html)

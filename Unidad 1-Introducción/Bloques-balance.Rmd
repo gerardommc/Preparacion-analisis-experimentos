@@ -42,8 +42,22 @@ Este se refiere a que el número de unidades experimentales obtenidas ($n$) por 
 $$ \sigma^2 = \sum_{i = 1} ^ n \frac{x_i - \bar{x}}{n}$$
 donde $\bar{x}$ es la media aritmética de la muestra $X$ y $n$ es el tamaño de la muestra. Aquí podemos ver que la varianza de una muestra tenderá a ser más pequeña cuanto mayor sea el tamaño de muestra $n$. Entonces si tenemos diseños experimentales sin balance, las comparaciones de varianza entre tratamientos y bloques serán más complicadas.
 
-Existen ajustes estadísticos para corregir las estimaciones probabilísticas a la hora de probar las hipótesis, pero éstos los veremos más adelante. Asimismo, la estadística Bayesiana es filosóficamente distinta de la que veremos en este curso, y no requiere de supuestos de balance experimental como la frecuentista. Basta decir por ahora que siempre que estemos diseñando experimentos deberemos buscar el balance entre tratamientos y bloques.
+Existen ajustes estadísticos para corregir las estimaciones probabilísticas para probar las hipótesis, pero éstos los veremos más adelante. Asimismo, la estadística Bayesiana es filosóficamente distinta de la que veremos en este curso, y no requiere de supuestos de balance experimental como la frecuentista. Basta decir por ahora que siempre que estemos diseñando experimentos deberemos buscar el balance entre tratamientos y bloques. No obstante, hay ocasiones en que no es posible balancear los diseños experimentales, por ejemplo si dos tratamientos son incompatibles en tiempo o espacio. En dichos casos se suelen dividir los tratamientos en bloques más grandes, obteniendo así arreglos de bloques fuera de balance (figura \@ref(fig:fert-cuad-no-bal)):
+
+```{r fert-cuad-no-bal, echo = F, out.width="100%", fig.cap="Bloques no balanceados", fig.align="center"}
+knitr::include_graphics("Fertilizante-cuadrado-no-balance.png")
+```
+
+# Discusión y conclusiones
+
+Los bloques son las unidades de agrupación de las unidades experimentales por tratamiento o grupos de tratamientos. Es importante saber distinguir entre bloque y tratamiento para utilizar las herramientas analíticas adecuadas, pues es con estas que probaremos las hipótesis. 
+
+El balance es importante porque los análiss estadísticos con diseños balanceados son más robustos, pero cuando no es posible diseñar experimentos balanceados, tanto por cuestiones biológicas, logísticas o financieras, hay arreglos de bloques para mejorar el rendimiento de los experimentos.
+
+En las siguientes unidades aprenderemos a traducir algunos diseños experimentales en análisis estadísticos y a implementarlos en **R**.
 
 # Verificación del conocimiento
+
+Sigue [esta liga](https://docs.google.com/forms/d/15T7lBQXqPZFjCfI6Eu9Zheo4X5kOKj79PSvHSyNxmKU/edit?usp=sharing) para completar la actividad correspondiente a este módulo. Para acceder necesitarás tu dirección institucional.
 
 [Regresar al índice del curso](../index.html)
