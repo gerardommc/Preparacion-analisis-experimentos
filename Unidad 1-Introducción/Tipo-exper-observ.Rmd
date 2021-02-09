@@ -16,14 +16,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-La ecología y biología son cada vez más sofisticadas, por lo que es imposible aprender todos los tipos de estudios que existen. En general, con base en el **grado de manipulación** del objeto de estudio podemos clasificarlos dos tipos:
+La ecología y biología son cada vez más sofisticadas, por lo que es imposible aprender todos los tipos de estudios que existen. En general, con base en el **grado de manipulación** del objeto de estudio podemos clasificarlos en dos tipos:
 
 - **Observacionales** Consisten en el registro sistemático de acontecimientos del mundo natural (ejemplo de la ardilla).
 - **Experimentales** Están basados en la creación de un ambiente donde podemos controlar los factores que afectan el objeto de estudio.
 
 Como es de esperarse, hay grados intermedios pues, por ejemplo, hay experimentos a gran escala (ecosistemas enteros) donde tenemos poco control sobre muchos de los factores que afectan el comportamiento del sistema de estudio.
 
-Es importante tener en cuenta esta burda clasificación, porque durante nuestra carrera podremos vernos en la necesidad de diseñar ambos tipos de estudios. Tal como mencionamos anteriormente, para diseñar experimenton hay que considerar factores biológicos, estadísticos, éticos y logísticos. Cuando decidimos si hacemos estudios observacionales o experimentales, debemos de tomar en cuenta los mismos factores y otros adicionales, pues ambos tipos de estudios tienen ventajas y desventajas tanto biológicas como estadísticas:
+Es importante tener en cuenta esta burda clasificación, porque durante nuestra carrera podremos vernos en la necesidad de diseñar ambos tipos de estudios. Tal como mencionamos anteriormente, para diseñar experimentos hay que considerar factores biológicos, estadísticos, éticos y logísticos. Cuando decidimos si hacemos estudios observacionales o experimentales, debemos de tomar en cuenta los mismos factores y otros adicionales, pues ambos tipos de estudios tienen ventajas y desventajas tanto biológicas como estadísticas:
 
 - **Biológicas** Los estudios experimentales son versiones muy simplificadas del mundo, por lo que podremos registrar con mayor certeza el fenómeno que nos interesa. Sin embargo, la ventaja de los estudios observacionales es que son mucho más realistas que los estudios experimentales. Por otra parte, los estudios experimentales pueden ser tan simplistas que los resultados obtenidos pueden tener implicaciones insignificantes en el mundo real. De igual manera, los estudios observacionales están afectados por tantos procesos paralelos que la variabildiad (error) es muy alta, resultando muy difícil haer generalizaciones a partir de lo que veamos.
 - **Estadísticas** Debido a que los estudios experimentales son más sencillos que los observacionales es más fácil estimar adecuadamente los errores y explicar la variabildiad que en los estudios observacionales. Por lo tanto los métodos estadísticos utilizados para los estudios experimentales son generalmente más sencillos. Por otra parte, mientras que en los estudios observacionales es más complicado probar hipótesis o estimar efectos, estos se prestan más para expandir los límites de los métodos estadésticos.
@@ -113,7 +113,7 @@ ggplot(df) + geom_point(aes(x = temp, y = prod)) +
 
 ## Discusión de los ejemplos {#disc}
 
-Aquí vimos dos ejemplos sumamente sencillos, uno con un factor categórigo a dos niveles, y un factor contínuo a do niveles. En la práctica es necesario tomar en cuenta muchos otros factores externos que pueden afectar los resultados que obtenemos. Por ejemplo, en el experimento de los fertilizantes, es posible que si dividimos el invernadero tal como se muestra en la figura, un lado de este tenga más sol que el otro, afectando la producción del mismo modo que el fertilizante. Por lo tanto tendríamos que introducir un modo diferente de arreglar las parcelas o las plantas. Una alternativa, quizás más robusta, sería poner las plantas en macetas del tamaño suficiente e intercalar los tratamientos *A* y *B*, como en un tablero de ajedrez con dos cuadros del mismo color intercalados, para eliminar el posible efecto del lado del invernadero:
+Aquí vimos dos ejemplos sumamente sencillos, uno con un factor categórigo a dos niveles, y un factor contínuo a cuatro niveles. En la práctica es necesario tomar en cuenta muchos otros factores externos que pueden afectar los resultados y las conclusiones que obtenemos de los experimentos. Por ejemplo, en el experimento de los fertilizantes, es posible que si dividimos el invernadero tal como se muestra en la figura, un lado de este tenga más sol que el otro, afectando la producción del mismo modo que el fertilizante. Por lo tanto tendríamos que introducir un modo diferente de arreglar las parcelas o las plantas. Una alternativa, quizás más robusta, sería poner las plantas en macetas del tamaño suficiente e intercalar los tratamientos *A* y *B*, como en un tablero de ajedrez con dos macetas con el mismo tratamiento intercaladas, para eliminar el posible efecto del lado del invernadero:
 
 ```{r fisher-plots, echo = F, fig.height=4, fig.width=5, fig.cap= "Diseño experimental alternativo en modo de tablero de ajedrez.", fig.align="center"}
 Trats <- expand.grid(x = seq(2, 20, by = 2), y = seq(1, 10, by = 1))
@@ -128,7 +128,7 @@ ggplot(Trats) + geom_point(aes(x = x, y = y, colour = Tratamiento), size = 3) +
 
 Este diseño experimental fue desarrollado por el famoso estadístico R. A. Fisher en la estación experimental de Rothamsted, Londres. Es obvio que un experimento de este tipo sería imposible para aplicar tratamientos de temperatura (segundo ejemplo), pues no podríamos controlar la temperatura como sí se puede controlar el tipo de fertilizante aplicado.
 
-Existen alternativas a este diseño que también podrían dar mejores resultados que el diseño original del ejemplo. El cuadrado latino, por ejemplo, está basado en parcelas arregladas en filas y columnas tal que cada fila y cada columna debe tener una parcela de cada tratamiento:
+Existen alternativas a este diseño que también podrían dar mejores resultados que el diseño original del ejemplo. El cuadrado latino, por ejemplo, está basado en parcelas dispuestas en filas y columnas tal que cada fila y cada columna debe tener una parcela de cada tratamiento:
 
 ```{r cuadrado-latino, echo = F, fig.height=4, fig.width=5, fig.cap="Diseño de cuadrado latino.", fig.align="center"}
 df.1 <- data.frame(x = c(1, 1, 2, 2), y = c(1, 2, 1, 2), Tratamiento = c("A", "B", "B", "A"))
@@ -138,14 +138,14 @@ ggplot(df.1) + geom_tile(aes(x = x, y = y, fill = Tratamiento)) +
             axis.ticks = element_blank())
 ```
 
-Existen muchas variaciones de este tipo de arreglos de los tratamientos experimentales, algunos de los cuales pueden ser muy complejos, sobretodo cuando aplicamos tratamientos con tres, cuatro niveles o más niveles (tres o cuatro fertilizantes); o combinaciones de tratamientos, por ejemplo combinando tres fertilizantes en dos tipos de suelo diferentes. Algunos de los diseños experimentales que revisaremos a profundidad junto con los métodos estadísticos para analizarlos son:
+También hay variaciones de este tipo de arreglos de los tratamientos experimentales, algunos de los cuales pueden ser muy complejos, sobretodo cuando aplicamos tratamientos con tres, cuatro niveles o más niveles (tres o cuatro fertilizantes diferentes); o combinaciones de tratamientos, por ejemplo combinando tres fertilizantes en dos tipos de suelo diferentes. Algunos de los diseños experimentales que revisaremos a profundidad junto con los métodos estadísticos para analizarlos son:
 
 1. Diseño completamente aleatorizado
 2. Diseño de bloques aleatorizados
 3. Diseño de parcelas divididas
 4. Cuadrado latino
 
-Estos estudios más complicados se llaman **multi-factoriales**. Lo que todos estos diseños experimentales tienen en común es que los datos se suelen analizar con un **Análisis de Varianza** (**ANOVA** por "Analysis of Variance", sus siglas en inglés). En la unidad 2 comenzaremos a ver por qué recibe este nombre y cómo se puede hacer dicho análisis estadístico.
+Estos estudios más complicados se llaman **multi-factoriales**. Lo que todos estos diseños experimentales tienen en común es que la técnica de análisis estadístico es un **Análisis de Varianza** (**ANOVA** por "Analysis of Variance", sus siglas en inglés). En la unidad 2 comenzaremos a ver por qué recibe este nombre y cómo se hace dependiendo del diseño experimental elegido.
 
 ## Conclusiones de los ejemplos
 

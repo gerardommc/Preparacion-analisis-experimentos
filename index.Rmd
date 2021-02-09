@@ -11,15 +11,27 @@ theme: journal
 
 # Introducción al diseño experimental
 
-1. [Tipos de experimentos y observaciones](Tipo-exper-observ.html)
+1. [Tipos de experimentos y observaciones](Unidad 1-Introducción/Tipo-exper-observ.html)
 
-2. [Concepto de dato](Concepto-dato.html)
+2. [El concepto de dato](Unidad 1-Introducción/Concepto-dato.html)
 
-3. [Unidades experimentales](Unidad-exper.html)
+3. [La unidad experimental](Unidad 1-Introducción/Unidad-exper.html)
 
-4. [Réplica, control y pseudo-replicación](Replica-control.html)
+4. [Réplica, control y pseudo-replicación](Unidad 1-Introducción/Replica-control.html)
 
-5. [Bloques y balance](Bloques-balance.html)
+5. [Bloques y balance](Unidad 1-Introducción/Bloques-balance.html)
 
-# El modelo ANOVA 1
+# El modelo ANOVA de una vía
+
+1. [Diseño completamente aleatorizado con efectos fijos]
+
+2. [Diseño completamente aleatorizado con con efectos aleatorios]
+
+3. [Diseño completamente aleatorizado con bloques al azar]
+
+4. [Pruebas equivalente para datos ordenados por rango]
+
+# El modelo ANOVA con dos o más criterios de clasificación
+
+
 
