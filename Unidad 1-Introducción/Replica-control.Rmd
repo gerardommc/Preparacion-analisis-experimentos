@@ -101,6 +101,6 @@ Por otra parte, como hemos visto aquí la agrupación puede representar un probl
 
 # Verificación del aprendizaje
 
-Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSd_A4s0bbYsu4UwBjLXdaGlLCQZpG1yuEy7PMAcmCcigOQR0A/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder necesitarás tu dirección institucional.
+Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSd_A4s0bbYsu4UwBjLXdaGlLCQZpG1yuEy7PMAcmCcigOQR0A/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder y registrar tu participación necesitarás tu dirección institucional.
 
 [Regresar al índice del curso](../index.html)

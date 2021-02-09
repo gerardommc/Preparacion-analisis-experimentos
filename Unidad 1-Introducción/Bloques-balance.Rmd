@@ -58,6 +58,6 @@ En las siguientes unidades aprenderemos a traducir algunos diseños experimental
 
 # Verificación del conocimiento
 
-Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSdKe7kF6bSxj0G58-nsjWG2mglEoDBRQ2vR1e3F5jgFYMD1AA/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder necesitarás tu dirección institucional.
+Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSdKe7kF6bSxj0G58-nsjWG2mglEoDBRQ2vR1e3F5jgFYMD1AA/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder y registrar tu participación necesitarás tu dirección institucional.
 
 [Regresar al índice del curso](../index.html)

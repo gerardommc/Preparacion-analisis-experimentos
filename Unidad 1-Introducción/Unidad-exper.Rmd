@@ -58,6 +58,6 @@ Los ejemplos aquí vistos muestran cómo el diseño experimental puede afectar e
 
 # Verificación del aprendizaje
 
-Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSfKNeJ8DSTyxEE8-L6yjD_ulAo-jPhre4MOn5pbMxWwSszYVw/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder necesitarás tu dirección institucional.
+Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSfKNeJ8DSTyxEE8-L6yjD_ulAo-jPhre4MOn5pbMxWwSszYVw/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder y registrar tu participación necesitarás tu dirección institucional.
 
 [Regresar al índice del curso](../index.html)
