@@ -178,4 +178,4 @@ Aquí podemos ver por qué es necesario tomar en cuenta el tipo de observaciones
 
 Dirígete al google classroom y completa el formulario:
 
-[Regresar al índice del curso](index.html)
+[Regresar al índice del curso](../index.html)

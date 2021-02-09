@@ -58,4 +58,4 @@ Los ejemplos aquí vistos muestran cómo el diseño experimental puede afectar e
 
 # Verificación del aprendizaje
 
-[Regresar al índice del curso](index.html)
+[Regresar al índice del curso](../index.html)

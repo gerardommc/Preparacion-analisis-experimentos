@@ -101,4 +101,4 @@ Por otra parte, como hemos visto aquí la agrupación puede representar un probl
 
 # Verificación del aprendizaje
 
-[Regresar al índice del curso](index.html)
+[Regresar al índice del curso](../index.html)

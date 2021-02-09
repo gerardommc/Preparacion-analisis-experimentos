@@ -43,7 +43,4 @@ Entonces, tenemos que una variable es categórica (*color*), una es contínua (*
 
 # Verificación del conocimiento
 
-
-
-
-[Regresar al índice del curso](index.html)
+[Regresar al índice del curso](../index.html)

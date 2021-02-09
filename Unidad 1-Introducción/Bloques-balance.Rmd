@@ -46,4 +46,4 @@ Existen ajustes estadísticos para corregir las estimaciones probabilísticas a 
 
 # Verificación del conocimiento
 
-[Regresar al índice del curso](index.html)
+[Regresar al índice del curso](../index.html)
