@@ -28,7 +28,7 @@ En la sección [Tipos de experimentos y observaciones](Tipo-exper-observ.html) c
 Brevemente, sel término **bloque** se ha mencionado, particularmente cuando hablamos de [unidades experimentales](Unidad-exper.html) y de [réplicas y controles](Replica-control.html). A estas alturas ya estamos familiarizados con muchos conceptos básicos, por lo que hablar de aspectos del diseño experimental que consisten en la agrupación de unidades experimentales nos resultará fácil de entender, justamente eso es un **bloque**. El siguiente cuadrado latino por ejemplo:
 
 ```{r fert-cuad, echo = F, out.width="75%", fig.cap="Cuadrado latino.", fig.align="center"}
-knitr::include_graphics("Fertilizante-cuadrado.png")
+knitr::include_graphics("Unidad 1-Introducción/Fertilizante-cuadrado.png")
 ```
 
 consiste de tres bloques para cada tratamiento, cada bloque contiene 1/3 de las plantas utilizadas en cada tratamiento (control, fertilizante A y B). Este diseño tuvo como finalidad contar con verdaderas réplicas, sin embargo, los datos obtenidos dentro de cada bloque no pueden ser considerados independientes entre sí, por lo que debemos de tomar en cuenta los bloques como factor de agrupación en el análisis estadístico.
@@ -37,15 +37,12 @@ Otros diseños experimentales que utilizan bloques para que existan réplicas ve
 
 ## Balance
 
-Este se refiere a que el número de unidades experimentales obtenidas ($n$) por cada bloque y tratamiento debe ser igual. La razón principal se puede encontrar en la fórmula de la varianza ($\sigma^2$):
-
-$$ \sigma^2 = \sum_{i = 1} ^ n \frac{x_i - \bar{x}}{n}$$
-donde $\bar{x}$ es la media aritmética de la muestra $X$ y $n$ es el tamaño de la muestra. Aquí podemos ver que la varianza de una muestra tenderá a ser más pequeña cuanto mayor sea el tamaño de muestra $n$. Entonces si tenemos diseños experimentales sin balance, las comparaciones de varianza entre tratamientos y bloques serán más complicadas.
+Este se refiere a que el número de unidades experimentales obtenidas ($n$) por cada bloque y tratamiento debe ser igual. La razón principal es que el análisis de varianza utiliza la suma de cuadrados ($SS$, por "sum of squares"), que consiste en sumar el cuadrado de los valores colectados para para tratamiento. Por lo que, la suma de cuadrados de un estudio no balanceado arrojaría resultados estadísticos inválidos
 
 Existen ajustes estadísticos para corregir las estimaciones probabilísticas para probar las hipótesis, pero éstos los veremos más adelante. Asimismo, la estadística Bayesiana es filosóficamente distinta de la que veremos en este curso, y no requiere de supuestos de balance experimental como la frecuentista. Basta decir por ahora que siempre que estemos diseñando experimentos deberemos buscar el balance entre tratamientos y bloques. No obstante, hay ocasiones en que no es posible balancear los diseños experimentales, por ejemplo si dos tratamientos son incompatibles en tiempo o espacio. En dichos casos se suelen dividir los tratamientos en bloques más grandes, obteniendo así arreglos de bloques fuera de balance (figura \@ref(fig:fert-cuad-no-bal)):
 
 ```{r fert-cuad-no-bal, echo = F, out.width="100%", fig.cap="Bloques no balanceados", fig.align="center"}
-knitr::include_graphics("Fertilizante-cuadrado-no-balance.png")
+knitr::include_graphics("Unidad 1-Introducción/Fertilizante-cuadrado-no-balance.png")
 ```
 
 # Discusión y conclusiones

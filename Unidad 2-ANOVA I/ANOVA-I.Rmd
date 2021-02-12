@@ -1,0 +1,93 @@
+---
+title: "ANOVA de una vía"
+author: "Gerardo Martín"
+date: "10/2/2021"
+output: 
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+El modelo estadístico para comparar los efectos de un factor con varios niveles categóricos se llama ANOVA de una vía. Existen variaciones de este modelo que nos ayudan a hacer las comparaciones entre tratamientos cuando tenemos diferentes bloques. Por lo pronto, en este documento se muestra el proceso para hacer un análisis de varianza de una vía sin bloques.
+
+## Definiciones
+
+Comenzaremos por describir el significado de algunas abreviaciones que se utilizan tradicionalmente para referirse a los cálculos típicos de un ANOVA de una vía:
+
+$CM$ **Correción de la media** Se calcula a partir de todos lo datos de la media como:
+
+$$ CM = \frac{\left ( \sum_{i = 1}^n \sum_{j = i}^{k} y_{ij} \right)^2}{N_{total}} = \frac{\mathrm{Suma\ de\ todas\ las\ observaciones}^2}{\mathrm{Número\ total\ de\ observaciones}}$$ 
+
+$SS(Total)$ **Suma de cuadrados totales** Es la suma de cada observación elevada al cuadrado (antes de hacer la suma), menos $CM$. Se calcula así:
+
+$$SS(Total) = \sum_{i = 1}^n \sum_{j = i}^{k} y_{ij}^2 - CM$$
+$SST$ **Suma de cuadrados de los tratamientos** Es similar al paso anterior, pero sólo para las observaciones de cada tratamiento:
+
+$$SST = \sum_{i = 1}^n \frac{T_i^2}{N_i} - CM$$
+Donde $T_i$ es la suma de las observaciones de cada tratamiento, por lo que $T_i^2$ es la suma elevada al cuadrado, y $N_i$ es el número de observaciones por tratamiento $i$.
+
+$SSE$ **Suma de cuadrados del error** Es la diferencia entre $SS(Total)$ y $SST$:
+
+$$SSE = SS(Total) - SST$$
+$MST$ **Media de cuadrados de los tratamientos** El nombre mismo lo dice (media = promedio aritmético):
+
+$$ MST = \frac{SST}{k-1} $$
+Donde $k$ es el número de observaciones por tratamiento, y $k-1$ son los *grados de libertad*.
+
+$MSE$ **Media de cuadrados del error**:
+
+$$ MSE = \frac{SSE}{N_{total}-k}$$
+
+$F$ **Estadístico F** Es el valor del parámetro de la distribución estadística $F$ (por Fisher). Se calcula así:
+
+$$ F = \frac{MST}{MSE}$$
+El valor de $F$, lo utilizamos para probar $H_0$ (no hay diferencias entre tratamientos). Para ello podemos utilizar una tabla de valores críticos (valores $\alpha$) de significancia estadística. Este último, en el 99% de los casos es $\alpha = 0.05$, lo que quiere decir que menos del 5% de las observaciones entre tratamientos serán *iguales*. También vamos a necesitar los grados de libertad por tratamiento $k-1$, los grados de libertad totales $N_{total} - k$, y el estadístico $F$.
+
+Si la curiosidad les gana, la fórmula del modelo estadístico $F$ y cómo se calcula la probabilidad estadística utilizando $k-1$ y $N_{total} - k$, lo pueden checar en [Wikipedia](https://en.wikipedia.org/wiki/F-distribution).
+
+# El proceso
+
+Como puden ver, hacer un análisis de varianza es relativamente simple, pues consiste simplemente de operaciones aritméticas. Teniendo en cuenta que:
+
+- $n$ = número de tratamientos
+- $k$ = número de observaciones por tratamiento
+- $N_{total}$ = número total de observaciones ($n \times k$ en tratamientos balanceados)
+- $y_{ij}$ = cada una de las observaciones $j$ ($1, \dots, k$) en el tratamiento $i$ ($1, \dots, n$)
+
+Un análisis de varianza consiste de:
+
+1. Calcular $CM$
+2. Utilizanto $CM$, calculamos $SS(Total)$
+3. Obtenemos el promedio de los cuadrados por tratamiento para calcular $SST$
+4. Utilizando $SS(Total)$ y $SST$, calculamos $SSE$
+5. Calculamos $MST$ usando $SST$ y $k-1$
+6. Calculamos $MSE$ usando $SSE$ y $N_{total} - k$
+7. Usando los dos anteriores, obtenemos el valor de $F$
+8. Probamos $H_0$ utilizando el $F$, $k-1$, $N_{total}-k$ y $\alpha = 0.05$
+
+Para este último paso podemos usar aplicaciones web como [esta](https://www.easycalculation.com/statistics/f-critical-value.php).
+
+# Discusión
+
+En realidad existen muchas aplicaciones que ya tienen implementadas muchas de las variaciones de ANOVA, en especial la de una vía. En las próximas clases veremos cómo se hace en **R**, un lenguaje de programación muy popular para hacer análisis estadísticos.
+
+# Verificación del conocimiento
+
+Para esta clase van a hacer dos análisis de varianza de una vía a mano utilizando las siguientes bases de datos:
+
+
+```{r}
+df1 <- data.frame()
+
+df2
+```
+
+

@@ -1574,66 +1574,265 @@ div.tocify {
 <tr class="odd">
 <td align="left">1</td>
 <td align="left">rojo</td>
-<td align="right">0.9670100</td>
-<td align="right">5</td>
+<td align="right">0.4629211</td>
+<td align="right">6</td>
 </tr>
 <tr class="even">
 <td align="left">2</td>
 <td align="left">verde</td>
-<td align="right">0.1781485</td>
-<td align="right">2</td>
+<td align="right">0.9897934</td>
+<td align="right">4</td>
 </tr>
 <tr class="odd">
 <td align="left">3</td>
 <td align="left">azul</td>
-<td align="right">0.9378515</td>
-<td align="right">7</td>
+<td align="right">0.1182241</td>
+<td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="left">4</td>
 <td align="left">rojo</td>
-<td align="right">0.5415080</td>
-<td align="right">5</td>
+<td align="right">0.9947153</td>
+<td align="right">2</td>
 </tr>
 <tr class="odd">
 <td align="left">5</td>
 <td align="left">café</td>
-<td align="right">0.2923942</td>
-<td align="right">7</td>
+<td align="right">0.8639023</td>
+<td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="left">6</td>
 <td align="left">verde</td>
-<td align="right">0.2984105</td>
-<td align="right">5</td>
+<td align="right">0.6418608</td>
+<td align="right">4</td>
 </tr>
 <tr class="odd">
 <td align="left">7</td>
 <td align="left">amarillo</td>
-<td align="right">0.2789651</td>
-<td align="right">9</td>
+<td align="right">0.1506636</td>
+<td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="left">8</td>
 <td align="left">azul</td>
-<td align="right">0.7720168</td>
+<td align="right">0.8278537</td>
 <td align="right">3</td>
 </tr>
 <tr class="odd">
 <td align="left">9</td>
 <td align="left">rojo</td>
-<td align="right">0.0909672</td>
-<td align="right">5</td>
+<td align="right">0.8360175</td>
+<td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="left">10</td>
 <td align="left">verde</td>
-<td align="right">0.7570282</td>
-<td align="right">2</td>
+<td align="right">0.3803223</td>
+<td align="right">5</td>
 </tr>
 </tbody>
 </table>
 <p>Entonces, tenemos que una variable es categórica (<em>color</em>), una es contínua (<em>largo</em>) y otra es discreta (<em>anillos</em>). Cada renglón de esta base de datos contiene el <em>color</em>, <em>largo</em> y número de <em>anillos</em> de los objetos identificados con número en la columna <em>id</em>. Entonces, cada renglón de la tabla <a href="#tab:base-datos">1.1</a> es un <strong>dato</strong>, por lo que <strong>dato</strong> es la descripción de cada unidad de estudio con las variables de interés (dependientes e independientes). Suponiendo que estamos viendo si número de <em>anillos</em> aumenta con la <em>longitud</em> y difiere entre <em>colores</em>, la variable dependiente es <em>anillos</em>, y las independientes son <em>longitud</em> y <em>color</em>.</p>
+</div>
+<div id="formatos-de-bases-de-datos" class="section level1">
+<h1><span class="header-section-number">2</span> Formatos de bases de datos</h1>
+<p>Existen varias maneras de arreglar los datos en tablas. El primero que vimos en la tabla <a href="#tab:base-datos">1.1</a>, se llama <strong>largo</strong>, pues cada fila contiene toda la información que describe a cada dato. También es posible, sin embargo, acomodar los datos en columnas, de modo que las filas ya no son las descripciones de los datos, sino la columna en la que están ubicados. Aquí tienen un ejempo de una base de datos en formato ancho:</p>
+<table>
+<caption><span id="tab:base-ancho">Table 2.1: </span>Base de datos en formato ancho</caption>
+<thead>
+<tr class="header">
+<th align="right">Control</th>
+<th align="right">Trat.A</th>
+<th align="right">Trat.B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>Y la misma base de datos en formato <strong>largo</strong>, en la que cada fila es un dato:</p>
+<table>
+<caption><span id="tab:base-largo">Table 2.2: </span>Misma base en formato largo</caption>
+<thead>
+<tr class="header">
+<th align="left">Tratamiento</th>
+<th align="right">Y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Control</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Control</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Control</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Control</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Control</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Control</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Control</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">Control</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Control</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Control</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Trat.A</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Trat.A</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Trat.A</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Trat.A</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Trat.A</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Trat.A</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">Trat.A</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">Trat.A</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Trat.A</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Trat.A</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Trat.B</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Trat.B</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Trat.B</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Trat.B</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Trat.B</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Trat.B</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Trat.B</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Trat.B</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Trat.B</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Trat.B</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>Cada formato de base de datos tiene sus bondades, por ejemplo si vamos a hacer un análisis de varianza en una hoja de cálculo como en excel, es más fácil hacerlo con la base en formato ancho, sin embargo, paquetes estadísticos como el lenguaje <strong>R</strong>, requiere que los datos estén en formalo <strong>largo</strong></p>
 <p><a href="../index.html">Regresar al índice del curso</a></p>
 </div>
 
