@@ -70,8 +70,10 @@ Un análisis de varianza consiste de:
 4. Utilizando $SS(Total)$ y $SST$, calculamos $SSE$
 5. Calculamos $MST$ usando $SST$ y $k-1$
 6. Calculamos $MSE$ usando $SSE$ y $N_{total} - k$
-7. Usando los dos anteriores, obtenemos el valor de $F$
-8. Probamos $H_0$ utilizando el $F$, $k-1$, $N_{total}-k$ y $\alpha = 0.05$
+7. Usando los dos anteriores, obtenemos el valor de $F$ para los datos analizados
+8. Probamos $H_0$ utilizando $k-1$, $N_{total}-k$ y $\alpha = 0.05$ para ver el valor crítico de $F$ ($F^*$). 
+
+Si $F^* < F$, podemos decir que hubo diferencias significativas entre los tratamientos, es decir, que los tratamientos experimentales sí afectaron los valores de la variable de respuesta que medimos.
 
 Para este último paso podemos usar aplicaciones web como [esta](https://www.easycalculation.com/statistics/f-critical-value.php).
 
@@ -81,13 +83,22 @@ En realidad existen muchas aplicaciones que ya tienen implementadas muchas de la
 
 # Verificación del conocimiento
 
-Para esta clase van a hacer dos análisis de varianza de una vía a mano utilizando las siguientes bases de datos:
+```{r echo = F, message=F}
+set.seed(123)
+df <- data.frame(A = round(rnorm(30, 0, 2)),
+                  B = round(rnorm(30, 1, 1)),
+                  C = round(rnorm(30, 2, 4)),
+                  D = round(rnorm(30, 3, 1)))
+openxlsx::write.xlsx(df, "Datos-ejercicio-1.xlsx")
 
-
-```{r}
-df1 <- data.frame()
-
-df2
+df.2 <- data.frame(A = round(rnorm(30, 1, 2), 2),
+                  B = round(rnorm(30, 1, 1), 2),
+                  C = round(rnorm(30, 1.5, 0.5), 2))
+df.2l <- reshape2::melt(df.2)
+names(df.2l) <- c("Tratamiento", "Valor")
+openxlsx::write.xlsx(df.2l, "Datos-ejercicio-2.xlsx")
 ```
 
+Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSd9nMrTKxq_NSQW9Hbi5YX50iK4JMOW9_j7dk6bZXcSqI_WMg/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder y registrar tu participación necesitarás tu dirección institucional.
 
+[Regresar al índice del curso](../index.html)
