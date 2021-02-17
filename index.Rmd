@@ -25,9 +25,9 @@ theme: flatly
 
 1. [Introducción a ANOVA](Unidad 2-ANOVA I/ANOVA-I.html)
 
-2. [Diseño completamente aleatorizado con con efectos aleatorios]
+2. [Diseño completamente aleatorizado con efectos fijos](Unidad 2-ANOVA I/Diseño-aleat-fijos.html)
 
-3. [Diseño completamente aleatorizado con con efectos aleatorios]
+3. [Diseño completamente aleatorizado con efectos aleatorios]
 
 4. [Diseño completamente aleatorizado con bloques al azar]
 

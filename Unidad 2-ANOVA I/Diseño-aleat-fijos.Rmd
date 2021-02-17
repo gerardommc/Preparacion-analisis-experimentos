@@ -1,0 +1,107 @@
+---
+title: "Diseño completamente aleatorizado con efectos fijos"
+author: "Gerardo Martín"
+date: "15/2/2021"
+output: 
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+En la [clase anterior](ANOVA-I.html), vimos cómo se hace un análisis de varianza con **efectos fijos**. Éstos se refieren al efecto estadístico que tienen los factores que estamos controlando, aquellos que conocemos y nos interesa entender. Como vimos en la sección de [Bloques y balance](../Unidad 1-Introducción/Bloques-balance.html) de la unidad anterior, en ocasiones es necesario utilizar bloques experimentales para poder contar con réplicas verdaderas. Debido a que los bloques pueden intrioucir efectos adicionales a aquellos que estamos midiendo, como los tratamientos, los bloques, dentro del análisis estadístico se consideran como efectos aleatorios. Esto quiere decir que se va a sumir que los bloques van a aumentar la variabilidad (varianza, $\sigma^2$) de la variable de respuesta que estamos midiendo, mientras que los efectos fijos sólo van a afectar el valor de la media (promedio). Los diseños ANOVA de una vía pueden contener tanto efectos fijos como aleatorios.
+
+## Diseño aleatorizado
+
+### Efectos fijos
+
+Este diseño consiste de la asignación de las unidades experimentales a los diferentes tratamientos de manera completamente aleatoria. Por ejemplo, si vamos a comparar el efecto de dos fertilizantes contra un grupo control, el criterio para dividir las plantas entre tratamientos debe ser completamente aleatorio.
+
+Existen muchas maneras de asignar aleatoriamente las unidades experimentales a los tratamientos, pero una manera sencilla y confiable de hacer esto sería con un programa de computadora. Por ejemplo, si tenemos 15 plantas con características más o menos parecidas y las enumeramos del 1-15, podríamos asignarlas a los tratamientos con un programa que revuelve la secuencia $1, \dots, 15$, de modo que los primeros cinco números serán asignados al tratamiento A:
+
+```{r echo=F, results='markup'}
+source("Random-functions/Shuffle.R")
+planta <- shuffle(15)
+planta[1:5]
+```
+
+del 6-10 al tratamiento B:
+
+```{r echo=F, results='markup'}
+planta[6:10]
+```
+
+y del 11-15 al control:
+
+```{r echo=F, results='markup'}
+planta[11:15]
+```
+
+Y posteriormente, también acomodamos las plantas aleatoriamente dentro de la instalación donde se hará el experimento. Este diseño experimental sin bloques se vería así:
+
+```{r Fijos, echo=F, fig.height=3.5, fig.width=5.5, message=FALSE, fig.align='center', fig.cap="Diseño experimental completamente aleatorizado con efectos fijos. Los números dentro de cada punto representan las plantas etiquetadas aleatoriamente con el programa de computadora."}
+library(ggplot2)
+
+tratamiento <- rep(c("A", "B", "Contr"), each = 5)
+trat <- data.frame(planta = planta, Tratamiento = tratamiento)
+trat <- trat[shuffle(15), ]
+rownames(trat) <- 1:15
+
+x <- 1:5
+y = 1:3
+
+xy <- expand.grid(x = x, y = y)
+xy <- cbind(xy, trat)
+
+ggplot(xy) + geom_point(aes(x = x, y = y, colour = Tratamiento), size = 8) + 
+      geom_text(aes(x = x, y = y, label = planta)) +
+      theme(axis.text = element_blank(),
+            axis.ticks = element_blank(),
+            axis.title = element_blank())
+```
+En el análisis estadístico de este diseño experimental sólo tendremos efectos fijos, que sería el tratamiento con tres niveles, A, B, y Control. Recordemos que los controles son unidades experimentales que no están sujetas a ningún tratamiento. Todos los ejercicios de ANOVA que hicimos anteriormente fueron de diseños experimentales como este, completamente aleatorizados con efectos fijos únicamente. Un diseño experimental con efectos aleatorios sería el siguiente:
+
+```{r Aleatorios, echo = F, fig.height=3, fig.width=8, fig.cap="Diseño aleatorizado con bloques (efectos aleatorios)."}
+
+planta.2 <- shuffle(15)
+
+trat.2 <- data.frame(planta = planta.2, Tratamiento = tratamiento)
+trat.2 <- trat.2[shuffle(15), ]
+rownames(trat.2) <- 1:15
+
+x <- 1:5
+y = 1:3
+
+xy.2 <- expand.grid(x = x, y = y)
+xy.2 <- cbind(xy.2, trat.2)
+
+xy$Bloque <- "Bloque 1"
+xy.2$Bloque <- "Bloque 2"
+
+xy.3 <- rbind(xy, xy.2)
+
+ggplot(xy.3) + geom_point(aes(x = x, y = y, colour = Tratamiento), size = 8) + 
+      geom_text(aes(x = x, y = y, label = planta)) +
+      facet_grid(~Bloque) +
+      theme(axis.text = element_blank(),
+            axis.ticks = element_blank(),
+            axis.title = element_blank())
+```
+# Discusión y conclusiones
+
+Los dos diseños experimentales mostrados aquí son muy similares, pues la única diferencia entre ellos es que el primero (figura \@ref(fig:Fijos)), sólo consta de un bloque, por lo que sólo hay efectos fijos (tratamientos); y en el segundo hay dos bloques por lo que hay efectos fijos y aleatorios (bloques).
+
+Los **efectos fijos** son aquellos que conocemos y sabemos que afectan el valor medio de la respuesta. Los **efectos aleatorios** son aquellos que no estamos midiendo y que afectarán la variabilidad (varianza) de la variable de respuesta.
+
+# Aplicación del conocimiento
+
+A continuación veremos cómo se hace una ANOVA en el lenguaje de programación **R**. Este lenguaje es el paquete estadístico más popular que existe y al mismo tiempo es el más completo. Para todos los análisis estadísticos que haremos en el curso utilizaremos **R**.
+
+[Regresar al índice del curso](../index.html)

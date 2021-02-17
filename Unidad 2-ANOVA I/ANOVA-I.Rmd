@@ -16,7 +16,38 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-El modelo estadístico para comparar los efectos de un factor con varios niveles categóricos se llama ANOVA de una vía. Existen variaciones de este modelo que nos ayudan a hacer las comparaciones entre tratamientos cuando tenemos diferentes bloques. Por lo pronto, en este documento se muestra el proceso para hacer un análisis de varianza de una vía sin bloques.
+El modelo estadístico para comparar los efectos de un factor con varios niveles categóricos se llama ANOVA de una vía. Existen variaciones de este modelo que nos ayudan a hacer las comparaciones entre tratamientos cuando tenemos diferentes bloques. Por lo pronto, en esta sección se muestra el proceso para hacer un análisis de varianza de una vía **sin bloques**.
+
+El análisis de varianza forma parte de un tipo de análisis estadístico conocidos como **modelos lineales**, pues, de manera general, se usan para estimar el efecto de una variable independiente sobre la media de una variable dependiente. El ANOVA en específico se utiliza para probar las hipótesis estadísticas de no-diferencias entre tratamientos experimentales.
+
+El primero de los supuestos de ANOVA es que la variable de respuesta (dependiente), tiene una distribución estadística con **varianza homogénea**, como la distribución normal. Para entender esto, veamos la fórmula de esta:
+
+$$ \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)}{2 \sigma^2}} $$
+donde $\mu$ es la media de la muestra $X$ y $\sigma^2$ es su varianza. El resto de los parámetros $\pi$ y $e$ son constantes cuyos valores puedes encontrar en muchas otras fuentes. Si utilizamos $\mu = 0$ y $\sigma^2 = 1$, la [distribución normal](https://es.wikipedia.org/wiki/Distribuci%C3%B3n_normal) para valores de $x = -3, \dots, 3$ es:
+
+```{r Norm, echo=F, fig.align='center', fig.height=4, fig.width=4, fig.cap="Distribución normal."}
+library(ggplot2)
+x <- seq(-3, 3, len = 100)
+y <- dnorm(x, mean = 0, sd = 1)
+
+vals <- data.frame(x = x, y = y)
+
+ggplot(vals) + geom_line(aes(x = x, y = y)) +
+      geom_vline(aes(xintercept= 0), colour = "red") +
+      geom_vline(aes(xintercept=-1), colour = "blue") +
+      geom_vline(aes(xintercept= 1), colour = "blue")
+```
+Aquí la línea vertical roja representa $\mu$, y las líneas azules representan $\mu \pm \sigma^2$, y se puede ver cómo las colas de la distribución normal son simétricas alrededor de $\mu$. La gráfica además se puede entender de la siguiente manera. Supongamos que $x$ son los valores de la variable de respuesta de un experimento, y $y$ muestra la frecuencia relativa de cada valor de $x$, es decir, la probabilidad de observar cada uno de los posibles valores de $x$, de aquí que cuando estimamos $\sigma^2$ se asume que la probabilidad de observar un valor dado de $x$ disminuye igual de *rápido* por delante y atrás de $\mu$.
+
+La distribución mostrada en la figura \@ref(fig:Norm) tiene un promedio de $0$. Pero cuando tenemos una variable $X$ con distribución normal (varianza homogénea), media $E(X) = \mu \neq 0$ y hacemos $X - \mu = X_0$, tendremos que $E(X_0) = 0$, y $X_0$ tendrá una distribución normal. 
+
+Ahora, llamemos $\mu_i$ a las medias estimadas para tratamiento con un ANOVA para cada $X$ del tratamiento $i$. Si hacemos $X_i - \mu_i = X_i'$ estaríamos obteniendo la diferencia entre las estimaciones del ANOVA y los datos experimentales, de modo que, por lo visto en el párrafo anterior $X_i'$ deberá tener una distribución normal. A estas diferencias entre las estimaciones de un modelo estadístico y los datos se les llama **residuales**.
+
+Es importante entender esto porque podemos hacer los cálculos para un ANOVA con variables con distibuciones asimétricas como la [distribución log-normal](https://es.wikipedia.org/wiki/Distribuci%C3%B3n_log-normal), lo cual origen a residuales con distribuciones diferentes de la normal. Existen pruebas diagnósticas de normalidad y homogeneidad de varianza para las variables de respuesta y los residuales para verificar que se cumple con los supuestos de homogeneidad de varianza y normalidad de residuales respectivamente, y asegurarnos de que las pruebas de hipótesis con ANOVA sean confiables.
+
+# Cómo se hace un ANOVA
+
+Hacer un análisis de varianza requiere de una serie de cálculos en secuencia, por lo que puede ser un poco confuso. A continuación se describen los cálculos necesarios para hacer un ANOVA de una vía, es decir para compara las medias de una varible de respuesta en diferentes tratamientos de un sólo factor (p. ej. producción vs dos fertilizantes).
 
 ## Definiciones
 
@@ -53,7 +84,7 @@ El valor de $F$, lo utilizamos para probar $H_0$ (no hay diferencias entre trata
 
 Si la curiosidad les gana, la fórmula del modelo estadístico $F$ y cómo se calcula la probabilidad estadística utilizando $k-1$ y $N_{total} - k$, lo pueden checar en [Wikipedia](https://en.wikipedia.org/wiki/F-distribution).
 
-# El proceso
+## El proceso
 
 Como puden ver, hacer un análisis de varianza es relativamente simple, pues consiste simplemente de operaciones aritméticas. Teniendo en cuenta que:
 
@@ -65,7 +96,7 @@ Como puden ver, hacer un análisis de varianza es relativamente simple, pues con
 Un análisis de varianza consiste de:
 
 1. Calcular $CM$
-2. Utilizanto $CM$, calculamos $SS(Total)$
+2. Utilizando $CM$, calculamos $SS(Total)$
 3. Obtenemos el promedio de los cuadrados por tratamiento para calcular $SST$
 4. Utilizando $SS(Total)$ y $SST$, calculamos $SSE$
 5. Calculamos $MST$ usando $SST$ y $k-1$
