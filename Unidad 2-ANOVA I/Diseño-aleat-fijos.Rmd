@@ -102,6 +102,54 @@ Los **efectos fijos** son aquellos que conocemos y sabemos que afectan el valor 
 
 # Aplicación del conocimiento
 
-A continuación veremos cómo se hace una ANOVA en el lenguaje de programación **R**. Este lenguaje es el paquete estadístico más popular que existe y al mismo tiempo es el más completo. Para todos los análisis estadísticos que haremos en el curso utilizaremos **R**.
+Esta sesión práctica constará de dos partes:
+
+1. Tutorial de R
+2. ANOVA de una vía con efectos fijos
+3. Interpretación de los resultados
+
+## Tutorial de R
+
+Para hacer un ANOVA en R hay una serie de pasos que seguir. El primero es preparar el entorno de cómputo que consta de [instalar **R**](https://cran.itam.mx/) y un entorno de desarrollo como [**R studio**](https://rstudio.com/products/rstudio/download/#download). Ambos paquetes son multiplataforma (Windows, Mac o Linux). Alternativamente, pueden dirigirse a [**R studio cloud**](https://login.rstudio.cloud/login?redirect=%2Foauth%2Fauthorize%3Fredirect_uri%3Dhttps%253A%252F%252Frstudio.cloud%252Flogin%26client_id%3Drstudio-cloud%26response_type%3Dcode%26show_auth%3D0%26show_login%3D1%26show_setup%3D1&setup=True) y acceder a la versión en línea con su cuenta institucional. Si no tienen acceso a computadora e internet en casa recomiendo la segunda opción, pues ahí pueden almacenar sus proyectos y tareas para acceder desde cualquier lugar.
+
+Una vez que tienen **R** y **R** studio instalados, o están en **R** studio cloud, podemos proceder a crear un script nuevo, dando click en la hoja con un gino +, bajo el menú de *Archivo* o *File*, y seleccionamos la primera opción. En este archivo podemos ir escribiendo el código y guardar el archivo de texto. Cada línea que escribimos aquí debe ser mandada a la **consola**, que es donde **R** va a evaluar el código que esbribimos. Para correr el código escrito debemos colocar el cursor y presionar el botón **Run**.
+
+Existen varios tipos de objetos por default que **R** puede manejar, y que almacenan distintos tipos de datos. Por ejemplo con la función `c` creamos cadenas de números que guardamos en `x` usando el operador `<-`:
+
+```{r}
+x <- c(1, 2, 3, 4, 5)
+```
+
+Y después podemos ver que `x` contiene esos valores:
+```{r}
+x
+```
+
+También podemos crear objetos que almacenan cadenas de texto:
+
+```{r}
+a <- c("a", "b", "c", "d", "e")
+a
+```
+
+Las cadenas de texto **siempre** deben in dentro de `""`, de otro modo **R** tratará de leer los objetos con nombre `x` ó `a`. Una vez que aprendimos a crear objetos de esta naturaleza podemos arreglarlos en una tabla, utilizando una función llamada `data.frame`:
+
+```{r}
+tabla <- data.frame(a = a, x = x)
+tabla
+```
+
+Podemos ver que `tabla` contiene dos columnas, una llamada `a` que contiene las letras y otra llamada `x` que contiene los números. Para acceder a las diferentes columnas de `tabla` utilizamos el operados `$` así:
+
+```{r}
+tabla$x
+tabla$a
+```
+
+Los objetos creados con la función `data.frame` son el formato más común para manejar datos dentro de **R** para hacer análisis estadísticos, y es lo único que necesitamos hasta ahora para hacer un ANOVA.
+
+## ANOVA de una vía con efectos fijos en R
+
+
 
 [Regresar al índice del curso](../index.html)

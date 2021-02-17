@@ -16,11 +16,24 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-El modelo estadístico para comparar los efectos de un factor con varios niveles categóricos se llama ANOVA de una vía. Existen variaciones de este modelo que nos ayudan a hacer las comparaciones entre tratamientos cuando tenemos diferentes bloques. Por lo pronto, en esta sección se muestra el proceso para hacer un análisis de varianza de una vía **sin bloques**.
+El modelo estadístico para comparar los efectos de un factor con varios niveles categóricos se llama ANOVA de una vía. Al decir **efecto** nos referimos a la capacidad del factor de alterar el valor de la variable de respuesta:
 
-El análisis de varianza forma parte de un tipo de análisis estadístico conocidos como **modelos lineales**, pues, de manera general, se usan para estimar el efecto de una variable independiente sobre la media de una variable dependiente. El ANOVA en específico se utiliza para probar las hipótesis estadísticas de no-diferencias entre tratamientos experimentales.
+```{r Dos-trats, echo=F, fig.height=4, fig.width=5, fig.align='center', fig.cap="Distribución de variable de respuesta *X* en dos tratamientos. En este caso los tratamientos parecen tener un efectos sobre el promedio, pues el pico más alto de las curvas están en posiciones diferentes dentro de los valores posibles de *X*.", message = F}
+library(ggplot2)
+df.1 <- data.frame(Tratamiento = rep(c("A", "B"), each = 100),
+                   Valor = c(rnorm(100, 10, 2),
+                             rnorm(100, 15, 3)))
 
-El primero de los supuestos de ANOVA es que la variable de respuesta (dependiente), tiene una distribución estadística con **varianza homogénea**, como la distribución normal. Para entender esto, veamos la fórmula de esta:
+ggplot(df.1) + geom_density(aes(Valor, fill = Tratamiento, colour = Tratamiento), alpha = 0.3) +
+      labs(y = " Densidad")
+```
+
+
+Existen variaciones de este modelo que nos ayudan a hacer las comparaciones entre tratamientos cuando tenemos diferentes bloques. Por lo pronto, en esta sección se muestra el proceso para hacer un análisis de varianza de una vía **sin bloques**.
+
+El análisis de varianza forma parte de un tipo de análisis estadístico conocidos como **modelos lineales**, pues, de manera general, se usan para estimar el efecto de una variable independiente sobre la media de una variable dependiente (picos más altos en la figura \@ref(fig:Dos-trats)). El ANOVA en específico se utiliza para probar las hipótesis estadísticas de no-diferencias entre tratamientos experimentales con niveles categóricos.
+
+Como toda representación matemática o estadística de un fenómeno, el primero de los supuestos de ANOVA es que la variable de respuesta (dependiente), tiene una distribución estadística con **varianza homogénea**, como la distribución normal. Para entender esto, veamos la fórmula de esta:
 
 $$ \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)}{2 \sigma^2}} $$
 donde $\mu$ es la media de la muestra $X$ y $\sigma^2$ es su varianza. El resto de los parámetros $\pi$ y $e$ son constantes cuyos valores puedes encontrar en muchas otras fuentes. Si utilizamos $\mu = 0$ y $\sigma^2 = 1$, la [distribución normal](https://es.wikipedia.org/wiki/Distribuci%C3%B3n_normal) para valores de $x = -3, \dots, 3$ es:
@@ -37,13 +50,13 @@ ggplot(vals) + geom_line(aes(x = x, y = y)) +
       geom_vline(aes(xintercept=-1), colour = "blue") +
       geom_vline(aes(xintercept= 1), colour = "blue")
 ```
-Aquí la línea vertical roja representa $\mu$, y las líneas azules representan $\mu \pm \sigma^2$, y se puede ver cómo las colas de la distribución normal son simétricas alrededor de $\mu$. La gráfica además se puede entender de la siguiente manera. Supongamos que $x$ son los valores de la variable de respuesta de un experimento, y $y$ muestra la frecuencia relativa de cada valor de $x$, es decir, la probabilidad de observar cada uno de los posibles valores de $x$, de aquí que cuando estimamos $\sigma^2$ se asume que la probabilidad de observar un valor dado de $x$ disminuye igual de *rápido* por delante y atrás de $\mu$.
+Aquí la línea vertical roja representa el promedio aritmético ($\mu$), y las líneas azules representan el valor de $x = \mu \pm \sigma^2$, y se puede ver cómo las colas de la distribución normal son simétricas alrededor de $\mu$. La gráfica además se puede entender de la siguiente manera. Supongamos que $x$ son los valores de la variable de respuesta de un experimento, y $y$ muestra la frecuencia relativa de cada valor de $x$, es decir, la probabilidad de observar cada uno de los posibles valores de $x$, de aquí que cuando estimamos $\sigma^2$ se asume que la probabilidad de observar un valor dado de $x$ disminuye igual de *rápido* por delante y atrás de $\mu$.
 
 La distribución mostrada en la figura \@ref(fig:Norm) tiene un promedio de $0$. Pero cuando tenemos una variable $X$ con distribución normal (varianza homogénea), media $E(X) = \mu \neq 0$ y hacemos $X - \mu = X_0$, tendremos que $E(X_0) = 0$, y $X_0$ tendrá una distribución normal. 
 
-Ahora, llamemos $\mu_i$ a las medias estimadas para tratamiento con un ANOVA para cada $X$ del tratamiento $i$. Si hacemos $X_i - \mu_i = X_i'$ estaríamos obteniendo la diferencia entre las estimaciones del ANOVA y los datos experimentales, de modo que, por lo visto en el párrafo anterior $X_i'$ deberá tener una distribución normal. A estas diferencias entre las estimaciones de un modelo estadístico y los datos se les llama **residuales**.
+Ahora, llamemos $\mu_i$ a las medias de los tratamientos con un ANOVA, es decir, promedio de $X$ del tratamiento $i$. Si hacemos $X_i - \mu_i = X_i'$ estaríamos obteniendo la diferencia entre las estimaciones del ANOVA y los datos experimentales, de modo que, por lo visto en el párrafo anterior $X_i'$ deberá tener una distribución normal. A estas diferencias entre las estimaciones de un modelo estadístico y los datos se les llama **residuales**.
 
-Es importante entender esto porque podemos hacer los cálculos para un ANOVA con variables con distibuciones asimétricas como la [distribución log-normal](https://es.wikipedia.org/wiki/Distribuci%C3%B3n_log-normal), lo cual origen a residuales con distribuciones diferentes de la normal. Existen pruebas diagnósticas de normalidad y homogeneidad de varianza para las variables de respuesta y los residuales para verificar que se cumple con los supuestos de homogeneidad de varianza y normalidad de residuales respectivamente, y asegurarnos de que las pruebas de hipótesis con ANOVA sean confiables.
+Es importante entender esto porque podemos hacer los cálculos para un ANOVA con variables con distibuciones asimétricas como la [distribución log-normal](https://es.wikipedia.org/wiki/Distribuci%C3%B3n_log-normal), lo cual da origen a residuales con distribuciones diferentes de la normal. Existen pruebas diagnósticas de normalidad y homogeneidad de varianza para las variables de respuesta y los residuales para verificar que se cumple con los supuestos de homogeneidad de varianza y normalidad de residuales respectivamente, y asegurarnos de que las pruebas de hipótesis con ANOVA sean confiables.
 
 # Cómo se hace un ANOVA
 
@@ -108,10 +121,6 @@ Si $F^* < F$, podemos decir que hubo diferencias significativas entre los tratam
 
 Para este último paso podemos usar aplicaciones web como [esta](https://www.easycalculation.com/statistics/f-critical-value.php).
 
-# Discusión
-
-En realidad existen muchas aplicaciones que ya tienen implementadas muchas de las variaciones de ANOVA, en especial la de una vía. En las próximas clases veremos cómo se hace en **R**, un lenguaje de programación muy popular para hacer análisis estadísticos.
-
 # Verificación del conocimiento
 
 ```{r echo = F, message=F}
@@ -130,6 +139,6 @@ names(df.2l) <- c("Tratamiento", "Valor")
 openxlsx::write.xlsx(df.2l, "Datos-ejercicio-2.xlsx")
 ```
 
-Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSd9nMrTKxq_NSQW9Hbi5YX50iK4JMOW9_j7dk6bZXcSqI_WMg/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder y registrar tu participación necesitarás tu dirección institucional.
+En esta clase haremos dos ANOVA de una vía en una hoja de cálculo, como lo hicimos en la clase sincrónica. Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSd9nMrTKxq_NSQW9Hbi5YX50iK4JMOW9_j7dk6bZXcSqI_WMg/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder y registrar tu participación necesitarás tu dirección institucional.
 
 [Regresar al índice del curso](../index.html)
