@@ -1,0 +1,104 @@
+---
+title: "Tutorial de R"
+author: "Gerardo Martín"
+date: "18/2/2021"
+output: 
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+**R** es un lenguaje de programación interpretado, lo que quiere decir que hay un programa que interpreta el código que escribimos y nos da una respuesta en la consola donde se está ejecutando. El uso más común de **R** es la estadística pues la manera de escribir el código se presta muy bien para esta aplicación. Aquí comenzaremos a aprender **R** básico para el diseño experimental y análisis de datos. **R** es sumamente potente, con lo que basta decir que este curso de 8 semanas es absolutamente insuficiente para aprenderlo.
+
+Esta sesión práctica constará de tres partes:
+
+1. **R** básico
+2. ANOVA de una vía con efectos fijos
+3. Interpretación de los resultados
+
+# **R** básico
+
+Para hacer un ANOVA en R hay una serie de pasos que seguir. El primero es preparar el entorno de cómputo que consta de [instalar **R**](https://cran.itam.mx/) y un entorno de desarrollo como [**R studio**](https://rstudio.com/products/rstudio/download/#download). Ambos paquetes son multiplataforma (Windows, Mac o Linux). Alternativamente, pueden dirigirse a [**R studio cloud**](https://login.rstudio.cloud/login?redirect=%2Foauth%2Fauthorize%3Fredirect_uri%3Dhttps%253A%252F%252Frstudio.cloud%252Flogin%26client_id%3Drstudio-cloud%26response_type%3Dcode%26show_auth%3D0%26show_login%3D1%26show_setup%3D1&setup=True) y acceder a la versión en línea con su cuenta institucional. Si no tienen acceso a computadora e internet en casa recomiendo la segunda opción, pues ahí pueden almacenar sus proyectos y tareas para acceder desde cualquier lugar.
+
+Una vez que tienen **R** y **R** studio instalados, o están en **R** studio cloud, podemos proceder a crear un script nuevo, dando click en la hoja con un signo +, bajo el menú de *Archivo* o *File*, y seleccionamos la primera opción. En este archivo podemos ir escribiendo el código y guardar el archivo de texto. Cada línea que escribimos aquí debe ser mandada a la **consola**, que es donde **R** va a evaluar el código que esbribimos. Para correr el código escrito debemos colocar el cursor y presionar el botón **Run** arriba a la derecha del panel de edición de texto, o presionar las teclas `Ctrl + Intro`.
+
+Existen varios tipos de objetos por default que **R** puede manejar, y que almacenan distintos tipos de datos. Por ejemplo con la función `c` creamos cadenas de números que guardamos en `x` usando el operador `<-`:
+
+```{r}
+x <- c(1, 2, 3, 4, 5)
+```
+
+Y después podemos ver que `x` contiene esos valores:
+```{r}
+x
+```
+
+También podemos crear objetos que almacenan cadenas de texto:
+
+```{r}
+a <- c("a", "b", "c", "d", "e")
+a
+```
+
+Las cadenas de texto **siempre** deben in dentro de `""`, de otro modo **R** tratará de leer los objetos con nombre `x` ó `a`. Una vez que aprendimos a crear objetos de esta naturaleza podemos arreglarlos en una tabla, utilizando una función llamada `data.frame`:
+
+```{r}
+tabla <- data.frame(a = a, x = x)
+tabla
+```
+
+Podemos ver que `tabla` contiene dos columnas, una llamada `a` que contiene las letras y otra llamada `x` que contiene los números. Para acceder a las diferentes columnas de `tabla` utilizamos el operados `$` así:
+
+```{r}
+tabla$x
+tabla$a
+```
+
+Los objetos creados con la función `data.frame` son el formato más común para manejar datos dentro de **R** para hacer análisis estadísticos, y es lo único que necesitamos hasta ahora para hacer un ANOVA.
+
+# ANOVA de una vía con efectos fijos en R
+
+Hay dos funciones de **R** que pueden hacer un ANOVA de una vía con efectos fijos que se llaman `lm` (por **L**inear **M**odel en inglés) y `aov` (por **A**nalysis **O**f **V**ariance). Ambas funciones dan exactamente el mismo resultado para el análisis que haremos aquí, sin embargo `aov` es más flexible, por lo que es la que utilizaremos. Existe una función llamada `anova` pero esta la veremos en la sección de Interpretación de los resultados.
+
+## Creando y preparando la base de datos
+
+Para hacer un ANOVA comenzaremos por crear una base de datos, para un experimento similar al visto en la [clase pasada](Diseño-aleat-fijos.html). Para crear la base de datos (por motivos ilustrativos únicamente), utilizaremos la función `rnorm` para generar números aleatorios con una distribución normal. Los argumentos que se ponen dentro de los paréntesis son: `rnorm(Tamaño de muestra, Promedio, Desviación estándar)`. Crearemos tres objetos con 15 valores, con distintas medias y desviación estándar:
+
+```{r}
+y1 <- rnorm(15, mean = 10, sd = 2)
+y2 <- rnorm(15, mean = 7, sd = 3)
+y3 <- rnorm(15, mean = 15, sd = 4)
+```
+
+El formato que necesitamos para usar la base de datos con la función `aov` es el largo, entonces vamos a almacenar `y1, y2` y `y3` en otro objeto:
+
+```{r}
+y <- c(y1, y2, y3)
+```
+
+Y necesitamos otro objeto con los nombres de los tratamientos a los que pertenece cada valor de `y`. Para hacer esto vamos a usar la función `rep`:
+
+```{r}
+tratamientos <- rep(c("A", "B", "C"), each = 15)
+```
+
+Y ahora ya podemos crear la tabla usando `data.frame`:
+
+```{r}
+base.datos <- data.frame(Tratamiento = tratamientos,
+                         Valores = y)
+head(base.datos)
+tail(base.datos)
+```
+
+Las funciones `head`y `tail` imprimen las primeras y últimas seis filas de la tabla `base.datos`.
+
+## El análisis

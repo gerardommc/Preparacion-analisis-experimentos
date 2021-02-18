@@ -6,7 +6,6 @@ author: Gerardo Martín
 output:
   distill::distill_article:
     self_contained: false
-theme: flatly
 ---
 
 # Introducción al diseño experimental
@@ -26,6 +25,8 @@ theme: flatly
 1. [Introducción a ANOVA](Unidad 2-ANOVA I/ANOVA-I.html)
 
 2. [Diseño completamente aleatorizado con efectos fijos](Unidad 2-ANOVA I/Diseño-aleat-fijos.html)
+
+      2.1. [Tutorial de R](Unidad 2-ANOVA I/Tutorial-R.html)
 
 3. [Diseño completamente aleatorizado con efectos aleatorios]
 
