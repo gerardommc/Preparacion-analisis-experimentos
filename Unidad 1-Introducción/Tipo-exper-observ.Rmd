@@ -176,6 +176,6 @@ Aquí podemos ver por qué es necesario tomar en cuenta el tipo de observaciones
 
 # Verificación del aprendizaje
 
-Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSeiY_akugc8A6bE29D9Y_76BNRS8gt_KlLvIywl_wQFZo88zQ/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder y registrar tu participación necesitarás tu dirección institucional.
+Completa la actividad correspondiente a este módulo en Classroom
 
 [Regresar al índice del curso](../index.html)
