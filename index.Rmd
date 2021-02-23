@@ -28,7 +28,7 @@ output:
 
       2.1. [Tutorial de R](Unidad 2-ANOVA I/Tutorial-R.html)
 
-3. [Diseño completamente aleatorizado con efectos aleatorios]
+3. [Diseño completamente aleatorizado con efectos aleatorios](Unidad 2-ANOVA I/Diseño-efect-aleat.html)
 
 4. [Diseño completamente aleatorizado con bloques al azar]
 

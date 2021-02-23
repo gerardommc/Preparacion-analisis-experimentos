@@ -1576,7 +1576,7 @@ tabla</code></pre>
 ## 3 c 3
 ## 4 d 4
 ## 5 e 5</code></pre>
-<p>Podemos ver que <code>tabla</code> contiene dos columnas, una llamada <code>a</code> que contiene las letras y otra llamada <code>x</code> que contiene los números. Para acceder a las diferentes columnas de <code>tabla</code> utilizamos el operados <code>$</code> así:</p>
+<p>Podemos ver que <code>tabla</code> contiene dos columnas, una llamada <code>a</code> que contiene las letras y otra llamada <code>x</code> que contiene los números. Para acceder a las diferentes columnas de <code>tabla</code> utilizamos el operador <code>$</code> así:</p>
 <pre class="r"><code>tabla$x</code></pre>
 <pre><code>## [1] 1 2 3 4 5</code></pre>
 <pre class="r"><code>tabla$a</code></pre>
@@ -1652,6 +1652,25 @@ modelo.1</code></pre>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Como podemos ver, la probabilidad de que los tratamientos sean iguales (columna <code>Pr(&gt;F)</code>) es <span class="math inline">\(P \ll 0.05\)</span>, por lo que coincide con la conclusión de los cálculos de <span class="math inline">\(F^*\)</span>.</p>
 </div>
+<div id="otras-funciones-importantes-de-r" class="section level2">
+<h2><span class="header-section-number">3.3</span> Otras funciones importantes de <strong>R</strong></h2>
+<p>En la mayoría de las ocasiones tenemos las bases de datos guardadas en algún directorio dentro de la computadora. El formato de estos archivos, recomendado para <strong>R</strong> es <code>.csv</code>, donde las columnas están separadas por comas y las filas por saltos de renglón (<code>Intro</code>). La función base de <strong>R</strong> para leer estos archivos en el espacio de trabajo es <code>read.csv</code>. El principal argumento que se da a la función es la ruta al archivo que se da envuelta en comillas: <code>read.csv(&quot;Directorio/archivo.csv&quot;)</code>. Veamos el ejemplo:</p>
+<pre class="r"><code>tabla.archivo &lt;- read.csv(&quot;./Base-datos.csv&quot;)
+head(tabla.archivo)</code></pre>
+<pre><code>##   X Tratamiento   Valores
+## 1 1           A  8.879049
+## 2 2           A  9.539645
+## 3 3           A 13.117417
+## 4 4           A 10.141017
+## 5 5           A 10.258575
+## 6 6           A 13.430130</code></pre>
+<p>En este ejemplo el operador <code>.</code> indica leer en el mismo directorio de trabajo. Si se desea cambiar el directorio de trabajo de <strong>R</strong> es puede hacer con la función <code>setwd(&quot;Dir nuevo/Subdir nuevo&quot;)</code>. Una sesión normal de <strong>R</strong> utiliza como directorio de trabajo por default la carpeta personal del usuario. En <strong>R studio</strong> el directorio de trabajo de puede cambiar desde el menú principal: <em>Sesión/Directorio de trabajo/Seleccionar directorio</em>.</p>
+</div>
+</div>
+<div id="aplicación-del-aprendizaje" class="section level1">
+<h1><span class="header-section-number">4</span> Aplicación del aprendizaje</h1>
+<p>En esta ocasión harás un ANOVA con efectos fijos con unos datos simulados parecidos a los que se utilizaron en el ejemplo del tutorial. Todas las indicaciones para hacerlo están en el Classroom del curso.</p>
+<p><a href="../index.html">Regresar al índice del curso</a></p>
 </div>
 
 

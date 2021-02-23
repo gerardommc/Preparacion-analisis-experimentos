@@ -1,0 +1,28 @@
+---
+title: "Diseño completamente aleatorizado con efectos aleatorios"
+author: "Gerardo Martín"
+date: "23/2/2021"
+output: 
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+En la [sección anterior](../Unidad 2-ANOVA I/Diseño-aleat-fijos.html) vimos brevemente la diferencia entre efectos fijos y aleatorios:
+
+- **Efectos fijos** Aquellos factores que estamos controlando y que sabemos que afectan el valor medio de la variable de respuesta.
+- **Efectos aleatorios** Aquellos factores que no estamos controlando y que sabemos que pueden afectar la dispersión (varianza) de la variable de respuesta.
+
+Otra catacterística de los **efectos aleatorios** es que no estamos interesados en determinar si alteran el valor o magnitud de la variable de respuesta. Es por estas razones que cuando incluimos efectos aleatorios en los análisis estadísticos, estamos tratando de identificar qué porción del error de la variable de respuesta de debe a los tratamientos y cuál a los bloques (¡recordemos que debemos incluir los efectos aleatorios solamente si estos existen en el diseño experimental!).
+
+Como vimos en el [tutorial de R](../Unidad 2-ANOVA 1/Tutorial-R.html), para hacer un ANOVA debemos de especificar la fórmula del modelo: `y ~ x`. Donde $y$ es la variable de respuesta y $x$ es la independiente con tantos niveles categóricos como decidamos incluir en el experimento. En ANOVA con efectos aleatorios también debemos especificarlos en la fórmula del modelo como: `y ~ x + Error(bloque)`, donde `bloque` debe ser una columna adicional dentro de la base de datos que especifica a qué bloque pertenece cada dato, y la función `Error` especifica que la variable `bloque` es un efecto aleatorio pues solamente afecta al **error** o variabilidad de $y$.
+
+[Regresar al índice del curso](../index.html)

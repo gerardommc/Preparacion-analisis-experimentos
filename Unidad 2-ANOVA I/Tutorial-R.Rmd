@@ -55,7 +55,7 @@ tabla <- data.frame(a = a, x = x)
 tabla
 ```
 
-Podemos ver que `tabla` contiene dos columnas, una llamada `a` que contiene las letras y otra llamada `x` que contiene los números. Para acceder a las diferentes columnas de `tabla` utilizamos el operados `$` así:
+Podemos ver que `tabla` contiene dos columnas, una llamada `a` que contiene las letras y otra llamada `x` que contiene los números. Para acceder a las diferentes columnas de `tabla` utilizamos el operador `$` así:
 
 ```{r}
 tabla$x
@@ -141,3 +141,25 @@ summary(modelo.1)
 ```
 
 Como podemos ver, la probabilidad de que los tratamientos sean iguales (columna `Pr(>F)`) es $P \ll 0.05$, por lo que coincide con la conclusión de los cálculos de $F^*$.
+
+## Otras funciones importantes de **R**
+
+En la mayoría de las ocasiones tenemos las bases de datos guardadas en algún directorio dentro de la computadora. El formato de estos archivos, recomendado para **R** es `.csv`, donde las columnas están separadas por comas y las filas por saltos de renglón (`Intro`). La función base de **R** para leer estos archivos en el espacio de trabajo es `read.csv`. El principal argumento que se da a la función es la ruta al archivo que se da envuelta en comillas: `read.csv("Directorio/archivo.csv")`. Veamos el ejemplo:
+
+```{r echo = FALSE}
+write.csv(base.datos, "Base-datos.csv")
+```
+
+
+```{r}
+tabla.archivo <- read.csv("./Base-datos.csv")
+head(tabla.archivo)
+```
+
+En este ejemplo el operador `.` indica leer en el mismo directorio de trabajo. Si se desea cambiar el directorio de trabajo de **R** es puede hacer con la función `setwd("Dir nuevo/Subdir nuevo")`. Una sesión normal de **R** utiliza como directorio de trabajo por default la carpeta personal del usuario. En **R studio** el directorio de trabajo de puede cambiar desde el menú principal: *Sesión/Directorio de trabajo/Seleccionar directorio*.
+
+# Aplicación del aprendizaje
+
+En esta ocasión harás un ANOVA con efectos fijos con unos datos simulados parecidos a los que se utilizaron en el ejemplo del tutorial. Todas las indicaciones para hacerlo están en el Classroom del curso.
+
+[Regresar al índice del curso](../index.html)

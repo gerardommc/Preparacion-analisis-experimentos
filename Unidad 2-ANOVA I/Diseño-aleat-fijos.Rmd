@@ -16,9 +16,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-En la [clase anterior](ANOVA-I.html), vimos cómo se hace un análisis de varianza con **efectos fijos**. Éstos se refieren al efecto estadístico que tienen los factores que estamos controlando, aquellos que conocemos y nos interesa entender. Como vimos en la sección de [Bloques y balance](../Unidad 1-Introducción/Bloques-balance.html) de la unidad anterior, en ocasiones es necesario utilizar bloques experimentales para poder contar con réplicas verdaderas. Debido a que los bloques pueden intrioucir efectos adicionales a aquellos que estamos midiendo, como los tratamientos, los bloques, dentro del análisis estadístico se consideran como efectos aleatorios. Esto quiere decir que se va a sumir que los bloques van a aumentar la variabilidad (varianza, $\sigma^2$) de la variable de respuesta que estamos midiendo, mientras que los efectos fijos sólo van a afectar el valor de la media (promedio). Los diseños ANOVA de una vía pueden contener tanto efectos fijos como aleatorios.
+En la [clase anterior](ANOVA-I.html), vimos cómo se hace un análisis de varianza con **efectos fijos**. Éstos se refieren al efecto estadístico que tienen los factores que estamos controlando, aquellos que conocemos y nos interesa entender. Como vimos en la sección de [Bloques y balance](../Unidad 1-Introducción/Bloques-balance.html) de la unidad anterior, en ocasiones es necesario utilizar bloques experimentales para poder contar con réplicas verdaderas. Debido a que los bloques pueden introducir efectos adicionales a aquellos que estamos midiendo (tratamientos), los bloques, dentro del análisis estadístico se consideran como efectos aleatorios. Esto quiere decir que se asume que los bloques van a aumentar la variabilidad (varianza, $\sigma^2$) de la variable de respuesta, mientras que los efectos fijos sólo van a afectar el valor de la media (promedio). Los diseños ANOVA de una vía pueden contener tanto efectos fijos como aleatorios.
 
-## Diseño aleatorizado
+## Diseño completamente aleatorizado
 
 ### Efectos fijos vs aleatorios
 
@@ -44,7 +44,7 @@ y del 11-15 al control:
 planta[11:15]
 ```
 
-Y posteriormente, también acomodamos las plantas aleatoriamente dentro de la instalación donde se hará el experimento. Este diseño experimental sin bloques se vería así:
+Posteriormente, también podemos acomodar las plantas aleatoriamente dentro de la instalación donde se hará el experimento. Este diseño experimental sin bloques se vería así:
 
 ```{r Fijos, echo=F, fig.height=3.5, fig.width=5.5, message=FALSE, fig.align='center', fig.cap="Diseño experimental completamente aleatorizado con efectos fijos. Los números dentro de cada punto representan las plantas etiquetadas aleatoriamente con el programa de computadora."}
 library(ggplot2)
