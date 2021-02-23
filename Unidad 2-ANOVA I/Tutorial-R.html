@@ -1602,24 +1602,55 @@ y3 &lt;- rnorm(15, mean = 15, sd = 4)</code></pre>
                          Valores = y)
 head(base.datos)</code></pre>
 <pre><code>##   Tratamiento   Valores
-## 1           A 13.909208
-## 2           A  8.063456
-## 3           A  8.712858
-## 4           A  7.112280
-## 5           A 11.244360
-## 6           A  8.469789</code></pre>
+## 1           A  8.879049
+## 2           A  9.539645
+## 3           A 13.117417
+## 4           A 10.141017
+## 5           A 10.258575
+## 6           A 13.430130</code></pre>
 <pre class="r"><code>tail(base.datos)</code></pre>
-<pre><code>##    Tratamiento  Valores
-## 40           C 14.99310
-## 41           C 15.27357
-## 42           C 22.62745
-## 43           C 18.27221
-## 44           C 21.40988
-## 45           C 24.09079</code></pre>
+<pre><code>##    Tratamiento   Valores
+## 40           C 13.478116
+## 41           C 12.221172
+## 42           C 14.168331
+## 43           C  9.938415
+## 44           C 23.675824
+## 45           C 19.831848</code></pre>
 <p>Las funciones <code>head</code>y <code>tail</code> imprimen las primeras y últimas seis filas de la tabla <code>base.datos</code>.</p>
 </div>
 <div id="el-análisis" class="section level2">
 <h2><span class="header-section-number">3.2</span> El análisis</h2>
+<p>las funciones <code>lm</code>y <code>aov</code> requieren de dos argumentos deltro del paréntesis, la fórmula del modelo y la base de datos donde está contenida la información a ser analizada. La fórmula se da de la siguiente manera: <code>y ~ x</code>. Esta fórmula se lee “<span class="math inline">\(y\)</span> es una función de <span class="math inline">\(x\)</span>”, tal como se lee en la notación tradicional de funciones matemáticas. Si analizáramos los datos simulados en la sección anterior la fórmula sería <code>Valores ~ Tratamiento</code>. Ahora, correremos el análisis, donde primero almacenaremos los resultados arrojados por la función <code>aov</code> en un objeto llamado <code>modelo.1</code> y revisamos el contenido de <code>modelo.1</code> en la consola:</p>
+<pre class="r"><code>modelo.1 &lt;- aov(formula = Valores ~ Tratamiento, data = base.datos)
+modelo.1</code></pre>
+<pre><code>## Call:
+##    aov(formula = Valores ~ Tratamiento, data = base.datos)
+## 
+## Terms:
+##                 Tratamiento Residuals
+## Sum of Squares     746.5761  358.7810
+## Deg. of Freedom           2        42
+## 
+## Residual standard error: 2.922739
+## Estimated effects may be unbalanced</code></pre>
+<p>Aquí podemos ver la suma de cuadrados de los tratamientos (<span class="math inline">\(SST\)</span>) y la suma de cuadrados del error (<span class="math inline">\(SSE\)</span>) en la primera fila, y en la segunda los grados de libertad del tratamiento (<span class="math inline">\(k-1\)</span>) y de todo el experimento (<span class="math inline">\(N-k\)</span>).</p>
+<p>Para ver la significancia estadística de los tratamientos tenemos dos opciones, calculando <span class="math inline">\(F\)</span> del experimento y compararlo con el valor crítico para los grados de libertad, o usar la función de <strong>R</strong>. Recordemos primero cómo se calcula <span class="math inline">\(F\)</span>:</p>
+<p><span class="math display">\[MST = \frac{SST}{k-1} \]</span></p>
+<p><span class="math display">\[MSE = \frac{SSE}{N-k} \]</span></p>
+<p><span class="math display">\[ F = \frac{MST}{MSE} \]</span></p>
+<p>De acuerdo con los resultados de <code>aov</code>, <span class="math inline">\(SST = 746.5761\)</span>, <span class="math inline">\(SSE = 358.7810\)</span>, <span class="math inline">\(k - 1 = 2\)</span> y <span class="math inline">\(N - k = 42\)</span>, por lo tanto:</p>
+<p><span class="math display">\[ F = \frac{746.5761/2}{358.7810/42}=2.08\]</span></p>
+<p>En <strong>R</strong> podemos encontrar el valor crítico <span class="math inline">\(F*\)</span> de <span class="math inline">\(F\)</span> utilizando la función <code>qf</code>, proporcionando el nivel de significancia <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(k-1\)</span> y <span class="math inline">\(N-k\)</span>:</p>
+<pre class="r"><code>qf(0.05, 2, 42)</code></pre>
+<pre><code>## [1] 0.05135599</code></pre>
+<p>debido a que <span class="math inline">\(F &gt; F^*\)</span>, rechazamos la hipótesis nula (<span class="math inline">\(H_0\)</span>) de no diferencias entre tratamientos. Ahora podemos verificar si el procedimiento de <strong>R</strong> sugiere lo mismo, utilizando la función <code>summary</code>:</p>
+<pre class="r"><code>summary(modelo.1)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## Tratamiento  2  746.6   373.3    43.7 5.47e-11 ***
+## Residuals   42  358.8     8.5                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Como podemos ver, la probabilidad de que los tratamientos sean iguales (columna <code>Pr(&gt;F)</code>) es <span class="math inline">\(P \ll 0.05\)</span>, por lo que coincide con la conclusión de los cálculos de <span class="math inline">\(F^*\)</span>.</p>
 </div>
 </div>
 

@@ -71,6 +71,10 @@ Hay dos funciones de **R** que pueden hacer un ANOVA de una vía con efectos fij
 ## Creando y preparando la base de datos
 
 Para hacer un ANOVA comenzaremos por crear una base de datos, para un experimento similar al visto en la [clase pasada](Diseño-aleat-fijos.html). Para crear la base de datos (por motivos ilustrativos únicamente), utilizaremos la función `rnorm` para generar números aleatorios con una distribución normal. Los argumentos que se ponen dentro de los paréntesis son: `rnorm(Tamaño de muestra, Promedio, Desviación estándar)`. Crearemos tres objetos con 15 valores, con distintas medias y desviación estándar:
+```{r echo = FALSE}
+set.seed(123)
+```
+
 
 ```{r}
 y1 <- rnorm(15, mean = 10, sd = 2)
@@ -102,3 +106,38 @@ tail(base.datos)
 Las funciones `head`y `tail` imprimen las primeras y últimas seis filas de la tabla `base.datos`.
 
 ## El análisis
+
+las funciones `lm`y `aov` requieren de dos argumentos deltro del paréntesis, la fórmula del modelo y la base de datos donde está contenida la información a ser analizada. La fórmula se da de la siguiente manera: `y ~ x`. Esta fórmula se lee "$y$ es una función de $x$", tal como se lee en la notación tradicional de funciones matemáticas. Si analizáramos los datos simulados en la sección anterior la fórmula sería `Valores ~ Tratamiento`. Ahora, correremos el análisis, donde primero almacenaremos los resultados arrojados por la función `aov` en un objeto llamado `modelo.1` y revisamos el contenido de `modelo.1` en la consola:
+
+```{r}
+modelo.1 <- aov(formula = Valores ~ Tratamiento, data = base.datos)
+modelo.1
+```
+
+Aquí podemos ver la suma de cuadrados de los tratamientos ($SST$) y la suma de cuadrados del error ($SSE$) en la primera fila, y en la segunda los grados de libertad del tratamiento ($k-1$) y de todo el experimento ($N-k$).
+
+Para ver la significancia estadística de los tratamientos tenemos dos opciones, calculando $F$ del experimento y compararlo con el valor crítico para los grados de libertad, o usar la función de **R**. Recordemos primero cómo se calcula $F$:
+
+$$MST = \frac{SST}{k-1} $$
+
+$$MSE = \frac{SSE}{N-k} $$
+
+$$ F = \frac{MST}{MSE} $$
+
+De acuerdo con los resultados de `aov`, $SST =  746.5761$, $SSE = 358.7810$, $k - 1 = 2$ y $N - k = 42$, por lo tanto:
+
+$$ F = \frac{746.5761/2}{358.7810/42}=2.08$$
+
+En **R** podemos encontrar el valor crítico $F*$ de $F$ utilizando la función `qf`, proporcionando el nivel de significancia $\alpha$, $k-1$ y $N-k$:
+
+```{r}
+qf(0.05, 2, 42)
+```
+
+debido a que $F > F^*$, rechazamos la hipótesis nula ($H_0$) de no diferencias entre tratamientos. Ahora podemos verificar si el procedimiento de **R** sugiere lo mismo, utilizando la función `summary`:
+
+```{r}
+summary(modelo.1)
+```
+
+Como podemos ver, la probabilidad de que los tratamientos sean iguales (columna `Pr(>F)`) es $P \ll 0.05$, por lo que coincide con la conclusión de los cálculos de $F^*$.

@@ -139,6 +139,6 @@ names(df.2l) <- c("Tratamiento", "Valor")
 openxlsx::write.xlsx(df.2l, "Datos-ejercicio-2.xlsx")
 ```
 
-En esta clase haremos dos ANOVA de una vía en una hoja de cálculo, como lo hicimos en la clase sincrónica. Sigue [esta liga](https://docs.google.com/forms/d/e/1FAIpQLSd9nMrTKxq_NSQW9Hbi5YX50iK4JMOW9_j7dk6bZXcSqI_WMg/viewform?usp=sf_link) para completar la actividad correspondiente a este módulo. Para acceder y registrar tu participación necesitarás tu dirección institucional.
+En esta clase haremos dos ANOVA de una vía en una hoja de cálculo, como lo hicimos en la clase sincrónica. Para ello completa la actividad correspondiente a este módulo en Classroom.
 
 [Regresar al índice del curso](../index.html)

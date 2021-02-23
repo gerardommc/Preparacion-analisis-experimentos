@@ -102,8 +102,6 @@ Los **efectos fijos** son aquellos que conocemos y sabemos que afectan el valor 
 
 # Verificación del conocimiento
 
-
-
-
+Completa la actividad correspondiente a este módulo en Classroom
 
 [Regresar al índice del curso](../index.html)
