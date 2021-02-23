@@ -25,4 +25,58 @@ Otra catacterística de los **efectos aleatorios** es que no estamos interesados
 
 Como vimos en el [tutorial de R](../Unidad 2-ANOVA 1/Tutorial-R.html), para hacer un ANOVA debemos de especificar la fórmula del modelo: `y ~ x`. Donde $y$ es la variable de respuesta y $x$ es la independiente con tantos niveles categóricos como decidamos incluir en el experimento. En ANOVA con efectos aleatorios también debemos especificarlos en la fórmula del modelo como: `y ~ x + Error(bloque)`, donde `bloque` debe ser una columna adicional dentro de la base de datos que especifica a qué bloque pertenece cada dato, y la función `Error` especifica que la variable `bloque` es un efecto aleatorio pues solamente afecta al **error** o variabilidad de $y$.
 
+# Análisis del diseño aleatorizado con efectos aleatorios
+
+Comenzaremos por simular una base de datos para un tratamiento con tres niveles en tres bloques, donde hay cinco unidades experimentales por tratamiento:
+```{r echo=FALSE}
+set.seed(123)
+```
+
+```{r}
+t1.1 <- rnorm(5, mean = 5, sd = 5)
+t1.2 <- rnorm(5, mean = 5, sd = 10)
+t1.3 <- rnorm(5, mean = 5, sd = 3)
+
+t2.1 <- rnorm(5, mean = 7, sd = 10)
+t2.2 <- rnorm(5, mean = 7, sd = 12)
+t2.3 <- rnorm(5, mean = 7, sd = 3)
+
+t3.1 <- rnorm(5, mean = 5.5, sd = 3)
+t3.2 <- rnorm(5, mean = 5.5, sd = 2)
+t3.3 <- rnorm(5, mean = 5.5, sd = 4)
+
+tratamientos <- rep(rep(c("A", "B", "C"), each = 5), 3)
+bloques <- rep(c("a", "b", "c"), each = 15)
+```
+
+```{r}
+base.datos <- data.frame(Valor = c(t1.1, t2.1, t3.1,
+                                   t1.2, t2.2, t3.2,
+                                   t1.3, t2.3, t3.3),
+                         Tratamiento = tratamientos,
+                         Bloque = bloques)
+head(base.datos)
+tail(base.datos)
+```
+
+Como podemos ver, las medias de cada tratamiento fueron iguales, independientemente del bloque, y la deviación estándar de `valor` cambió entre bloques. Ahora hagamos el análisis de varianza con efectos aleatorios:
+
+```{r}
+modelo.1 <- aov(Valor ~ Tratamiento + Error(Bloque), base.datos)
+summary(modelo.1)
+```
+
+Como podemos ver, debido al error explicado por los tratamientos, la probabilidad de que estos tengan medias parecidas es muy alta $P = 0.694$, con lo que no podemos rechazar $H_0$ de no diferencias entre tratamientos. Veamos que pasa si omitimos los efectos aleatorios:
+
+```{r}
+modelo.2 <- aov(Valor ~ Tratamiento, base.datos)
+summary(modelo.2)
+```
+
+En este caso llegamos a la misma conclusión pero como podemos ver, en el modelo sin efectos aleatorios $P$ es más pequeña en el modelo con efectos aleatorios. Esto indica que incluir los efectos aleatorios sí afecta el tipo de conclusiones que obtendríamos pues aumenta el riesgo de comisión de [errores de tipo I o II](https://es.wikipedia.org/wiki/Errores_de_tipo_I_y_de_tipo_II).
+
+# Aplicación del conocimiento
+
+Completa la actividad correspondiente a este módulo en Classroom.
+
 [Regresar al índice del curso](../index.html)

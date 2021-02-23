@@ -1553,6 +1553,68 @@ div.tocify {
 </ul>
 <p>Otra catacterística de los <strong>efectos aleatorios</strong> es que no estamos interesados en determinar si alteran el valor o magnitud de la variable de respuesta. Es por estas razones que cuando incluimos efectos aleatorios en los análisis estadísticos, estamos tratando de identificar qué porción del error de la variable de respuesta de debe a los tratamientos y cuál a los bloques (¡recordemos que debemos incluir los efectos aleatorios solamente si estos existen en el diseño experimental!).</p>
 <p>Como vimos en el <a href="../Unidad%202-ANOVA%201/Tutorial-R.html">tutorial de R</a>, para hacer un ANOVA debemos de especificar la fórmula del modelo: <code>y ~ x</code>. Donde <span class="math inline">\(y\)</span> es la variable de respuesta y <span class="math inline">\(x\)</span> es la independiente con tantos niveles categóricos como decidamos incluir en el experimento. En ANOVA con efectos aleatorios también debemos especificarlos en la fórmula del modelo como: <code>y ~ x + Error(bloque)</code>, donde <code>bloque</code> debe ser una columna adicional dentro de la base de datos que especifica a qué bloque pertenece cada dato, y la función <code>Error</code> especifica que la variable <code>bloque</code> es un efecto aleatorio pues solamente afecta al <strong>error</strong> o variabilidad de <span class="math inline">\(y\)</span>.</p>
+</div>
+<div id="análisis-del-diseño-aleatorizado-con-efectos-aleatorios" class="section level1">
+<h1><span class="header-section-number">2</span> Análisis del diseño aleatorizado con efectos aleatorios</h1>
+<p>Comenzaremos por simular una base de datos para un tratamiento con tres niveles en tres bloques, donde hay cinco unidades experimentales por tratamiento:</p>
+<pre class="r"><code>t1.1 &lt;- rnorm(5, mean = 5, sd = 5)
+t1.2 &lt;- rnorm(5, mean = 5, sd = 10)
+t1.3 &lt;- rnorm(5, mean = 5, sd = 3)
+
+t2.1 &lt;- rnorm(5, mean = 7, sd = 10)
+t2.2 &lt;- rnorm(5, mean = 7, sd = 12)
+t2.3 &lt;- rnorm(5, mean = 7, sd = 3)
+
+t3.1 &lt;- rnorm(5, mean = 5.5, sd = 3)
+t3.2 &lt;- rnorm(5, mean = 5.5, sd = 2)
+t3.3 &lt;- rnorm(5, mean = 5.5, sd = 4)
+
+tratamientos &lt;- rep(rep(c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;), each = 5), 3)
+bloques &lt;- rep(c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;), each = 15)</code></pre>
+<pre class="r"><code>base.datos &lt;- data.frame(Valor = c(t1.1, t2.1, t3.1,
+                                   t1.2, t2.2, t3.2,
+                                   t1.3, t2.3, t3.3),
+                         Tratamiento = tratamientos,
+                         Bloque = bloques)
+head(base.datos)</code></pre>
+<pre><code>##       Valor Tratamiento Bloque
+## 1  2.197622           A      a
+## 2  3.849113           A      a
+## 3 12.793542           A      a
+## 4  5.352542           A      a
+## 5  5.646439           A      a
+## 6 24.869131           B      a</code></pre>
+<pre class="r"><code>tail(base.datos)</code></pre>
+<pre><code>##         Valor Tratamiento Bloque
+## 40 10.7614448           B      c
+## 41  2.7211721           C      c
+## 42  4.6683309           C      c
+## 43  0.4384146           C      c
+## 44 14.1758239           C      c
+## 45 10.3318480           C      c</code></pre>
+<p>Como podemos ver, las medias de cada tratamiento fueron iguales, independientemente del bloque, y la deviación estándar de <code>valor</code> cambió entre bloques. Ahora hagamos el análisis de varianza con efectos aleatorios:</p>
+<pre class="r"><code>modelo.1 &lt;- aov(Valor ~ Tratamiento + Error(Bloque), base.datos)
+summary(modelo.1)</code></pre>
+<pre><code>## 
+## Error: Bloque
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals  2    155   77.51               
+## 
+## Error: Within
+##             Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Tratamiento  2   33.7   16.87   0.369  0.694
+## Residuals   40 1827.4   45.68</code></pre>
+<p>Como podemos ver, debido al error explicado por los tratamientos, la probabilidad de que estos tengan medias parecidas es muy alta <span class="math inline">\(P = 0.694\)</span>, con lo que no podemos rechazar <span class="math inline">\(H_0\)</span> de no diferencias entre tratamientos. Veamos que pasa si omitimos los efectos aleatorios:</p>
+<pre class="r"><code>modelo.2 &lt;- aov(Valor ~ Tratamiento, base.datos)
+summary(modelo.2)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Tratamiento  2   33.7   16.87   0.358  0.702
+## Residuals   42 1982.4   47.20</code></pre>
+<p>En este caso llegamos a la misma conclusión pero como podemos ver, en el modelo sin efectos aleatorios <span class="math inline">\(P\)</span> es más pequeña en el modelo con efectos aleatorios. Esto indica que incluir los efectos aleatorios sí afecta el tipo de conclusiones que obtendríamos pues aumenta el riesgo de comisión de <a href="https://es.wikipedia.org/wiki/Errores_de_tipo_I_y_de_tipo_II">errores de tipo I o II</a>.</p>
+</div>
+<div id="aplicación-del-conocimiento" class="section level1">
+<h1><span class="header-section-number">3</span> Aplicación del conocimiento</h1>
+<p>Completa la actividad correspondiente a este módulo en Classroom.</p>
 <p><a href="../index.html">Regresar al índice del curso</a></p>
 </div>
 
