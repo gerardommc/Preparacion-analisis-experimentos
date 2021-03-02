@@ -100,8 +100,6 @@ Los dos diseños experimentales mostrados aquí son muy similares, pues la únic
 
 Los **efectos fijos** son aquellos que conocemos y sabemos que afectan el valor medio de la respuesta. Los **efectos aleatorios** son aquellos que no estamos midiendo y que afectarán la variabilidad (varianza) de la variable de respuesta.
 
-# Verificación del conocimiento
-
-Completa la actividad correspondiente a este módulo en Classroom
+Para el día de hoy continuaremos con el [Tutotial de R](../Unidad 2-ANOVA I/Tutorial-R.html)
 
 [Regresar al índice del curso](../index.html)

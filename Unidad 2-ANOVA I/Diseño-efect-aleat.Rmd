@@ -59,24 +59,54 @@ head(base.datos)
 tail(base.datos)
 ```
 
-Como podemos ver, las medias de cada tratamiento fueron iguales, independientemente del bloque, y la deviación estándar de `valor` cambió entre bloques. Ahora hagamos el análisis de varianza con efectos aleatorios:
+Como podemos ver, las medias de cada tratamiento fueron iguales, independientemente del bloque, y la desviación estándar de `valor` cambió entre bloques. Ahora hagamos el análisis de varianza con efectos aleatorios:
 
 ```{r}
 modelo.1 <- aov(Valor ~ Tratamiento + Error(Bloque), base.datos)
 summary(modelo.1)
 ```
 
-Como podemos ver, debido al error explicado por los tratamientos, la probabilidad de que estos tengan medias parecidas es muy alta $P = 0.694$, con lo que no podemos rechazar $H_0$ de no diferencias entre tratamientos. Veamos que pasa si omitimos los efectos aleatorios:
+Entonces, debido al error explicado por los tratamientos, la probabilidad de que estos tengan medias parecidas es muy alta $P = 0.694$, con lo que no podemos rechazar $H_0$ de no diferencias entre tratamientos. Veamos que pasa si omitimos los efectos aleatorios:
 
 ```{r}
 modelo.2 <- aov(Valor ~ Tratamiento, base.datos)
 summary(modelo.2)
 ```
 
-En este caso llegamos a la misma conclusión pero como podemos ver, en el modelo sin efectos aleatorios $P$ es más pequeña en el modelo con efectos aleatorios. Esto indica que incluir los efectos aleatorios sí afecta el tipo de conclusiones que obtendríamos pues aumenta el riesgo de comisión de [errores de tipo I o II](https://es.wikipedia.org/wiki/Errores_de_tipo_I_y_de_tipo_II).
+En este caso llegamos a la misma conclusión pero, en el modelo sin efectos aleatorios $P$ es más pequeña en el modelo con efectos aleatorios. Esto indica que incluir los efectos aleatorios sí afecta el tipo de conclusiones que obtendríamos pues aumenta el riesgo de cometer [errores de tipo I o II](https://es.wikipedia.org/wiki/Errores_de_tipo_I_y_de_tipo_II).
 
 # Aplicación del conocimiento
 
 Completa la actividad correspondiente a este módulo en Classroom.
+
+```{r echo=FALSE}
+set.seed(456)
+
+t1.1 <- rnorm(10, mean = runif(1, 7, 10), sd = 3)
+t1.2 <- rnorm(10, mean = runif(1, 7, 10), sd = 5)
+t1.3 <- rnorm(10, mean = runif(1, 7, 10), sd = 2)
+
+t2.1 <- rnorm(10, mean = runif(1, 5, 8), sd = 1)
+t2.2 <- rnorm(10, mean = runif(1, 5, 8), sd = 6)
+t2.3 <- rnorm(10, mean = runif(1, 5, 8), sd = 4)
+
+t3.1 <- rnorm(10, mean = runif(1, 9, 11), sd = 5)
+t3.2 <- rnorm(10, mean = runif(1, 9, 11), sd = 3)
+t3.3 <- rnorm(10, mean = runif(1, 9, 11), sd = 2)
+
+tratamientos <- rep(rep(c("A", "B", "C"), each = 5), 3)
+bloques <- rep(c("a", "b", "c"), each = 15)
+
+base.datos.2 <- data.frame(Valor = c(t1.1, t2.1, t3.1,
+                                   t1.2, t2.2, t3.2,
+                                   t1.3, t2.3, t3.3),
+                         Tratamiento = tratamientos,
+                         Bloque = bloques)
+
+openxlsx::write.xlsx(base.datos.2, "Base-datos-Aleatorios.xlsx")
+
+m1 <- aov(Valor ~ Tratamiento + Error(Bloque), base.datos.2)
+saveRDS(m1, "Modelo-tarea-effect-aleat.rds")
+```
 
 [Regresar al índice del curso](../index.html)

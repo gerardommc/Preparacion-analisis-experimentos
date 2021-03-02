@@ -1592,7 +1592,7 @@ head(base.datos)</code></pre>
 ## 43  0.4384146           C      c
 ## 44 14.1758239           C      c
 ## 45 10.3318480           C      c</code></pre>
-<p>Como podemos ver, las medias de cada tratamiento fueron iguales, independientemente del bloque, y la deviación estándar de <code>valor</code> cambió entre bloques. Ahora hagamos el análisis de varianza con efectos aleatorios:</p>
+<p>Como podemos ver, las medias de cada tratamiento fueron iguales, independientemente del bloque, y la desviación estándar de <code>valor</code> cambió entre bloques. Ahora hagamos el análisis de varianza con efectos aleatorios:</p>
 <pre class="r"><code>modelo.1 &lt;- aov(Valor ~ Tratamiento + Error(Bloque), base.datos)
 summary(modelo.1)</code></pre>
 <pre><code>## 
@@ -1604,13 +1604,13 @@ summary(modelo.1)</code></pre>
 ##             Df Sum Sq Mean Sq F value Pr(&gt;F)
 ## Tratamiento  2   33.7   16.87   0.369  0.694
 ## Residuals   40 1827.4   45.68</code></pre>
-<p>Como podemos ver, debido al error explicado por los tratamientos, la probabilidad de que estos tengan medias parecidas es muy alta <span class="math inline">\(P = 0.694\)</span>, con lo que no podemos rechazar <span class="math inline">\(H_0\)</span> de no diferencias entre tratamientos. Veamos que pasa si omitimos los efectos aleatorios:</p>
+<p>Entonces, debido al error explicado por los tratamientos, la probabilidad de que estos tengan medias parecidas es muy alta <span class="math inline">\(P = 0.694\)</span>, con lo que no podemos rechazar <span class="math inline">\(H_0\)</span> de no diferencias entre tratamientos. Veamos que pasa si omitimos los efectos aleatorios:</p>
 <pre class="r"><code>modelo.2 &lt;- aov(Valor ~ Tratamiento, base.datos)
 summary(modelo.2)</code></pre>
 <pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)
 ## Tratamiento  2   33.7   16.87   0.358  0.702
 ## Residuals   42 1982.4   47.20</code></pre>
-<p>En este caso llegamos a la misma conclusión pero como podemos ver, en el modelo sin efectos aleatorios <span class="math inline">\(P\)</span> es más pequeña en el modelo con efectos aleatorios. Esto indica que incluir los efectos aleatorios sí afecta el tipo de conclusiones que obtendríamos pues aumenta el riesgo de comisión de <a href="https://es.wikipedia.org/wiki/Errores_de_tipo_I_y_de_tipo_II">errores de tipo I o II</a>.</p>
+<p>En este caso llegamos a la misma conclusión pero, en el modelo sin efectos aleatorios <span class="math inline">\(P\)</span> es más pequeña en el modelo con efectos aleatorios. Esto indica que incluir los efectos aleatorios sí afecta el tipo de conclusiones que obtendríamos pues aumenta el riesgo de cometer <a href="https://es.wikipedia.org/wiki/Errores_de_tipo_I_y_de_tipo_II">errores de tipo I o II</a>.</p>
 </div>
 <div id="aplicación-del-conocimiento" class="section level1">
 <h1><span class="header-section-number">3</span> Aplicación del conocimiento</h1>
