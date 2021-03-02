@@ -1638,11 +1638,11 @@ modelo.1</code></pre>
 <p><span class="math display">\[MST = \frac{SST}{k-1} \]</span></p>
 <p><span class="math display">\[MSE = \frac{SSE}{N-k} \]</span></p>
 <p><span class="math display">\[ F = \frac{MST}{MSE} \]</span></p>
-<p>De acuerdo con los resultados de <code>aov</code>, <span class="math inline">\(SST = 746.5761\)</span>, <span class="math inline">\(SSE = 358.7810\)</span>, <span class="math inline">\(k - 1 = 2\)</span> y <span class="math inline">\(N - k = 42\)</span>, por lo tanto:</p>
-<p><span class="math display">\[ F = \frac{746.5761/2}{358.7810/42}=2.08\]</span></p>
+<p>De acuerdo con los resultados de <code>aov</code>, <span class="math inline">\(SST = 746.5761\)</span>, <span class="math inline">\(SSE = 358.7810\)</span>, <span class="math inline">\(k - 1 = 14\)</span> y <span class="math inline">\(N - k = 30\)</span>, por lo tanto:</p>
+<p><span class="math display">\[ F = \frac{746.5761/14}{358.7810/30}=4.45\]</span></p>
 <p>En <strong>R</strong> podemos encontrar el valor crítico <span class="math inline">\(F*\)</span> de <span class="math inline">\(F\)</span> utilizando la función <code>qf</code>, proporcionando el nivel de significancia <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(k-1\)</span> y <span class="math inline">\(N-k\)</span>:</p>
-<pre class="r"><code>qf(0.05, 2, 42)</code></pre>
-<pre><code>## [1] 0.05135599</code></pre>
+<pre class="r"><code>qf(0.05, 14, 30)</code></pre>
+<pre><code>## [1] 0.4332367</code></pre>
 <p>debido a que <span class="math inline">\(F &gt; F^*\)</span>, rechazamos la hipótesis nula (<span class="math inline">\(H_0\)</span>) de no diferencias entre tratamientos. Ahora podemos verificar si el procedimiento de <strong>R</strong> sugiere lo mismo, utilizando la función <code>summary</code>:</p>
 <pre class="r"><code>summary(modelo.1)</code></pre>
 <pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    

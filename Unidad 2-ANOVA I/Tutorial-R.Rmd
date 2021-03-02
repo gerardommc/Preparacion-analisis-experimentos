@@ -124,14 +124,14 @@ $$MSE = \frac{SSE}{N-k} $$
 
 $$ F = \frac{MST}{MSE} $$
 
-De acuerdo con los resultados de `aov`, $SST =  746.5761$, $SSE = 358.7810$, $k - 1 = 2$ y $N - k = 42$, por lo tanto:
+De acuerdo con los resultados de `aov`, $SST =  746.5761$, $SSE = 358.7810$, $k - 1 = 14$ y $N - k = 30$, por lo tanto:
 
-$$ F = \frac{746.5761/2}{358.7810/42}=2.08$$
+$$ F = \frac{746.5761/14}{358.7810/30}=4.45$$
 
 En **R** podemos encontrar el valor crítico $F*$ de $F$ utilizando la función `qf`, proporcionando el nivel de significancia $\alpha$, $k-1$ y $N-k$:
 
 ```{r}
-qf(0.05, 2, 42)
+qf(0.05, 14, 30)
 ```
 
 debido a que $F > F^*$, rechazamos la hipótesis nula ($H_0$) de no diferencias entre tratamientos. Ahora podemos verificar si el procedimiento de **R** sugiere lo mismo, utilizando la función `summary`:
