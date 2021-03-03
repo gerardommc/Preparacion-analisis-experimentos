@@ -32,6 +32,8 @@ output:
 
 4. [Diseño completamente aleatorizado con bloques al azar](Unidad 2-ANOVA I/Bloques-aleatorios.html)
 
+      4.1 [Tutorial de R-2](Unidad 2-ANOVA I/Tutorial-R-2.html)
+
 5. [Pruebas equivalentes para datos ordenados por rango]
 
 # El modelo ANOVA con dos o más criterios de clasificación

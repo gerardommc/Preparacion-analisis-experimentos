@@ -26,13 +26,11 @@ Como se puede notar, dentro de cada bloque no hay réplicas. La ausencia de rép
 
 # Análisis del diseño aleatorizado por bloques
 
-Para comenzar, simularemos una base de datos utilizando un método distinto del que usamos anteriormente para ir aprendiendo más técnicas de **R**. Esta técnica es aparentemente más complicada, pero permite simular bases de datos más grandes de manera sencilla y la aprendí de [Murray Logan](http://www.flutterbys.com.au/stats/tut/tut7.4a.html#h3_1):
+Para comenzar, simularemos una base de datos utilizando el mismo método que [utilizamos anteriormente](../Unidad 2-ANOVA I/Diseño-efect-aleat.html), por lo que omitiré el código y el nombre de los datos experimentales es `base.datos`. Afortunadamente el análisis de los datos de este diseño experimental es igual al diseño por completamente aleatorizado con efectos aleatorios. Para incrementar las herramientas analíticas utilizaremos entonces aprenderemos a utilizar un paquete llamado `lme4`.
 
 ```{r echo = F}
 set.seed(123)
-```
 
-```{r}
 t1.1 <- rnorm(5, mean = 5, sd = 5)
 t1.2 <- rnorm(5, mean = 5, sd = 10)
 t1.3 <- rnorm(5, mean = 5, sd = 3)
@@ -47,8 +45,49 @@ t3.3 <- rnorm(5, mean = 5.5, sd = 4)
 
 tratamientos <- rep(rep(c("A", "B", "C"), each = 5), 3)
 bloques <- rep(c("a", "b", "c"), each = 15)
+
+base.datos <- data.frame(Valor = c(t1.1, t2.1, t3.1,
+                                   t1.2, t2.2, t3.2,
+                                   t1.3, t2.3, t3.3),
+                         Tratamiento = tratamientos,
+                         Bloque = bloques)
 ```
 
+## Instalación y uso de paquetes en **R**
+
+Cuando comenzamos una sesión en **R** hay una serie de funciones básicas. Sin embargo, esas funciones son muy limitadas y por lo general están contenidas en *paquetes* con nombres como `base`, `graphics` y `stats`. La principal bondad de **R** es que hay una cantidad enorme de paquetes disponibles para instalar y que contienen un sin fín de métodos estadísticos implementados o de funciones adicionales para manejar diferentes tipos de datos. Uno de dichos paquetes es `lme4` que contiene código y funciones para ajustar modelos lineales con efectos fijos y aleatorios. Primero para instalar el paquete corrermos la función:
+
+`install.packages("lme4")`
+
+y para abrirlo en la sesión actual:
+
+```{r message = F}
+library(lme4)
+```
+
+nota que le argumento de `install.packages` está rodeado por `""`, y no así el de la función nativa `library`. Ahora, una vez que abrimos el paquete `lme4` en la sesión interactiva de **R**, podemos comenzar a usar las funciones que contiene. 
+
+## El análisis con `lme4`
+
+Haremos primero el ANOVA con efectos aleatorios que hicimos anteriormente. La función del paquete `lme4` para hacer un anova con efectos aleatorios es `lmer`, y los efectos aleatorios (efectos de `Bloque`) se especifican de una manera un tanto diferente:
+
+```{r}
+modelo.1 <- lmer(Valor ~ Tratamiento + (1|Bloque), data = base.datos)
+modelo.1
+```
+Cuando imprimimos los resultados del análisis, para comenzar a entender, hay que fijarnos en las últimas filas desués de `Fixed Effects`. La columna `(Intercept)` contiene la media del tratamiento A, y los valores de las columnas `Tratamiento B` y `Tratamiento C` muestran los efectos del los tratamientos en comparación con el `Tratamiento A`. Esto quiere decir que la media del `Tratamiento B` estimada por `lmer` es `5.4828 - 1.1669 = 4.3159`. Para ver la significancia estadística de los tratamientos podemos extraer el valor de $F$ con la función `anova` (última columna `F value`):
+
+```{r}
+anova(modelo.1)
+```
+
+Y el valor crítico $F^*$ para una significancia de 0.05 es:
+
+```{r}
+qf(0.05, 14, 30)
+```
+
+Como podemos ver, $F^* > F$, $0.4332367 > 0.3694$, con lo que **no** podemos rechazar $H_0$ de no diferencias entre tratamientos y concluimos que los tratamientos no tuvieron un efecto significativo sobre la media de la variable `Valor`.
 
 [Regresar al índice del curso](../index.html)
 

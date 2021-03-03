@@ -1557,22 +1557,43 @@ Figure 1.1: Esquema del diseño completamente aleatorizado con bloques aleatorio
 </div>
 <div id="análisis-del-diseño-aleatorizado-por-bloques" class="section level1">
 <h1><span class="header-section-number">2</span> Análisis del diseño aleatorizado por bloques</h1>
-<p>Para comenzar, simularemos una base de datos utilizando un método distinto del que usamos anteriormente para ir aprendiendo más técnicas de <strong>R</strong>. Esta técnica es aparentemente más complicada, pero permite simular bases de datos más grandes de manera sencilla y la aprendí de <a href="http://www.flutterbys.com.au/stats/tut/tut7.4a.html#h3_1">Murray Logan</a>:</p>
-<pre class="r"><code>t1.1 &lt;- rnorm(5, mean = 5, sd = 5)
-t1.2 &lt;- rnorm(5, mean = 5, sd = 10)
-t1.3 &lt;- rnorm(5, mean = 5, sd = 3)
-
-t2.1 &lt;- rnorm(5, mean = 7, sd = 10)
-t2.2 &lt;- rnorm(5, mean = 7, sd = 12)
-t2.3 &lt;- rnorm(5, mean = 7, sd = 3)
-
-t3.1 &lt;- rnorm(5, mean = 5.5, sd = 3)
-t3.2 &lt;- rnorm(5, mean = 5.5, sd = 2)
-t3.3 &lt;- rnorm(5, mean = 5.5, sd = 4)
-
-tratamientos &lt;- rep(rep(c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;), each = 5), 3)
-bloques &lt;- rep(c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;), each = 15)</code></pre>
+<p>Para comenzar, simularemos una base de datos utilizando el mismo método que <a href="../Unidad%202-ANOVA%20I/Diseño-efect-aleat.html">utilizamos anteriormente</a>, por lo que omitiré el código y el nombre de los datos experimentales es <code>base.datos</code>. Afortunadamente el análisis de los datos de este diseño experimental es igual al diseño por completamente aleatorizado con efectos aleatorios. Para incrementar las herramientas analíticas utilizaremos entonces aprenderemos a utilizar un paquete llamado <code>lme4</code>.</p>
+<div id="instalación-y-uso-de-paquetes-en-r" class="section level2">
+<h2><span class="header-section-number">2.1</span> Instalación y uso de paquetes en <strong>R</strong></h2>
+<p>Cuando comenzamos una sesión en <strong>R</strong> hay una serie de funciones básicas. Sin embargo, esas funciones son muy limitadas y por lo general están contenidas en <em>paquetes</em> con nombres como <code>base</code>, <code>graphics</code> y <code>stats</code>. La principal bondad de <strong>R</strong> es que hay una cantidad enorme de paquetes disponibles para instalar y que contienen un sin fín de métodos estadísticos implementados o de funciones adicionales para manejar diferentes tipos de datos. Uno de dichos paquetes es <code>lme4</code> que contiene código y funciones para ajustar modelos lineales con efectos fijos y aleatorios. Primero para instalar el paquete corrermos la función:</p>
+<p><code>install.packages(&quot;lme4&quot;)</code></p>
+<p>y para abrirlo en la sesión actual:</p>
+<pre class="r"><code>library(lme4)</code></pre>
+<p>nota que le argumento de <code>install.packages</code> está rodeado por <code>&quot;&quot;</code>, y no así el de la función nativa <code>library</code>. Ahora, una vez que abrimos el paquete <code>lme4</code> en la sesión interactiva de <strong>R</strong>, podemos comenzar a usar las funciones que contiene.</p>
+</div>
+<div id="el-análisis-con-lme4" class="section level2">
+<h2><span class="header-section-number">2.2</span> El análisis con <code>lme4</code></h2>
+<p>Haremos primero el ANOVA con efectos aleatorios que hicimos anteriormente. La función del paquete <code>lme4</code> para hacer un anova con efectos aleatorios es <code>lmer</code>, y los efectos aleatorios (efectos de <code>Bloque</code>) se especifican de una manera un tanto diferente:</p>
+<pre class="r"><code>modelo.1 &lt;- lmer(Valor ~ Tratamiento + (1|Bloque), data = base.datos)
+modelo.1</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: Valor ~ Tratamiento + (1 | Bloque)
+##    Data: base.datos
+## REML criterion at convergence: 288.886
+## Random effects:
+##  Groups   Name        Std.Dev.
+##  Bloque   (Intercept) 1.457   
+##  Residual             6.759   
+## Number of obs: 45, groups:  Bloque, 3
+## Fixed Effects:
+##  (Intercept)  TratamientoB  TratamientoC  
+##       5.4828       -1.1669        0.9507</code></pre>
+<p>Cuando imprimimos los resultados del análisis, para comenzar a entender, hay que fijarnos en las últimas filas desués de <code>Fixed Effects</code>. La columna <code>(Intercept)</code> contiene la media del tratamiento A, y los valores de las columnas <code>Tratamiento B</code> y <code>Tratamiento C</code> muestran los efectos del los tratamientos en comparación con el <code>Tratamiento A</code>. Esto quiere decir que la media del <code>Tratamiento B</code> estimada por <code>lmer</code> es <code>5.4828 - 1.1669 = 4.3159</code>. Para ver la significancia estadística de los tratamientos podemos extraer el valor de <span class="math inline">\(F\)</span> con la función <code>anova</code> (última columna <code>F value</code>):</p>
+<pre class="r"><code>anova(modelo.1)</code></pre>
+<pre><code>## Analysis of Variance Table
+##             npar Sum Sq Mean Sq F value
+## Tratamiento    2 33.748  16.874  0.3694</code></pre>
+<p>Y el valor crítico <span class="math inline">\(F^*\)</span> para una significancia de 0.05 es:</p>
+<pre class="r"><code>qf(0.05, 14, 30)</code></pre>
+<pre><code>## [1] 0.4332367</code></pre>
+<p>Como podemos ver, <span class="math inline">\(F^* &gt; F\)</span>, <span class="math inline">\(0.4332367 &gt; 0.3694\)</span>, con lo que <strong>no</strong> podemos rechazar <span class="math inline">\(H_0\)</span> de no diferencias entre tratamientos y concluimos que los tratamientos no tuvieron un efecto significativo sobre la media de la variable <code>Valor</code>.</p>
 <p><a href="../index.html">Regresar al índice del curso</a></p>
+</div>
 </div>
 
 

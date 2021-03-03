@@ -1,0 +1,21 @@
+---
+title: "Tutorial de R-2"
+author: "Gerardo Martín"
+date: "3/3/2021"
+output: 
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+En este tutorial vamos a aprender a hacer tres cosas:
+
+1. Hacer pruebas diagnósticas de los datos para antes de ajustar un modelo
+2. Diagnosticar los modelos ajustados
+3. Utilizar el sistema de gráficos
