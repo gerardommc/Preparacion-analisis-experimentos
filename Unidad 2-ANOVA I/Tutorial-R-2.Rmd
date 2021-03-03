@@ -14,8 +14,219 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-En este tutorial vamos a aprender a hacer tres cosas:
+En este tutorial vamos a aprender a hacer dos análisis y junto con ellos a hacer gráficos con el sistema natico de **R**:
 
 1. Hacer pruebas diagnósticas de los datos para antes de ajustar un modelo
-2. Diagnosticar los modelos ajustados
-3. Utilizar el sistema de gráficos
+2. Diagnosticar el ajuste de los modelos estadísticos
+
+# Pruebas diagnósticas *a priori*
+
+## Métodos visuales
+
+Como se ha mencionado antes, el primer supuesto de los modelos lineales (ANOVA incluido) es que la variable de respuesta $y$ tiene una distribución normal dentro de cada uno de sus grupos experimentales $i$. Le primera herramienta que tenemos es visual y se llama gráfico de cajas. Simulemos una base de datos para ver cómo se hacen e interpretan:
+
+```{r}
+y1 <- rnorm(100, mean = 0, sd = 2)
+y2 <- rnorm(100, mean = 0, sd = 0.5)
+tabla.1 <- data.frame(y = c(y1, y2),
+                      x = rep(c("A", "B"), each = 100))
+```
+
+En esta base de datos simulamos una variable $y$ con dos tratamientos $x = \{A, B\}$, y sólo son diferentes por la desviación estándar ($\sigma_{A, B} = \{2, 0.5\}$). Para el gráfico de cajas usamos la función `boxplot` que utiliza dos argumentos, el primero es la fórmula que se especifica del mismo modo que para `aov` y `lmer`. El segundo argumento es la base de datos que contiene las variables $x$ y $y$.
+
+```{r cajas-desvest, fig.cap="Gráfico de cajas de dos tratamientos con diferente desviación estándar.", fig.height=4, fig.width=4, fig.align="center"}
+boxplot(y ~ x, data = tabla.1)
+```
+
+Las líneas horizontales gruesas representa las medianas de $y_A$ y $y_B$, mientras que los límites de la caja central muestran los valores del primer y tercer cuartiles (25 y 75%) de los datos, y los límites de las líneas de rango muestran los percentiles 2.5 y 97.5% repsectivamente. Los datos graficados fuera de estas líneas de rango son los denominados *outliers*, o valores que son relativamente raros y que quedan por fuera del 95% de los datos.
+
+Con este tipo de gráficos queda de manifiesta la distribución de las variables. Por ejemplo podemos ver que la mediana queda enmedio de los posibles valores de $y$ y que por arriba y abajo de la mediana hay más o menos la misma cantidad de datos. Ahora veamos qué sucede si cambiamos el valor de la media de los datos simulados:
+
+```{r cajas-media, fig.height=4, fig.width=4, fig.cap="Gráfico de cajas con dos tratamientos con diferentes promedios.", fig.align="center"}
+tabla.2 <- data.frame(y = c(rnorm(100, mean = 0, sd = 2), #y1
+                            rnorm(100, mean = 3, sd = 2)),#y2 
+                      x = rep(c("A", "B"), each = 100)) #Tratamientos
+
+boxplot(y ~ x, data = tabla.2)
+```
+
+En la simulación de estos datos se omitió el primer paso de generar los niveles de $y$ por separado, sin embargo ambos fueron almacenados en $y$ dentro de `tabla.2`. En este ejemplo se puede apreciar cómo la mediana del tratamiento $A$ es menor que la del tratamiento $B$. También es buena práctica graficar la media aritmética sobre la mediana para ver si hay diferencias:
+
+```{r cajas-media-roja, fig.height=4, fig.width=4, fig.align="center", fig.cap="Medias en puntos rojos sobre el mismo gráfico de cajas anterior."}
+media.y.a <- mean(tabla.2$y[1:100])
+media.y.b <- mean(tabla.2$y[101:200])
+
+boxplot(y ~ x, data = tabla.2)
+points(x = c(1, 2), y = c(media.y.a, media.y.b), col = "red", pch = 20, cex = 1.5)
+```
+En ambos casos la media aritmética se parece mucho a la mediana, con lo cual inferimos que no hay razones para sospechar que $y$ sea muy diferente de una desviación normal. Veamos ahora un gráfico de cajas de una distribución que no es normal, como la distribución [log.normal](https://es.wikipedia.org/wiki/Distribuci%C3%B3n_de_Poisson):
+
+```{r cajas-pois, fig.height=4, fig.width=2, fig.align="center", fig.cap="Gráfico de cajas de una distribución Poisson"}
+y.lnorm <- exp(rnorm(100, mean = 0, sd = 1))
+media.lnorm <- mean(y.lnorm)
+boxplot(y.lnorm)
+points(1, media.lnorm, col = "red", pch = 20, cex = 1.5)
+```
+
+Aquí podemos ver que la media (el punto rojo), es mayor a la mediana (línea negra), lo que sugiere que por encima de la mediana hay más datos que por abajo, por lo tanto no se trata de una distribución con varianza homogénea. Para analizar datos con este tipo de varianza hay que tomar medidas especiales. Por lo pronto basta saber que ANOVA con datos crudos de esta naturaleza dará resultados inválidos.
+
+## Pruebas estadísticas formales
+
+La prueba estadística más popular para probar la hipótesis de que $y$ proviene de una distribución normal se llama prueba de Shapiro (apellido del estadrístico que la desarrolló). Al igual que otras pruebas de hipótesis, en este caso rechazamos que $y$ tenga una distribución normal si $P < 0.05$. Veamos dos ejemplos contrastantes:
+
+```{r echo = F}
+set.seed(123)
+```
+```{r}
+y1 <- rnorm(100, mean = 0, sd = 1)
+shapiro.test(y1)
+```
+
+y
+
+```{r}
+y1.lnorm <- exp(y1)
+shapiro.test(y1.lnorm)
+```
+
+En el primer ejemplo, es claro que no se puede rechazar la hipótesis de que $y$ proviene de una distribución normal. En el segundo caso, dado que $P\ll 0.05$, sí que se puede rechazar.
+
+## Conclusiones
+
+Aquí vimos que se puede explorar visualmente si se cumple el supuesto de homogeneidad de varianza (distribución de datos homogénea alrededor de la media). Si la media es significativamente mayor o menor que la mediana podemos asegurar que la varianza no es homogénea. Esto lo podemos demostrar estadísticamente con la prueba de hipótesis de que la variable en cuestión proviene de una distribución normal con `shapiro.test`. En caso de no cumplirse dicho supuesto, será necesario transformar las variables de respuesta ó utilizar otro método estadístico diferente a ANOVA.
+
+# Purebas diagnósticas *a posteriori*
+
+Una vez ajustado un modelo estadístico tenemos que revisar que este último haya sido adecuado para los datos, aún cuando hayamos determinado *a priori* que los datos cumplen con los supuestos. Como se expuso en la clase [introductoria al modelo ANOVA de una vía](../Unidad 2-ANOVA I/ANOVA-I.html), los residuales deben tener una distribución normal, y también deben de estar distribuidos aleatoriamente entre tratamientos. Al igual que los diagnósticos *a priori*, los diagnósticos después de ajustar el modelo se pueden hacer visuales. Comencemos con un ejemplo que cumple con todos los supuestos descritos aquí.
+
+
+## Ejemplo que cumple con supuestos
+
+Comenzaremos con el mismo ejemplo utilizado en el [primer tutorial de **R**](../Unidad 2-ANOVA I/Tutorial-R.html). El código para simular los datos es:
+
+```{r}
+set.seed(123)
+
+y1 <- rnorm(15, mean = 10, sd = 2)
+y2 <- rnorm(15, mean = 7, sd = 3)
+y3 <- rnorm(15, mean = 15, sd = 4)
+
+y <- c(y1, y2, y3)
+
+tratamientos <- rep(c("A", "B", "C"), each = 15)
+
+base.datos <- data.frame(Tratamiento = tratamientos,
+                         Valores = y)
+```
+
+### Diagnóstico previo
+
+#### Gráficos de cajas
+
+```{r Cajas-tutorial-1, fig.height=4, fig.width=6, fig.align="center", fig.cap="Gráfico de cajas de la base de datos del primer tutorial de R sobre ANOVA."}
+boxplot(Valores ~ Tratamiento, base.datos)
+points(c(1, 2, 3),
+       c(mean(y1), mean(y2), mean(y3)),
+       col = "red", pch = 20, cex = 1.5)
+```
+
+Estos gráficos indican que las medias son cercanas a las medianas y que la varianza es homogénea alrededor de la media y mediana. Quizás en el tratamiento A, tanto la mediana como la media parecen estar más cerca del tercer cuartil (75%), pero ambas tienen valores muy similares.
+
+#### Prueba de hipótesis de normalidad
+
+Al igual que arriba utilizaremos `shapiro.test`:
+
+```{r}
+shapiro.test(y1)
+shapiro.test(y2)
+shapiro.test(y3)
+```
+
+Esto indica que la variable de respuesta en todos los tratamientos tiene, efectivamente una distribución normal.
+
+### Diagnóstico posterior
+
+#### Ajustando el modelo
+
+En este caso, para seguir aprendiendo las posibilidades de **R**, ajustaremos el mismo modelo con `aov` y `lm`:
+
+```{r}
+modelo.1 <- aov(Valores ~ Tratamiento, base.datos)
+modelo.2 <- lm(Valores ~ Tratamiento, base.datos)
+```
+
+En este punto ya estamos familiarizados con el resultado de `aov`, el cual sugiere que los tratamientos sí afectaron significativamente la media:
+
+```{r}
+summary(modelo.1)
+```
+
+El caso de `lm`, la presentación de los resultados es distinta:
+
+```{r}
+summary(modelo.2)
+```
+
+Ahí, aunque parezca más complicado, en este caso se muestra en la columna `Estimate`, el valor de la media del tratamiento A (`Intercept`), y el hecho de que sea altamente significativo, sugiere simplemente que es poco probable que la media de ese tratamiento sea cero ($\mu_a \neq 0$). Las demás filas, muestran el efecto del tratamiento B y C sobre sus respectivas medias. Y la significancia indica que ambas son diferentes de la media del tratamiento A. Esto indica al igual que con `aov` que podemos rechazar $H_0$.
+
+#### Diagnóstico visual del ajuste
+
+Hasta ahorita ya vimos la función `boxplot` del sistema básico de gráficos. La función más común (y flexible) del mismo sistema se llama `plot`. Para diagnosticar el ajuste de un modelo simplemente se proporciona como único argumento el nombre del objeto donde almacenamos el modelo:
+
+```{r diagnóstico, fig.height=7, fig.width=6, fig.cap="Gráficas de diagnóstico del modelo.", fig.align = "center"}
+par(mfrow = c(2, 2))
+plot(modelo.1)
+```
+
+Para interpretar estas gráficas, vamos a enfocarnos en las de la promera fila. En el eje $x$ de la gráfica con el título *Residuals vs fitted* tenemos las medias de cada tratamiento, y en las $y$ tenemos la diferencia entre cada observación y la media del grupo (los residuales). La línea roja muestra el promedio de los residuales entre grupos, la cual **SIEMPRE** debe de ser lo más cercano a la horizontal. Si dicha línea no fuera horizontal, se estaría violando el primer supuesto de homogeneidad de varianza en alguno de los grupos.
+
+La gráfica de la izquierda en la primera fila muestra los residuales ordenados de mayor a menor graficados contra los residuales divididos entre la desviación estándar. Y estos deben estar alineados lo más cercanamente posible con la línea punteada. En este caso podemos concluir que el modelo es adecuado para los datos.
+
+Las dos gráficas sobrantes son reintepretaciones de las que explicamos arriba.
+
+## Ejemplo contrastante
+
+Aquí muestro las gráficas de diagnóstico para unos datos que no deberían haber sido analizados con ANOVA:
+
+```{r echo = F}
+y <- c(rpois(10, 1),
+       rpois(10, 2),
+       rpois(10, 4))
+trats <- rep(c("A", "B", "C"), each = 10)
+datos.2 <- data.frame(Valores = y, Tratamiento = trats)
+```
+
+Gráfico de cajas:
+
+```{r Poisson, fig.height=4, fig.width=6, fig.align="center", fig.cap="Gráfico de cajas de tratamiento sin distribución normal."}
+boxplot(Valores ~ Tratamiento, datos.2)
+```
+
+Se puede apreciar que las medianas no están en el centro de la distribución y que las colas son más grande hacia una lado que el otro, en especial en los tratamientos A y C.
+
+Modelo:
+
+```{r}
+modelo.3 <- aov(Valores ~ Tratamiento, datos.2)
+summary(modelo.3)
+```
+
+Aquí, los tratamientos, tuvieron aparentemente un efecto significativo sobre la media.
+
+```{r Diagnostico-poisson, fig.height=7, fig.width=6, fig.align="center", fig.cap="Gráficas de diangóstico de un modelo inadecuado para los datos."}
+par(mfrow = c(2,2))
+plot(modelo.3)
+```
+
+Se puede apreciar que ninguna de las gráficas tiene las características:
+
+1. Línea de medias de *Residuals vs fitted* horizontal
+2. Quantiles cercanos a línea punteada en *Normal Q-Q*.
+
+Con esto se confirma que el modelo ANOVA por default es inadecuado para estos datos.
+
+# Aplicación del conocimiento
+
+Completa las actividades correspondientes a este tutorial en Google Classroom.
+
+[Regresar el índice del curso](../index.html)
