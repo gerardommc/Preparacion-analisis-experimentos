@@ -1,0 +1,30 @@
+---
+title: "Diseño completamente aleatorizado con bloques al azar"
+author: "Gerardo Martín"
+date: "3/3/2021"
+output: 
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+El diseño completamente aleatorizado con bloques al azar es muy similar al diseño completamente aleatorizado con efectos aleatorios. La principal diferencia entre ambos diseños es que cada bloque cuenta con todos los tratamientos, mientras que en los diseños aleatorizados cada bloque cuenta con los tratamientos que se hayan asignado aleatoriamente:
+
+```{r Bloques-aleat, echo=F, out.width="50%", fig.cap="Esquema del diseño completamente aleatorizado con bloques aleatorios.", fig.align='center'}
+knitr::include_graphics("Bloques-aleatorizados.png")
+```
+
+Como se puede notar, dentro de cada bloque no hay réplicas. La ausencia de réplicas dentro de los bloques no es un requerimiento, pero sí una característica del diseño, puede o no haber réplicas dentro de los bloques. Debido a que las réplicas son los bloques mismos que contienen los tratamientos, no existe pseudo-replicación simple.
+
+# Análisis del diseño aleatorizado por bloques
+
+Para comenzar, simularemos una base de datos utilizando un método distinto del que usamos anteriormente para ir aprendiendo más técnicas de **R**
+

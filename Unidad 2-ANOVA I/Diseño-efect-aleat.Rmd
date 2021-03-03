@@ -27,7 +27,15 @@ Como vimos en el [tutorial de R](../Unidad 2-ANOVA I/Tutorial-R.html), para hace
 
 # Análisis del diseño aleatorizado con efectos aleatorios
 
-Comenzaremos por simular una base de datos para un tratamiento con tres niveles en tres bloques, donde hay cinco unidades experimentales por tratamiento:
+El diseño aleatorizado con efectos aleatorios, como su nombre lo dice, consiste de la asignación aleatoria de las unidades observacionales a los tratamientos y de estos a los bloques. Por lo tanto, es posible que haya bloques que consten solamente de una fracción de los tratamientos: 
+
+```{r Bloques-aleat, echo=F, out.width="100%", fig.cap="Esquema del diseño aleatorizado con bloques.", fig.align='center'}
+knitr::include_graphics("Bloques-aleatorios-esquema.png")
+```
+
+El primero problema con que nos encontramos es el desarrollo de un mecanismo para asginar de manera aleatoria, los tratamientos a los bloques y las unidades a los tratamientos y bloques. Esto puede ser hecho en **R** de manera sencilla.
+
+Para el análisis estadístico sin embargo, es necesario tomar en cuenta los bloques para estimar los efectos aleatorios. Comenzaremos por simular una base de datos para un tratamiento con tres niveles en tres bloques, donde hay cinco unidades experimentales por tratamiento. Para poder dar seguimiento más fácil al código, aquí se asignan los tratamientos a los bloques de manera uniforme:
 ```{r echo=FALSE}
 set.seed(123)
 ```
