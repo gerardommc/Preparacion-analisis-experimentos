@@ -70,11 +70,11 @@ tail(base.datos)
 Como podemos ver, las medias de cada tratamiento fueron iguales, independientemente del bloque, y la desviación estándar de `valor` cambió entre bloques. Ahora hagamos el análisis de varianza con efectos aleatorios:
 
 ```{r}
-modelo.1 <- aov(Valor ~ Tratamiento + Error(Bloque), base.datos)
+modelo.1 <- aov(Valor ~ Tratamiento + Error(Bloque/Tratamiento), base.datos)
 summary(modelo.1)
 ```
 
-Entonces, debido al error explicado por los tratamientos, la probabilidad de que estos tengan medias parecidas es muy alta $P = 0.694$, con lo que no podemos rechazar $H_0$ de no diferencias entre tratamientos. Veamos que pasa si omitimos los efectos aleatorios:
+Entonces, debido al error explicado por los tratamientos, la probabilidad de que estos tengan medias parecidas es muy alta $P = 0.653$, con lo que no podemos rechazar $H_0$ de no diferencias entre tratamientos. Veamos que pasa si omitimos los efectos aleatorios:
 
 ```{r}
 modelo.2 <- aov(Valor ~ Tratamiento, base.datos)

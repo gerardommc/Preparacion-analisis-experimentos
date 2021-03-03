@@ -26,5 +26,29 @@ Como se puede notar, dentro de cada bloque no hay réplicas. La ausencia de rép
 
 # Análisis del diseño aleatorizado por bloques
 
-Para comenzar, simularemos una base de datos utilizando un método distinto del que usamos anteriormente para ir aprendiendo más técnicas de **R**
+Para comenzar, simularemos una base de datos utilizando un método distinto del que usamos anteriormente para ir aprendiendo más técnicas de **R**. Esta técnica es aparentemente más complicada, pero permite simular bases de datos más grandes de manera sencilla y la aprendí de [Murray Logan](http://www.flutterbys.com.au/stats/tut/tut7.4a.html#h3_1):
+
+```{r echo = F}
+set.seed(123)
+```
+
+```{r}
+t1.1 <- rnorm(5, mean = 5, sd = 5)
+t1.2 <- rnorm(5, mean = 5, sd = 10)
+t1.3 <- rnorm(5, mean = 5, sd = 3)
+
+t2.1 <- rnorm(5, mean = 7, sd = 10)
+t2.2 <- rnorm(5, mean = 7, sd = 12)
+t2.3 <- rnorm(5, mean = 7, sd = 3)
+
+t3.1 <- rnorm(5, mean = 5.5, sd = 3)
+t3.2 <- rnorm(5, mean = 5.5, sd = 2)
+t3.3 <- rnorm(5, mean = 5.5, sd = 4)
+
+tratamientos <- rep(rep(c("A", "B", "C"), each = 5), 3)
+bloques <- rep(c("a", "b", "c"), each = 15)
+```
+
+
+[Regresar al índice del curso](../index.html)
 

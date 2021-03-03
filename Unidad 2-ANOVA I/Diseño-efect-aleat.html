@@ -1601,18 +1601,22 @@ head(base.datos)</code></pre>
 ## 44 14.1758239           C      c
 ## 45 10.3318480           C      c</code></pre>
 <p>Como podemos ver, las medias de cada tratamiento fueron iguales, independientemente del bloque, y la desviación estándar de <code>valor</code> cambió entre bloques. Ahora hagamos el análisis de varianza con efectos aleatorios:</p>
-<pre class="r"><code>modelo.1 &lt;- aov(Valor ~ Tratamiento + Error(Bloque), base.datos)
+<pre class="r"><code>modelo.1 &lt;- aov(Valor ~ Tratamiento + Error(Bloque/Tratamiento), base.datos)
 summary(modelo.1)</code></pre>
 <pre><code>## 
 ## Error: Bloque
 ##           Df Sum Sq Mean Sq F value Pr(&gt;F)
 ## Residuals  2    155   77.51               
 ## 
-## Error: Within
+## Error: Bloque:Tratamiento
 ##             Df Sum Sq Mean Sq F value Pr(&gt;F)
-## Tratamiento  2   33.7   16.87   0.369  0.694
-## Residuals   40 1827.4   45.68</code></pre>
-<p>Entonces, debido al error explicado por los tratamientos, la probabilidad de que estos tengan medias parecidas es muy alta <span class="math inline">\(P = 0.694\)</span>, con lo que no podemos rechazar <span class="math inline">\(H_0\)</span> de no diferencias entre tratamientos. Veamos que pasa si omitimos los efectos aleatorios:</p>
+## Tratamiento  2  33.75   16.87   0.475  0.653
+## Residuals    4 142.12   35.53               
+## 
+## Error: Within
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals 36   1685   46.81</code></pre>
+<p>Entonces, debido al error explicado por los tratamientos, la probabilidad de que estos tengan medias parecidas es muy alta <span class="math inline">\(P = 0.653\)</span>, con lo que no podemos rechazar <span class="math inline">\(H_0\)</span> de no diferencias entre tratamientos. Veamos que pasa si omitimos los efectos aleatorios:</p>
 <pre class="r"><code>modelo.2 &lt;- aov(Valor ~ Tratamiento, base.datos)
 summary(modelo.2)</code></pre>
 <pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)

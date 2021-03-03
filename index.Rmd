@@ -30,7 +30,7 @@ output:
 
 3. [Diseño completamente aleatorizado con efectos aleatorios](Unidad 2-ANOVA I/Diseño-efect-aleat.html)
 
-4. [Diseño completamente aleatorizado con bloques al azar]
+4. [Diseño completamente aleatorizado con bloques al azar](Unidad 2-ANOVA I/Bloques-aleatorios.html)
 
 5. [Pruebas equivalentes para datos ordenados por rango]
 

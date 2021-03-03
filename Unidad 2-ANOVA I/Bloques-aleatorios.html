@@ -1557,7 +1557,22 @@ Figure 1.1: Esquema del diseño completamente aleatorizado con bloques aleatorio
 </div>
 <div id="análisis-del-diseño-aleatorizado-por-bloques" class="section level1">
 <h1><span class="header-section-number">2</span> Análisis del diseño aleatorizado por bloques</h1>
-<p>Para comenzar, simularemos una base de datos utilizando un método distinto del que usamos anteriormente para ir aprendiendo más técnicas de <strong>R</strong></p>
+<p>Para comenzar, simularemos una base de datos utilizando un método distinto del que usamos anteriormente para ir aprendiendo más técnicas de <strong>R</strong>. Esta técnica es aparentemente más complicada, pero permite simular bases de datos más grandes de manera sencilla y la aprendí de <a href="http://www.flutterbys.com.au/stats/tut/tut7.4a.html#h3_1">Murray Logan</a>:</p>
+<pre class="r"><code>t1.1 &lt;- rnorm(5, mean = 5, sd = 5)
+t1.2 &lt;- rnorm(5, mean = 5, sd = 10)
+t1.3 &lt;- rnorm(5, mean = 5, sd = 3)
+
+t2.1 &lt;- rnorm(5, mean = 7, sd = 10)
+t2.2 &lt;- rnorm(5, mean = 7, sd = 12)
+t2.3 &lt;- rnorm(5, mean = 7, sd = 3)
+
+t3.1 &lt;- rnorm(5, mean = 5.5, sd = 3)
+t3.2 &lt;- rnorm(5, mean = 5.5, sd = 2)
+t3.3 &lt;- rnorm(5, mean = 5.5, sd = 4)
+
+tratamientos &lt;- rep(rep(c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;), each = 5), 3)
+bloques &lt;- rep(c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;), each = 15)</code></pre>
+<p><a href="../index.html">Regresar al índice del curso</a></p>
 </div>
 
 
