@@ -59,7 +59,7 @@ media.y.b <- mean(tabla.2$y[101:200])
 boxplot(y ~ x, data = tabla.2)
 points(x = c(1, 2), y = c(media.y.a, media.y.b), col = "red", pch = 20, cex = 1.5)
 ```
-En ambos casos la media aritmética se parece mucho a la mediana, con lo cual inferimos que no hay razones para sospechar que $y$ sea muy diferente de una desviación normal. Veamos ahora un gráfico de cajas de una distribución que no es normal, como la distribución [log.normal](https://es.wikipedia.org/wiki/Distribuci%C3%B3n_de_Poisson):
+En ambos casos la media aritmética se parece mucho a la mediana, con lo cual inferimos que no hay razones para sospechar que $y$ sea muy diferente de una desviación normal. Veamos ahora un gráfico de cajas de una distribución que no es normal, como la distribución [log.normal](https://es.wikipedia.org/wiki/Distribuci%C3%B3n_log-normal):
 
 ```{r cajas-pois, fig.height=4, fig.width=2, fig.align="center", fig.cap="Gráfico de cajas de una distribución Poisson"}
 y.lnorm <- exp(rnorm(100, mean = 0, sd = 1))
