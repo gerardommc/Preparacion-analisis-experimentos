@@ -1,0 +1,30 @@
+---
+title: "Prueba de Kruskal-Wallis"
+author: "Gerardo Martín"
+date: "4/3/2021"
+output: 
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+Hasta este momento hemos visto varios ejemplos del modelo ANOVA como herramienta para comparar medias entre tratamientos. Para que los resultados de los análisis hechos con ANOVA sean confiables es necesario que los datos cumplan con ciertos supuestos y que el cumplimiento de estos supuestos quede reflejado en los residuales del análisis. Cuando los datos no cumplen con los supuestos necesarios para confiar en los resultados de ANOVA debemos emplear otras herramientas, una de ellas, y la más sencilla de todas, es la prueba de [Kruskal-Wallis](https://es.wikipedia.org/wiki/Prueba_de_Kruskal-Wallis).
+
+Al igual que ANOVA, Kruskal-Wallis sirve para probal la hipótesis nula $H_0$ de no-diferencias entre dos ó más grupos de datos, sin asumir ningún tipo de distribución, a diferencia de ANOVA. Esta es la principal y única ventaja de la prueba de Kruskal-Wallis en comparación con ANOVA.
+
+La principal limitación de Kruskal-Wallis es que no es un método paramétrico, como sí lo es ANOVA. Los métodos paramétricos se basan en supuestos relativamente rígidos que hacen sobre la distribución estadística de los datos, pero en general es más fácil aplicarlos a diseños experimentales complejos pues permiten, como su nombre lo indica, estimar parámetros como la media-$\mu$ y varianza-$\sigma^2$. Los métodos no paramétricos no están basados en modelos matemáticos *a priori* (la [distribución normal](https://es.wikipedia.org/wiki/Distribuci%C3%B3n_normal), p. ej.), en cambio hacen una serie de cálculos matemáticos basados en la frecuencia de las observaciones. Es por esta razón que también se les llama análisis guiados por los datos. De aquí que la prueba de Kruskal-Wallis no puede ser usada para analizar datos experimentales con efectos aleatorios.
+
+## Otros métodos no paramétricos
+
+Al igual que ANOVA, la prueba del estadístico *t*-student que se usa para comparar medias de pares de tratamientos, existen alternativas no paramétricas para pares de muestras. La primera alternativa no paramétrica es la [prueba de Wilcoxon](https://es.wikipedia.org/wiki/Prueba_de_los_rangos_con_signo_de_Wilcoxon) que hace la comparación de pares de medias de variables con distribuciones diferentes a la normal. Una prueba similar a la de Wilcoxon es la [prueba de Kolmogorov-Smirnov](https://es.wikipedia.org/wiki/Prueba_de_Kolmogorov-Smirnov), aunque la hipótesis que se prueba es que el par de grupos de datos provienen de distribuciones estadísticas diferentes.
+
+# Prueba de Kruskal-Wallis en **R**
+

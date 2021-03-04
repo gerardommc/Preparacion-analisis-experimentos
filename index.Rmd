@@ -34,7 +34,7 @@ output:
 
       4.1 [Tutorial de R-2](Unidad 2-ANOVA I/Tutorial-R-2.html)
 
-5. [Pruebas equivalentes para datos ordenados por rango]
+5. [Pruebas equivalentes para datos ordenados por rango](Unidad 2-ANOVA I/Kruskal-Wallis.html)
 
 # El modelo ANOVA con dos o más criterios de clasificación
 
