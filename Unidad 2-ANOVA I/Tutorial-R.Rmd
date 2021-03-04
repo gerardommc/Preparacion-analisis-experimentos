@@ -114,9 +114,9 @@ modelo.1 <- aov(formula = Valores ~ Tratamiento, data = base.datos)
 modelo.1
 ```
 
-Aquí podemos ver la suma de cuadrados de los tratamientos ($SST$) y la suma de cuadrados del error ($SSE$) en la primera fila, y en la segunda los grados de libertad del tratamiento ($k-1$) y de todo el experimento ($N-k$).
+Aquí podemos ver la suma de cuadrados de los tratamientos ($SST$) y la suma de cuadrados del error ($SSE$) en la primera fila, y en la segunda los grados de libertad de los tratamientos ($k-1$) y de todo el experimento ($N-k$).
 
-Para ver la significancia estadística de los tratamientos tenemos dos opciones, calculando $F$ del experimento y compararlo con el valor crítico para los grados de libertad, o usar la función de **R**. Recordemos primero cómo se calcula $F$:
+Para ver la significancia estadística de los tratamientos tenemos dos opciones, calcular $F$ del experimento y compararlo con el valor crítico para los grados de libertad, o usar la función de **R**. Recordemos primero cómo se calcula $F$:
 
 $$MST = \frac{SST}{k-1} $$
 
@@ -126,7 +126,7 @@ $$ F = \frac{MST}{MSE} $$
 
 De acuerdo con los resultados de `aov`, $SST =  746.5761$, $SSE = 358.7810$, $k - 1 = 14$ y $N - k = 30$, por lo tanto:
 
-$$ F = \frac{746.5761/14}{358.7810/30}=4.45$$
+$$ F = \frac{746.5761/2}{358.7810/42}=43.698$$
 
 En **R** podemos encontrar el valor crítico $F*$ de $F$ utilizando la función `qf`, proporcionando el nivel de significancia $\alpha$, $k-1$ y $N-k$:
 

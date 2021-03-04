@@ -1633,13 +1633,13 @@ modelo.1</code></pre>
 ## 
 ## Residual standard error: 2.922739
 ## Estimated effects may be unbalanced</code></pre>
-<p>Aquí podemos ver la suma de cuadrados de los tratamientos (<span class="math inline">\(SST\)</span>) y la suma de cuadrados del error (<span class="math inline">\(SSE\)</span>) en la primera fila, y en la segunda los grados de libertad del tratamiento (<span class="math inline">\(k-1\)</span>) y de todo el experimento (<span class="math inline">\(N-k\)</span>).</p>
-<p>Para ver la significancia estadística de los tratamientos tenemos dos opciones, calculando <span class="math inline">\(F\)</span> del experimento y compararlo con el valor crítico para los grados de libertad, o usar la función de <strong>R</strong>. Recordemos primero cómo se calcula <span class="math inline">\(F\)</span>:</p>
+<p>Aquí podemos ver la suma de cuadrados de los tratamientos (<span class="math inline">\(SST\)</span>) y la suma de cuadrados del error (<span class="math inline">\(SSE\)</span>) en la primera fila, y en la segunda los grados de libertad de los tratamientos (<span class="math inline">\(k-1\)</span>) y de todo el experimento (<span class="math inline">\(N-k\)</span>).</p>
+<p>Para ver la significancia estadística de los tratamientos tenemos dos opciones, calcular <span class="math inline">\(F\)</span> del experimento y compararlo con el valor crítico para los grados de libertad, o usar la función de <strong>R</strong>. Recordemos primero cómo se calcula <span class="math inline">\(F\)</span>:</p>
 <p><span class="math display">\[MST = \frac{SST}{k-1} \]</span></p>
 <p><span class="math display">\[MSE = \frac{SSE}{N-k} \]</span></p>
 <p><span class="math display">\[ F = \frac{MST}{MSE} \]</span></p>
 <p>De acuerdo con los resultados de <code>aov</code>, <span class="math inline">\(SST = 746.5761\)</span>, <span class="math inline">\(SSE = 358.7810\)</span>, <span class="math inline">\(k - 1 = 14\)</span> y <span class="math inline">\(N - k = 30\)</span>, por lo tanto:</p>
-<p><span class="math display">\[ F = \frac{746.5761/14}{358.7810/30}=4.45\]</span></p>
+<p><span class="math display">\[ F = \frac{746.5761/2}{358.7810/42}=43.698\]</span></p>
 <p>En <strong>R</strong> podemos encontrar el valor crítico <span class="math inline">\(F*\)</span> de <span class="math inline">\(F\)</span> utilizando la función <code>qf</code>, proporcionando el nivel de significancia <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(k-1\)</span> y <span class="math inline">\(N-k\)</span>:</p>
 <pre class="r"><code>qf(0.05, 14, 30)</code></pre>
 <pre><code>## [1] 0.4332367</code></pre>

@@ -68,15 +68,15 @@ Comenzaremos por describir el significado de algunas abreviaciones que se utiliz
 
 $CM$ **Correción de la media** Se calcula a partir de todos lo datos de la media como:
 
-$$ CM = \frac{\left ( \sum_{i = 1}^n \sum_{j = i}^{k} y_{ij} \right)^2}{N_{total}} = \frac{\mathrm{Suma\ de\ todas\ las\ observaciones}^2}{\mathrm{Número\ total\ de\ observaciones}}$$ 
+$$ CM = \frac{\left ( \sum_{i = 1}^n \sum_{j = i}^{k} y_{ij} \right)^2}{N_{total}} = \frac{\mathrm{Suma\ de\ todas\ las\ observaciones}^2}{\mathrm{Número\ total\ de\ observaciones}}$$
 
 $SS(Total)$ **Suma de cuadrados totales** Es la suma de cada observación elevada al cuadrado (antes de hacer la suma), menos $CM$. Se calcula así:
 
-$$SS(Total) = \sum_{i = 1}^n \sum_{j = i}^{k} y_{ij}^2 - CM$$
+$$SS(Total) = \sum_{i = 1}^n \sum_{j = 1}^{k} y_{ij}^2 - CM$$
 $SST$ **Suma de cuadrados de los tratamientos** Es similar al paso anterior, pero sólo para las observaciones de cada tratamiento:
 
-$$SST = \sum_{i = 1}^n \frac{T_i^2}{N_i} - CM$$
-Donde $T_i$ es la suma de las observaciones de cada tratamiento, por lo que $T_i^2$ es la suma elevada al cuadrado, y $N_i$ es el número de observaciones por tratamiento $i$.
+$$SST = \sum_{i = 1}^N \frac{T_i^2}{n_i} - CM$$
+Donde $T_i$ es la suma de las observaciones de cada tratamiento, por lo que $T_i^2$ es la suma elevada al cuadrado, y $N_i$ es el número de observaciones del tratamiento $i$.
 
 $SSE$ **Suma de cuadrados del error** Es la diferencia entre $SS(Total)$ y $SST$:
 
@@ -84,7 +84,7 @@ $$SSE = SS(Total) - SST$$
 $MST$ **Media de cuadrados de los tratamientos** El nombre mismo lo dice (media = promedio aritmético):
 
 $$ MST = \frac{SST}{k-1} $$
-Donde $k$ es el número de observaciones por tratamiento, y $k-1$ son los *grados de libertad*.
+Donde $k$ es el número de tratamientos, y $k-1$ son los *grados de libertad* de los tratamientos.
 
 $MSE$ **Media de cuadrados del error**:
 
