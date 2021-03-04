@@ -28,3 +28,64 @@ Al igual que ANOVA, la prueba del estadístico *t*-student que se usa para compa
 
 # Prueba de Kruskal-Wallis en **R**
 
+Para hacer esta prueba en **R** nos se requiere de ningún paquete especial, y se usa la función `kruskal.test`. El primer argumento que se da a la función es la fórmula del modelo del mismo como que con `aov`y `lm`, `y ~ x`y el segundo es la base de datos que contiene a $y$ y $x$. Igual que antes simularemos una base de datos sencilla, pero la analizaremos con ANOVA y Kruskal-Wallis.
+
+Aquí los detalles de la generación de los datos:
+
+```{r}
+set.seed(123)
+
+y1 <- exp(rnorm(100, 0, 1))
+y2 <- exp(rnorm(100, 0.1, 1))
+y3 <- exp(rnorm(100, 0.2, 1.5))
+
+trats <- rep(c("A", "B", "C"), each = 100)
+
+base.datos <- data.frame(Valor = c(y1, y2, y3),
+                         Tratamiento = trats)
+
+```
+
+Primero verifiquemos que los datos no tengan una distribución normal:
+
+```{r Cajas-1, fig.height=4, fig.width=6, fig.cap="Gráfico de cajas de los datos simulados", fig.align="center"}
+boxplot(Valor ~ Tratamiento, base.datos)
+points(c(1, 2, 3),
+       c(mean(y1), mean(y2), mean(y3)),
+       col = "red", pch = 20, cex = 1.5)
+```
+
+Y se puede apreciar claramente que los datos son asimétricos alrededor de la mediana. Ahora vamos a comparar los resultados de ANOVA con Kruskal-Wallis
+
+```{r}
+modelo.1 <- aov(Valor ~ Tratamiento, data = base.datos)
+modelo.2 <- kruskal.test(Valor ~ Tratamiento, data = base.datos)
+```
+
+Los resultados de ANOVA:
+```{r}
+summary(modelo.1)
+```
+
+sugieren que hay diferencias significativas entre tratamientos ($P < 0.05$), mientras que los resutlados de de Kruskal-Wallis:
+
+```{r}
+modelo.2
+```
+
+indican lo contrario ($P > 0.05$).
+
+Para decidir a qué método le hacemos caso, hay que hacer el diagnóstico posterior, de entrada sabemos que `Valor` no cumple con el supuesto de homogeneidad de varianza. Veamos las gráficas de los residuales:
+
+```{r diagnostico, fig.height=7, fig.width=6, fig.align="center", fig.cap="Gráficas de diagnóstico de `modelo.1`"}
+par(mfrow = c(2,2))
+plot(modelo.1)
+```
+
+Y efectivamente, la línea roja de la primera gráfica no es horizontal, y los puntos de la segunda gráfica se limitan a la línea punteada, con lo que concluimos que ANOVA es inadecuado para rechazar la hipótesis nula de no diferencia entre tratamientos.
+
+Para cerrar, debido a que Kruskal-Wallis no hace ningún supuesto de distribución de datos, no es necesario hacer gráficas diagnósticas. Lo que sí es necesario para analizar datos con esta prueba es descartar la posible existencia de pseudo-replicación y/o efectos aleatorios.
+
+# Aplicación del conocimiento
+
+[Regresar al índice del curso](../index.html)
