@@ -26,6 +26,22 @@ La principal limitación de Kruskal-Wallis es que no es un método paramétrico,
 
 Al igual que ANOVA, la prueba del estadístico *t*-student que se usa para comparar medias de pares de tratamientos, existen alternativas no paramétricas para pares de muestras. La primera alternativa no paramétrica es la [prueba de Wilcoxon](https://es.wikipedia.org/wiki/Prueba_de_los_rangos_con_signo_de_Wilcoxon) que hace la comparación de pares de medias de variables con distribuciones diferentes a la normal. Una prueba similar a la de Wilcoxon es la [prueba de Kolmogorov-Smirnov](https://es.wikipedia.org/wiki/Prueba_de_Kolmogorov-Smirnov), aunque la hipótesis que se prueba es que el par de grupos de datos provienen de distribuciones estadísticas diferentes.
 
+# El proceso de la prueba Kruskal-Wallis
+
+Los cálculos para hacer la prueba de Kruskal-Wallis son muy sencillos y se utilizan para estimar el valor del estadístico $H$. Para comenzar a hacer una prueba de Kruskal-Wallis, debemos de ordenar la base de datos del mayor al menor y conocer las siguientes características del diseño experimental:
+
+- $n$ Tamaño total de la base de datos
+- $n_i$ Número de observaciones de cada tratamiento $i$
+
+Una vez que conocemos estas cantidades y tenemos los datos ordenados de menor a mayor y les asignamos un rango ($1, 2, 3, \dots, n$), hay que identifica a qué tratamiento pertenencen. Con esto se calcula el valor de $H$:
+
+$$
+H = \frac{12}{n(n+1)} \sum \frac{R_i^2}{n_i} - 3(n + 1)
+$$
+Nota que tanto $n$ como $n_i$ aparecen en la fórmula. $R_i$ corresponde a la suma de rangos de cada tratamiento $i$.
+
+Para establecer la significancia de los tratamientos, al igual que en ANOVA necesitamos los grados de libertad de los tratamientos ($\max(i) - 1$), pues la suma de rangos se efectúa por los tratamientos. El estadístico $H$ tiene una distribución muy similar al de $\chi^2$, por lo que tradicionalmente se calcula el valor crítico de $\chi$ para establecer la significancia en relación al valor de $\alpha$ asumido (0.05).
+
 # Prueba de Kruskal-Wallis en **R**
 
 Para hacer esta prueba en **R** nos se requiere de ningún paquete especial, y se usa la función `kruskal.test`. El primer argumento que se da a la función es la fórmula del modelo del mismo como que con `aov` y `lm`: `y ~ x`. El segundo de la función es el nombre de la base de datos que contiene a $y$ y $x$. Igual que antes simularemos una base de datos sencilla, para analizar con ANOVA y Kruskal-Wallis y comparar los resultados.
@@ -87,5 +103,7 @@ Y efectivamente, la línea roja de la primera gráfica no es horizontal, y los p
 Para cerrar, debido a que Kruskal-Wallis no hace ningún supuesto de distribución de datos, no es necesario hacer gráficas diagnósticas. Lo que sí es necesario para analizar datos con esta prueba es descartar la posible existencia de pseudo-replicación y/o efectos aleatorios.
 
 # Aplicación del conocimiento
+
+Dirígete al classroom para completar la actividad correspondiente a esta sección.
 
 [Regresar al índice del curso](../index.html)
