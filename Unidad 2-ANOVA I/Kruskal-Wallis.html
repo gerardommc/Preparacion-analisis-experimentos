@@ -1566,7 +1566,7 @@ div.tocify {
 H = \frac{12}{n(n+1)} \sum \frac{R_i^2}{n_i} - 3(n + 1)
 \]</span>
 Nota que tanto <span class="math inline">\(n\)</span> como <span class="math inline">\(n_i\)</span> aparecen en la fórmula. <span class="math inline">\(R_i\)</span> corresponde a la suma de rangos de cada tratamiento <span class="math inline">\(i\)</span>.</p>
-<p>Para establecer la significancia de los tratamientos, al igual que en ANOVA necesitamos los grados de libertad de los tratamientos (<span class="math inline">\(\max(i) - 1\)</span>), pues la suma de rangos se efectúa por los tratamientos. El estadístico <span class="math inline">\(H\)</span> tiene una distribución muy similar al de <span class="math inline">\(\chi^2\)</span>, por lo que tradicionalmente se calcula el valor crítico de <span class="math inline">\(\chi\)</span> para establecer la significancia en relación al valor de <span class="math inline">\(\alpha\)</span> asumido (0.05).</p>
+<p>Para establecer la significancia de los tratamientos, al igual que en ANOVA necesitamos los grados de libertad de los tratamientos (<span class="math inline">\(\max(i) - 1\)</span>), pues la suma de rangos se efectúa por los tratamientos. El estadístico <span class="math inline">\(H\)</span> tiene una distribución muy similar al de <span class="math inline">\(\chi^2\)</span>, por lo que tradicionalmente se calcula el valor crítico del estadístico <span class="math inline">\(\chi^2\)</span> para establecer la significancia asumiendo un valor de <span class="math inline">\(\alpha\)</span> (0.05 p.ej.).</p>
 </div>
 <div id="prueba-de-kruskal-wallis-en-r" class="section level1">
 <h1><span class="header-section-number">3</span> Prueba de Kruskal-Wallis en <strong>R</strong></h1>

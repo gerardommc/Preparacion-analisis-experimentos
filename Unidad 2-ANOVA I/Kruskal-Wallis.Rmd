@@ -40,7 +40,7 @@ H = \frac{12}{n(n+1)} \sum \frac{R_i^2}{n_i} - 3(n + 1)
 $$
 Nota que tanto $n$ como $n_i$ aparecen en la fórmula. $R_i$ corresponde a la suma de rangos de cada tratamiento $i$.
 
-Para establecer la significancia de los tratamientos, al igual que en ANOVA necesitamos los grados de libertad de los tratamientos ($\max(i) - 1$), pues la suma de rangos se efectúa por los tratamientos. El estadístico $H$ tiene una distribución muy similar al de $\chi^2$, por lo que tradicionalmente se calcula el valor crítico de $\chi$ para establecer la significancia en relación al valor de $\alpha$ asumido (0.05).
+Para establecer la significancia de los tratamientos, al igual que en ANOVA necesitamos los grados de libertad de los tratamientos ($\max(i) - 1$), pues la suma de rangos se efectúa por los tratamientos. El estadístico $H$ tiene una distribución muy similar al de $\chi^2$, por lo que tradicionalmente se calcula el valor crítico del estadístico $\chi^2$ para establecer la significancia asumiendo un valor de $\alpha$ (0.05 p.ej.).
 
 # Prueba de Kruskal-Wallis en **R**
 
