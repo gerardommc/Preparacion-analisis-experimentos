@@ -106,4 +106,16 @@ Para cerrar, debido a que Kruskal-Wallis no hace ningún supuesto de distribuci�
 
 Dirígete al classroom para completar la actividad correspondiente a esta sección.
 
+```{r echo = F}
+#Experimento mangles
+spp <- c(1, 2, 3)
+tamaño <- exp(c(rnorm(50, mean = 2, sd = 2), rnorm(50, mean = 2, sd = 1), rnorm(50, mean = 0, sd = 2)))
+
+base.mangle <- data.frame(Especie = rep(spp, ech = 50),
+                          Tamaño = tamaño)
+write.csv(base.mangle, "Base-mangle.csv")
+#
+```
+
+
 [Regresar al índice del curso](../index.html)

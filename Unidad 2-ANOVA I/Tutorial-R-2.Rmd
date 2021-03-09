@@ -188,7 +188,7 @@ Las dos gráficas sobrantes son reintepretaciones de las que explicamos arriba.
 
 Aquí muestro las gráficas de diagnóstico para unos datos que no deberían haber sido analizados con ANOVA:
 
-```{r echo = F}
+```{r}
 y <- c(rpois(10, 1),
        rpois(10, 2),
        rpois(10, 4))
