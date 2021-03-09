@@ -108,13 +108,30 @@ Dirígete al classroom para completar la actividad correspondiente a esta secci�
 
 ```{r echo = F}
 #Experimento mangles
-spp <- c(1, 2, 3)
+set.seed(234)
+
+spp <- letters[2:4]
 tamaño <- exp(c(rnorm(50, mean = 2, sd = 2), rnorm(50, mean = 2, sd = 1), rnorm(50, mean = 0, sd = 2)))
 
 base.mangle <- data.frame(Especie = rep(spp, ech = 50),
                           Tamaño = tamaño)
 write.csv(base.mangle, "Base-mangle.csv")
-#
+
+#Experimento antibióticos
+antib <- rep(letters[1:10], each = 25)
+medias.trat <- c(round(runif(10, min = 2, max = 20), 1))
+datos.completos <- sapply(medias.trat, function(x){rnorm(25, mean = x, sd = runif(1, 0, 1.5))})
+datos.completos <- round(datos.completos, 1)
+datos.completos[which(datos.completos < 0)] <- 0
+source("../Random-functions/Shuffle.R")
+Caja <- rep(1:50, 5)[shuffle(250)]
+
+base.antib <- data.frame(Radio = c(datos.completos),
+                         Antibiótico = antib, 
+                         Caja = Caja)
+write.csv(base.antib, "Base-antibioticos.csv")
+
+
 ```
 
 
