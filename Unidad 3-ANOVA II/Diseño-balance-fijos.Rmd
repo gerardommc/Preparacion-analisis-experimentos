@@ -1,0 +1,98 @@
+---
+title: "Diseños balanceados con efectos fijos"
+author: "Gerardo Martín"
+date: "9/3/2021"
+output: 
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+Como vimos anteriormente los diseños balanceados son aquellos que cuentan con la misma cantidad de unidades observacionales y experimentales por tratamiento y bloque. Aquí comenzaremos a ver cómo se ajusta e interpreta un ANOVA de dos vías en **R**.
+
+Suponiendo que el diseño experimental únicamente contempla dos criterios de clasificación $A$ y $B$, podemos ajustar un ANOVA de dos vías utilizando la función `lm` así `lm(y ~ A * B, data = datos)`. Recordemos que `A * B` en **R** quiere decir `A + B + A : B`.
+
+# Ejemplo de ANOVA de dos vías para un diseño balanceado
+
+Para este caso utilizaremos una base de datos reales que se distribuye por default en **R** llamada `ToothGrowth`. Esta base proviene de un estudio del efecto de la vitamina C sobre el crecimiento de los dientes de los [conejillos de indias](https://es.wikipedia.org/wiki/Cavia_porcellus#/media/Archivo:Caviaklein.jpg). Los conejillos de indias, como nosotros no sintetizan vitamina C, por lo que son muy susceptiles de padecer escorbuto, una enfermedad metabólica por cumulación de radicales libres cuyos primeros síntomas son la pérdida de piezas dentales.
+
+Para ver la base de datos podemos escribir el nombre del objeto que la tiene en la consola de **R**
+```{r}
+str(ToothGrowth)
+```
+
+Y podemos ver que consta de tres columnas y 60 filas (observaciones), la primera `len` contiene las mediciones de los dientes, `supp` es el tratamiento de suplementación con vitamina C y jugo de naranja, y la tercera `dose` contiene la dosis de 0.5, 1.0 y 2.0. Esta última es contínua pero para hacer ANOVA la transformaremos en categórica.
+
+Comenzaremos por almancenar `ToothGrowth` en otro objeto y transformar `dose` en un factor:
+
+```{r}
+datos <- ToothGrowth
+datos$dose <- as.factor(paste0("D", datos$dose))
+str(datos)
+```
+
+Podemos ahora ver si es un estudio balanceado si todos los niveles de los factores `supp` y `dose` tienen el mismo número de observaciones:
+
+```{r}
+table(datos$supp)
+```
+
+```{r}
+table(datos$dose)
+```
+
+Entonces, lo que nos queda por ver es si `len` se presta para hacer ANOVA:
+
+```{r box-thooth, echo = F, fig.height=4.5, fig.width=9, fig.cap="Gráfico de cajas de la longitud de dientes en `ToothGrowth`", fig.align="center"}
+boxplot(len ~ supp + dose, data = datos)
+```
+
+Es posible que haya grupos que se desvíen de la normalidad, pero podemos ver, después de ajustado el modelo, si esto es un problema.
+
+## Ajustando el modelo
+
+Para comenzar hay que entender la hipótesis nula que estaremos probando. El primer criterio de clasificación es la suplementación con jugo de naranja y con vitamina C, el segundo es la dosis de cada uno. De modo que trataremos de rechazar la hipótesis nula de que el suplemento y su dosis no afectan el crecimiento de los dientes.
+
+Comenzaremos por ajustar un modelo donde hay interacción entre `supp` y `dose`. Para mantener la interpretación sencilla lo haremos con `aov`:
+
+```{r}
+modelo.1 <- aov(len ~ supp * dose, data = datos)
+summary(modelo.1)
+```
+
+Podemos ver que todos los componentes del modelo afectan significativamente la media de los tratamientos, con lo que de entrada podemos rechazar $H_0$. Sin embargo, si vemos con cuidado la suma de cuadrados (columna `Sum Sq`), el factor dosis explica una gran proporción de la variación, pues contiene la suma de cuadrados con mayor valor, y tiene la $P$ más pequeña de todas. Para ver si los otros factores son importantes en realidad, podemos ajustar otro modelo quitando el término o factor que contribuyó con la menor suma de cuadrados: `supp:dose`:
+
+```{r}
+modelo.2 <- aov(len ~ supp + dose, data = datos)
+summary(modelo.2)
+```
+
+Aquí vemos que la suma de cuadrados de los residuales aumentó un poco y bajó la significancia de `supp`. Esta diferencia entre modelos sugiere que el término de interacción es importante, aunque la dosis es el principa factor que afecta el crecimiento de los dientes. Chequemos ahora los residuales de ambos modelos.
+
+### Diagnóstico de `modelo.1`
+
+```{r Diag-mod1, fig.height=6, fig.width=5, fig.cap="Gráficas de diagnóstico de `modelo.1`.", fig.align="center"}
+par(mfrow = c(2,2))
+plot(modelo.1)
+```
+
+A juzgar por estas gráficas es posible que el modelo sea confiable para rechazar $H_0$, veamos sin embargo si `modelo.2` tiene otras cualidades.
+
+### Diagnósticos de `modelo.2`
+
+```{r Diag-mod2, fig.height=6, fig.width=5, fig.cap="Gráficas de diagnóstico de `modelo.2`.", fig.align="center"}
+par(mfrow = c(2,2))
+plot(modelo.2)
+```
+
+Para este modelo podemos que que los residuales no están centrados en cero y que la línea roja tampoco es recta o completamente horizontal. Esto corrobora que `modelo.1` es una mejor opción para rechazar $H_0$ y que sí podemos concluir que la dosis del suplemento afecta el crecimiento de los dientes. 
+
+[Regresar al índice del curso](../index.html)
