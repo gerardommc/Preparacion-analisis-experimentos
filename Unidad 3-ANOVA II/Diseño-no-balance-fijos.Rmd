@@ -22,8 +22,8 @@ Hay muchas razones por las cuales los estudios pueden quedar fuera de balance, d
 
 Existe otro tipo de diseños no balanceados con efectos fijos cuando por ejemplo faltan algunas combinaciones de los niveles de los dos factores experimentales (Figura \@ref(fig:No-balance-1)). Este tipo de diseños también se pueden analizar con suma de cuadrados tipo II.
 
-```{r No-balance-1, echo = F, fig.cap="Diseño experimental no balanceado por falta de combinaciones de factores", fig.align = "center"}
-knitr::include_graphics("Diseño-factorial-1.png")
+```{r No-balance-1, echo = F, fig.cap="Diseño experimental no balanceado con combinaciones de factores faltantes", fig.align = "center"}
+knitr::include_graphics("Diseño-factorial-2.png")
 ```
 
 # La suma de cuadrados **Tipo II**
