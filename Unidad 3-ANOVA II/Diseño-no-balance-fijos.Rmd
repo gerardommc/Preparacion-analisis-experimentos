@@ -50,7 +50,62 @@ Para este tutorial utilizaremos la misma base de datos `ToothGrowth` pero elimin
 
 ## Pérdida de unidades experimentales
 
+Comenzaremos por cargar la base de datos y eliminar 20 datos aleatoriamente y ver cómo queda el balance después de la eliminación
+
+```{r}
+set.seed(21)
+datos <- ToothGrowth
+datos$dose <- as.factor(paste0("D", datos$dose))
+
+datos <- datos[sample(1:60, 40), ]
+
+table(datos$supp)
+table(datos$dose)
+```
+
+Como podemos apreciar el diseño quedó fuera de balance en varios de los niveles de los factores. Haremos primero ANOVA con suma de cuadrados tipo I:
+
+```{r}
+modelo.1 <- lm(len ~ supp * dose, data = datos)
+anova(modelo.1)
+```
+
+Podemos ver que los resultados son muy parecidos a los del [análisis balanceado](Diseño-balance-fijos.html), pero en este caso ya no podemos demostrar si la interacción es significativa.
+
+Comparemos entonces los resultados con los que se obtienen utilizando suma de cuadrados tipo II:
+
+```{r}
+library(car)
+Anova(modelo.1, type = "II")
+```
+
+Aquí cambiaron un poco los niveles de significancia, pero lo que sí cambió mucho fue las sumas de cuadrados de `supp`, pues estas ya no son las que se usan como referencia, ahora estas están calculadas en relación a `dose`. Y también con la suma de cuadrados tipo II para ajustar en ausencia de balance perdemos la interacción `supp:dose`
+
 ## Pérdida de niveles de un factor
+
+Volvamos a cargar la base de datos para eliminar los datos de las combinaciones `OJ-D1`:
+
+```{r}
+datos.2 <- ToothGrowth
+datos.2$dose <- as.factor(paste0("D", datos.2$dose))
+datos.2$len[datos.2$supp == "OJ" & datos.2$dose == "D1"] <- NA
+datos.2 <- na.omit(datos.2)
+```
+
+Y hagamos un gráfico de caja para verificar que falten esas combinaciones de tratamientos:
+
+```{r Cajas-trat-falt, fig.height=4.5, fig.width=6, fig.cap="Gráfico de cajas del diseño con combinaciones faltantes.", fig.align="center"}
+boxplot(len ~ supp + dose, data = datos.2)
+```
+
+Entonces haremos el análisis de este diseño desbalanceado, viendo las diferencias entre $SS$ I y $SS$ II:
+
+```{r}
+modelo.2 <- lm(len ~ supp * dose, data = datos.2)
+anova(modelo.2)
+Anova(modelo.2, type = "II")
+```
+
 
 [Regresar al índice del curso](../index.html)
 

@@ -1,11 +1,10 @@
 ---
 title: "Preparación y análisis de experimentos"
-description: |
-  Licenciatura en Manejo Sustentable de la Zona Costera
-author: Gerardo Martín
+description: "Licenciatura en Manejo Sustentable de la Zona Costera"
+author: "Gerardo Martín"
 output:
-  distill::distill_article:
-    self_contained: false
+      distill::distill_article:
+            self_contained: false
 ---
 
 # Introducción al diseño experimental
@@ -37,6 +36,10 @@ output:
 5. [Pruebas equivalentes para datos ordenados por rango](Unidad 2-ANOVA I/Kruskal-Wallis.html)
 
 # El modelo ANOVA con dos o más criterios de clasificación
+
 1. [Introducción al modelo ANOVA de dos vías](Unidad 3-ANOVA II/ANOVA-II.html)
+
 2. [Diseño balanceado con efectos fijos](Unidad 3-ANOVA II/Diseño-balance-fijos.html)
+
+3. [Diseño no balanceado con efectos fijos](Unidad 3-ANOVA II/Diseño-no-balance-fijos.html)
 
