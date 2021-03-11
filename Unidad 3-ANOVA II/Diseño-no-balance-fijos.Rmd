@@ -92,7 +92,7 @@ datos.2$len[datos.2$supp == "OJ" & datos.2$dose == "D1"] <- NA
 datos.2 <- na.omit(datos.2)
 ```
 
-Y hagamos un gráfico de caja para verificar que falten esas combinaciones de tratamientos:
+Y hagamos un gráfico de cajas para verificar que falten esas combinaciones de tratamientos:
 
 ```{r Cajas-trat-falt, fig.height=4.5, fig.width=6, fig.cap="Gráfico de cajas del diseño con combinaciones faltantes.", fig.align="center"}
 boxplot(len ~ supp + dose, data = datos.2)
@@ -106,6 +106,28 @@ anova(modelo.2)
 Anova(modelo.2, type = "II")
 ```
 
+## Pérdida de observaciones y niveles de un factor
+
+Eliminando los datos aleatoriamente:
+
+```{r}
+datos.3 <- datos.2[sample(1:nrow(datos.2), 40), ]
+table(datos.3$supp)
+table(datos.3$dose)
+```
+
+El análisis con $SS$ I:
+
+```{r}
+modelo.3 <- lm(len ~ supp * dose, data = datos.3)
+anova(modelo.3)
+```
+
+El análisis con $SS$ II:
+
+```{r}
+Anova(modelo.3)
+```
 
 [Regresar al índice del curso](../index.html)
 
