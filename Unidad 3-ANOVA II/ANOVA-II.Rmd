@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-En la 2$^a$ unidad de este curso vimos varias maneras de hacer análisis de varianza donde la variable de respuesta depende sólamente de un criterio de clasificación con tantos niveles como sea posible. Estos diseños experimentales son relativamente sencillos, sin embargo el mundo es muy complejo y a veces es necesario nos interesa cómo dos o más factores afectan nuestro objeto de estudio. La herramienta estadística para probar hipótesis relacionadas con los efectos de dos o más factores están cubiertas por el modelo **ANOVA de dos vías**.
+En la 2$^a$ unidad de este curso vimos varias maneras de hacer análisis de varianza donde la variable de respuesta depende sólamente de un criterio de clasificación con tantos niveles como sea posible. Estos diseños experimentales son relativamente sencillos, sin embargo el mundo es muy complejo y a veces nos interesa entender cómo dos o más factores con niveles categóricos afectan nuestro objeto de estudio. El modelo estadístico para probar hipótesis relacionadas con los efectos de dos o más factores es el **ANOVA de dos vías**.
 
 Veamos un ejemplo basado en la aplicación de fertilizantes y herbicidas. Supongamos que tenemos dos fertilizantes y dos herbicidas diferentes, por lo que nos interesa conocer qué combinación de ellos es más eficaz. Entonces para comenzar este estudio es necesario asegurarnos de que las unidades experimentales y observacionales cubran todas las combinaciones posibles de fertilizante y herbicida:
 
@@ -49,27 +49,31 @@ Se puede apreciar entonces cómo el número de tratamientos totales crece mucho 
 knitr::include_graphics("Diseño-factorial-1.png")
 ```
 
-Este tipo de estudios también reciben el nombre de **factoriales**. En el modelo estadístico para el análisis de estos experimentos es necesario tomar en cuenta que ambos factores pueden interactuar, incrementando uno el efecto del otro. Las interacciones estadísticas en **R** se especifican de manera sencilla en las fórmulas de los modelos con el operador `*`. El significado de este operador en una fórmula de modelo es: 
+Este tipo de estudios también reciben el nombre de **factoriales**. En el modelo estadístico para el análisis de estos experimentos es necesario tomar en cuenta que ambos factores pueden interactuar, afectando uno el efecto del otro. Las interacciones estadísticas en **R** se especifican de manera sencilla en las fórmulas de los modelos con el operador `*`. El significado de este operador en una fórmula de modelo es: 
 
 `x1 * x2 = x1 + x2 + x1 : x2`
 
-donde `:` indica multiplicación. De este modo hay dos maneras equivalentes de especificar el mismo modelo estadístico, una con el lado izquierdo y otra con el lado derecho. Siempre que estemos analizando datos de estudios factoriales debemos tomar en cuenta la posible existencia de interacciones.
+donde `:` indica multiplicación/interacción. De este modo hay dos maneras equivalentes de especificar el mismo modelo estadístico, una con el lado izquierdo y otra con el lado derecho. Siempre que estemos analizando datos de estudios factoriales debemos tomar en cuenta la posible existencia de interacciones.
 
 # Ajustando un modelo ANOVA de dos vías
 
-En el modelo [ANOVA de una vía](../Unidad 2-ANOVA I/ANOVA-I.html) vimos una manera específica de hacer la suma de cuadrados de los tratamientos. La suma de cuadrados *Tipo I*
-es la que hicimos en ese primer tutorial, es adecuada para los diseños balanceados y es la misma suma de cuadrados que se usa en ANOVA de dos vías para el análisis de los diseños factoriales balanceados. La suma de cuadrados de Tipo I consiste en la suma secuencial de cuadrados de los tratamientos:
+En el modelo [ANOVA de una vía](../Unidad 2-ANOVA I/ANOVA-I.html) aprendimos a hacer la suma de cuadrados de un tratamiento. Sin embargo en ANOVA de dos vías es necesario hacer la suma de cuadrados de dos tratamientos y comparar las sumas entre sí. La comparación de las sumas de cuadrados ($SS$) para ANOVA de dos vías tiene varias modalidades, la más utilizada y que se usa para diseños balanceados es $SS-I$, la suma de cuadrados *Tipo I*. $SS-I$ consiste en la suma secuencial de cuadrados de los tratamientos. Por ejemplo, si tenemos un experimento donde probamos el efectos de los tratamientos del factor $A$ y el factor $B$, $SS$-I consiste en hacer $SS(A)$ y utilizarla como base para medir el efecto de los tratamientos del factor $B$ ($SS(B | A)$). Para probar la interacción de $AB$, entonces se toma como referencia $SS(B | A)$, de modo que $SS(AB | B, A)$. Es por esta razón que $SS-I$ recibe el nombre de **suma de cuadrados secuencial**, pues los efectos de los tratamientos se agregarn de manera secuencial.
 
-$$
-SS(A, B)
-$$
-la suma de cuadrados de cada tratamiento por separado, y si hay interacción en ANOVA de dos vías:
+En **R**, $SS-I$ está implementada por default, de modo que si queremos probar los efectos de los factores $A$ y $B$ con ANOVA, $SS-I$ se puede hacer de las siguientes maneras:
 
-$$
-SS(A, B, AB)
-$$
-las sumas de cuadrados por separado, y la suma de cuadrado de las interacciones entre el factor de clasificación $A$ y el factor de clasificación $B$.
+1. Con el modelo completo `m <- aov(X ~ A * B, data = datos)`, y `anova(m)`
+2. Ajustando los modelos de manera secuencial:
 
-Para los diseños no balanceados existe otro tipo de suma de cuadrados llamada **Tipo II**, que introduce algunas limitaciones, pero es capaz de ajustar las diferencias  entre sumas de cuadrados por tratamiento ante los diferentes tamaños de muestra. Para diseños balanceados ambos métodos dan exactamente los mismos resultados.
+      2.1 `m1 <- aov(X ~ A, data = datos)`
+      
+      2.2 `m2 <- aov(X ~ A + B, data = datos)`
+      
+      2.3 `m3 <- aov(X ~ A + B + A:B, data = datos)`
+      
+      2.4 `anova(m1, m2, m3)`
+
+$SS-I$ tiene bastantes problemas pues los efectos que se estiman para los factores $A$ y $B$ dependen del orden en que los introduzcamos, por ejemplo `A * B` da resultados diferentes a `B * A`, pues el modelo base de comparación es el de $SS(B)$.
+
+En la práctica, cuando los diseños están balanceados, $SS-I$ y $SS-II$ producen los mismos resultados, pero $SS-II$ no tiene el problema que tiene $SS-I$ por utilizar suma de cuadrados secuenciales. En el siguiente tema veremos cómo se pueden hacer ambos tipos de sumas de cuadrados con **R**.
 
 [Regresar al índice del curso](../index.html)
