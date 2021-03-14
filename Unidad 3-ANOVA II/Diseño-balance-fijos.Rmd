@@ -18,28 +18,29 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Como vimos anteriormente los diseños balanceados son aquellos que cuentan con la misma cantidad de unidades observacionales y experimentales por tratamiento y bloque. Aquí comenzaremos a ver cómo se ajusta e interpreta un ANOVA de dos vías en **R**.
 
-Suponiendo que el diseño experimental únicamente contempla dos criterios de clasificación $A$ y $B$, podemos ajustar un ANOVA de dos vías utilizando la función `lm` así `lm(y ~ A * B, data = datos)`. Recordemos que `A * B` en **R** quiere decir `A + B + A : B`.
+Suponiendo que el diseño experimental únicamente contempla dos criterios de clasificación $A$ y $B$, podemos ajustar un ANOVA de dos vías utilizando `aov(y ~ A * B, data = datos)`. Recordemos que `A * B` en **R** quiere decir `A + B + A : B`.
 
 # Ejemplo de ANOVA de dos vías para un diseño balanceado
 
-Para este caso utilizaremos una base de datos reales que se distribuye por default en **R** llamada `ToothGrowth`. Esta base proviene de un estudio del efecto de la vitamina C sobre el crecimiento de los dientes de los [conejillos de indias](https://es.wikipedia.org/wiki/Cavia_porcellus#/media/Archivo:Caviaklein.jpg). Los conejillos de indias, como nosotros no sintetizan vitamina C, por lo que son muy susceptiles de padecer escorbuto, una enfermedad metabólica por cumulación de radicales libres cuyos primeros síntomas son la pérdida de piezas dentales.
+Para este caso utilizaremos una base de datos reales que se distribuye por default en **R** llamada `ToothGrowth`. Esta base proviene de un estudio del efecto de la vitamina C sobre el crecimiento de los dientes de los [conejillos de indias](https://es.wikipedia.org/wiki/Cavia_porcellus#/media/Archivo:Caviaklein.jpg). Los conejillos de indias, como los humanso, no sintetizan vitamina C, por lo que son muy susceptiles de padecer escorbuto, una enfermedad metabólica por acumulación de radicales libres cuyos primeros síntomas son la pérdida de piezas dentales.
 
-Para ver la base de datos podemos escribir el nombre del objeto que la tiene en la consola de **R**
+Para ver la base de datos podemos escribir el nombre del objeto que de la base de datos en la consola de **R**:
+
 ```{r}
 str(ToothGrowth)
 ```
 
-Y podemos ver que consta de tres columnas y 60 filas (observaciones), la primera `len` contiene las mediciones de los dientes, `supp` es el tratamiento de suplementación con vitamina C y jugo de naranja, y la tercera `dose` contiene la dosis de 0.5, 1.0 y 2.0. Esta última es contínua pero para hacer ANOVA la transformaremos en categórica.
+Y podemos ver que consta de tres columnas y 60 filas (observaciones), la primera `len` contiene las mediciones de los dientes, `supp` es el tratamiento de suplementación con vitamina C (`VC`) y jugo de naranja (`OJ`), y la tercera `dose` contiene la dosis de 0.5, 1.0 y 2.0. Esta última es contínua pero para hacer ANOVA la transformaremos en categórica.
 
 Comenzaremos por almancenar `ToothGrowth` en otro objeto y transformar `dose` en un factor:
 
 ```{r}
 datos <- ToothGrowth
-datos$dose <- as.factor(paste0("D", datos$dose))
+datos$dose <- as.factor(paste0("D", datos$dose)) #Transformando dose en un factor
 str(datos)
 ```
 
-Podemos ahora ver si es un estudio balanceado si todos los niveles de los factores `supp` y `dose` tienen el mismo número de observaciones:
+Podemos ahora ver si `ToothGrowth` tiene datos de un estudio balanceado, verifigando que  todos los niveles de los factores `supp` y `dose` tengan el mismo número de observaciones. Para ello haremos una tabulación cruzada:
 
 ```{r}
 table(datos$supp)
@@ -68,14 +69,30 @@ modelo.1 <- aov(len ~ supp * dose, data = datos)
 summary(modelo.1)
 ```
 
-Podemos ver que todos los componentes del modelo afectan significativamente la media de los tratamientos, con lo que de entrada podemos rechazar $H_0$. Sin embargo, si vemos con cuidado la suma de cuadrados (columna `Sum Sq`), el factor dosis explica una gran proporción de la variación, pues contiene la suma de cuadrados con mayor valor, y tiene la $P$ más pequeña de todas. Para ver si los otros factores son importantes en realidad, podemos ajustar otro modelo quitando el término o factor que contribuyó con la menor suma de cuadrados: `supp:dose`:
+Podemos ver que todos los componentes del modelo afectan significativamente la media de los tratamientos, con lo que de entrada podemos rechazar $H_0$. Sin embargo, si vemos con cuidado la suma de cuadrados (columna `Sum Sq`), el factor dosis explica una gran proporción de la variación, pues contiene la suma de cuadrados con el mayor valor, y tiene la $P$ más pequeña de todas. Para ver si los otros factores son importantes en realidad, podemos ajustar otro modelo quitando el término o factor que contribuyó con la menor suma de cuadrados que fue `supp:dose`:
 
 ```{r}
 modelo.2 <- aov(len ~ supp + dose, data = datos)
 summary(modelo.2)
 ```
 
-Aquí vemos que la suma de cuadrados de los residuales aumentó un poco y bajó la significancia de `supp`. Esta diferencia entre modelos sugiere que el término de interacción es importante, aunque la dosis es el principa factor que afecta el crecimiento de los dientes. Chequemos ahora los residuales de ambos modelos.
+Aquí vemos que la suma de cuadrados de los residuales aumentó un poco y bajó la significancia de `supp`. Esta diferencia entre modelos sugiere que el término de interacción es importante, aunque la dosis es el principal factor que afecta el crecimiento de los dientes. Chequemos ahora los residuales de ambos modelos.
+
+## Invirtiendo el orden de los factores
+
+Como se mencionó en [Introducción al modelo ANOVA de dos vías](ANOVA-II.html), el orden de especificación de los factores de primer orden (antes de las interacciones especificaddas con `:`), afecta los resultados, por lo que ahora ajustaremos el modelo haciendo `dose * supp`:
+
+```{r}
+modelo.3 <- aov(len ~ dose * supp, data = datos)
+summary(modelo.3)
+```
+
+Y efectivamente, los valores de $P$ para `supp` son diferentes que cuando especificamos el modelo como `supp * dose`, pues la base de comparación para `supp` ahora es `dose`. También podemos apreciar que `supp : dose` es igual, y esto se debe a que tiene la misma base de comparación. El valor *idéndico* de $P$ para `dose` se debe a que el número más pequeño que **R** (la computadora) puede mostrar es $2 \times 10^{-16}$.
+
+```{r}
+modelo.4 <- aov(len ~ dose + supp, data = datos)
+summary(modelo.4)
+```
 
 ### Diagnóstico de `modelo.1`
 

@@ -1547,27 +1547,27 @@ div.tocify {
 <div id="introducción" class="section level1">
 <h1><span class="header-section-number">1</span> Introducción</h1>
 <p>Como vimos anteriormente los diseños balanceados son aquellos que cuentan con la misma cantidad de unidades observacionales y experimentales por tratamiento y bloque. Aquí comenzaremos a ver cómo se ajusta e interpreta un ANOVA de dos vías en <strong>R</strong>.</p>
-<p>Suponiendo que el diseño experimental únicamente contempla dos criterios de clasificación <span class="math inline">\(A\)</span> y <span class="math inline">\(B\)</span>, podemos ajustar un ANOVA de dos vías utilizando la función <code>lm</code> así <code>lm(y ~ A * B, data = datos)</code>. Recordemos que <code>A * B</code> en <strong>R</strong> quiere decir <code>A + B + A : B</code>.</p>
+<p>Suponiendo que el diseño experimental únicamente contempla dos criterios de clasificación <span class="math inline">\(A\)</span> y <span class="math inline">\(B\)</span>, podemos ajustar un ANOVA de dos vías utilizando <code>aov(y ~ A * B, data = datos)</code>. Recordemos que <code>A * B</code> en <strong>R</strong> quiere decir <code>A + B + A : B</code>.</p>
 </div>
 <div id="ejemplo-de-anova-de-dos-vías-para-un-diseño-balanceado" class="section level1">
 <h1><span class="header-section-number">2</span> Ejemplo de ANOVA de dos vías para un diseño balanceado</h1>
-<p>Para este caso utilizaremos una base de datos reales que se distribuye por default en <strong>R</strong> llamada <code>ToothGrowth</code>. Esta base proviene de un estudio del efecto de la vitamina C sobre el crecimiento de los dientes de los <a href="https://es.wikipedia.org/wiki/Cavia_porcellus#/media/Archivo:Caviaklein.jpg">conejillos de indias</a>. Los conejillos de indias, como nosotros no sintetizan vitamina C, por lo que son muy susceptiles de padecer escorbuto, una enfermedad metabólica por cumulación de radicales libres cuyos primeros síntomas son la pérdida de piezas dentales.</p>
-<p>Para ver la base de datos podemos escribir el nombre del objeto que la tiene en la consola de <strong>R</strong></p>
+<p>Para este caso utilizaremos una base de datos reales que se distribuye por default en <strong>R</strong> llamada <code>ToothGrowth</code>. Esta base proviene de un estudio del efecto de la vitamina C sobre el crecimiento de los dientes de los <a href="https://es.wikipedia.org/wiki/Cavia_porcellus#/media/Archivo:Caviaklein.jpg">conejillos de indias</a>. Los conejillos de indias, como los humanso, no sintetizan vitamina C, por lo que son muy susceptiles de padecer escorbuto, una enfermedad metabólica por acumulación de radicales libres cuyos primeros síntomas son la pérdida de piezas dentales.</p>
+<p>Para ver la base de datos podemos escribir el nombre del objeto que de la base de datos en la consola de <strong>R</strong>:</p>
 <pre class="r"><code>str(ToothGrowth)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    60 obs. of  3 variables:
 ##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
 ##  $ supp: Factor w/ 2 levels &quot;OJ&quot;,&quot;VC&quot;: 2 2 2 2 2 2 2 2 2 2 ...
 ##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...</code></pre>
-<p>Y podemos ver que consta de tres columnas y 60 filas (observaciones), la primera <code>len</code> contiene las mediciones de los dientes, <code>supp</code> es el tratamiento de suplementación con vitamina C y jugo de naranja, y la tercera <code>dose</code> contiene la dosis de 0.5, 1.0 y 2.0. Esta última es contínua pero para hacer ANOVA la transformaremos en categórica.</p>
+<p>Y podemos ver que consta de tres columnas y 60 filas (observaciones), la primera <code>len</code> contiene las mediciones de los dientes, <code>supp</code> es el tratamiento de suplementación con vitamina C (<code>VC</code>) y jugo de naranja (<code>OJ</code>), y la tercera <code>dose</code> contiene la dosis de 0.5, 1.0 y 2.0. Esta última es contínua pero para hacer ANOVA la transformaremos en categórica.</p>
 <p>Comenzaremos por almancenar <code>ToothGrowth</code> en otro objeto y transformar <code>dose</code> en un factor:</p>
 <pre class="r"><code>datos &lt;- ToothGrowth
-datos$dose &lt;- as.factor(paste0(&quot;D&quot;, datos$dose))
+datos$dose &lt;- as.factor(paste0(&quot;D&quot;, datos$dose)) #Transformando dose en un factor
 str(datos)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    60 obs. of  3 variables:
 ##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
 ##  $ supp: Factor w/ 2 levels &quot;OJ&quot;,&quot;VC&quot;: 2 2 2 2 2 2 2 2 2 2 ...
 ##  $ dose: Factor w/ 3 levels &quot;D0.5&quot;,&quot;D1&quot;,&quot;D2&quot;: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<p>Podemos ahora ver si es un estudio balanceado si todos los niveles de los factores <code>supp</code> y <code>dose</code> tienen el mismo número de observaciones:</p>
+<p>Podemos ahora ver si <code>ToothGrowth</code> tiene datos de un estudio balanceado, verifigando que todos los niveles de los factores <code>supp</code> y <code>dose</code> tengan el mismo número de observaciones. Para ello haremos una tabulación cruzada:</p>
 <pre class="r"><code>table(datos$supp)</code></pre>
 <pre><code>## 
 ## OJ VC 
@@ -1597,7 +1597,7 @@ summary(modelo.1)</code></pre>
 ## Residuals   54  712.1    13.2                     
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Podemos ver que todos los componentes del modelo afectan significativamente la media de los tratamientos, con lo que de entrada podemos rechazar <span class="math inline">\(H_0\)</span>. Sin embargo, si vemos con cuidado la suma de cuadrados (columna <code>Sum Sq</code>), el factor dosis explica una gran proporción de la variación, pues contiene la suma de cuadrados con mayor valor, y tiene la <span class="math inline">\(P\)</span> más pequeña de todas. Para ver si los otros factores son importantes en realidad, podemos ajustar otro modelo quitando el término o factor que contribuyó con la menor suma de cuadrados: <code>supp:dose</code>:</p>
+<p>Podemos ver que todos los componentes del modelo afectan significativamente la media de los tratamientos, con lo que de entrada podemos rechazar <span class="math inline">\(H_0\)</span>. Sin embargo, si vemos con cuidado la suma de cuadrados (columna <code>Sum Sq</code>), el factor dosis explica una gran proporción de la variación, pues contiene la suma de cuadrados con el mayor valor, y tiene la <span class="math inline">\(P\)</span> más pequeña de todas. Para ver si los otros factores son importantes en realidad, podemos ajustar otro modelo quitando el término o factor que contribuyó con la menor suma de cuadrados que fue <code>supp:dose</code>:</p>
 <pre class="r"><code>modelo.2 &lt;- aov(len ~ supp + dose, data = datos)
 summary(modelo.2)</code></pre>
 <pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
@@ -1606,9 +1606,31 @@ summary(modelo.2)</code></pre>
 ## Residuals   56  820.4    14.7                     
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Aquí vemos que la suma de cuadrados de los residuales aumentó un poco y bajó la significancia de <code>supp</code>. Esta diferencia entre modelos sugiere que el término de interacción es importante, aunque la dosis es el principa factor que afecta el crecimiento de los dientes. Chequemos ahora los residuales de ambos modelos.</p>
+<p>Aquí vemos que la suma de cuadrados de los residuales aumentó un poco y bajó la significancia de <code>supp</code>. Esta diferencia entre modelos sugiere que el término de interacción es importante, aunque la dosis es el principal factor que afecta el crecimiento de los dientes. Chequemos ahora los residuales de ambos modelos.</p>
+</div>
+<div id="invirtiendo-el-orden-de-los-factores" class="section level2">
+<h2><span class="header-section-number">2.2</span> Invirtiendo el orden de los factores</h2>
+<p>Como se mencionó en <a href="ANOVA-II.html">Introducción al modelo ANOVA de dos vías</a>, el orden de especificación de los factores de primer orden (antes de las interacciones especificaddas con <code>:</code>), afecta los resultados, por lo que ahora ajustaremos el modelo haciendo <code>dose * supp</code>:</p>
+<pre class="r"><code>modelo.3 &lt;- aov(len ~ dose * supp, data = datos)
+summary(modelo.3)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## dose         2 2426.4  1213.2  92.000  &lt; 2e-16 ***
+## supp         1  205.4   205.4  15.572 0.000231 ***
+## dose:supp    2  108.3    54.2   4.107 0.021860 *  
+## Residuals   54  712.1    13.2                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Y efectivamente, los valores de <span class="math inline">\(P\)</span> para <code>supp</code> son diferentes que cuando especificamos el modelo como <code>supp * dose</code>, pues la base de comparación para <code>supp</code> ahora es <code>dose</code>. También podemos apreciar que <code>supp : dose</code> es igual, y esto se debe a que tiene la misma base de comparación. El valor <em>idéndico</em> de <span class="math inline">\(P\)</span> para <code>dose</code> se debe a que el número más pequeño que <strong>R</strong> (la computadora) puede mostrar es <span class="math inline">\(2 \times 10^{-16}\)</span>.</p>
+<pre class="r"><code>modelo.4 &lt;- aov(len ~ dose + supp, data = datos)
+summary(modelo.4)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## dose         2 2426.4  1213.2   82.81  &lt; 2e-16 ***
+## supp         1  205.4   205.4   14.02 0.000429 ***
+## Residuals   56  820.4    14.7                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <div id="diagnóstico-de-modelo.1" class="section level3">
-<h3><span class="header-section-number">2.1.1</span> Diagnóstico de <code>modelo.1</code></h3>
+<h3><span class="header-section-number">2.2.1</span> Diagnóstico de <code>modelo.1</code></h3>
 <pre class="r"><code>par(mfrow = c(2,2))
 plot(modelo.1)</code></pre>
 <div class="figure" style="text-align: center"><span id="fig:Diag-mod1"></span>
@@ -1620,7 +1642,7 @@ Figure 2.2: Gráficas de diagnóstico de <code>modelo.1</code>.
 <p>A juzgar por estas gráficas es posible que el modelo sea confiable para rechazar <span class="math inline">\(H_0\)</span>, veamos sin embargo si <code>modelo.2</code> tiene otras cualidades.</p>
 </div>
 <div id="diagnósticos-de-modelo.2" class="section level3">
-<h3><span class="header-section-number">2.1.2</span> Diagnósticos de <code>modelo.2</code></h3>
+<h3><span class="header-section-number">2.2.2</span> Diagnósticos de <code>modelo.2</code></h3>
 <pre class="r"><code>par(mfrow = c(2,2))
 plot(modelo.2)</code></pre>
 <div class="figure" style="text-align: center"><span id="fig:Diag-mod2"></span>
