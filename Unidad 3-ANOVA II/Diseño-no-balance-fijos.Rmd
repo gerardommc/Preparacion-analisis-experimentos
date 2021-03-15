@@ -16,11 +16,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-Una de las razones por la que los diseños no balanceados requieren una estrategia diferente de suma de cuadrados es que ésta --la suma de cuadrados-- será artificialmente *mayor* para los tratamientos o factores que tengan más unidades experimentales, de modo que, aunque dichos factores o tratamientos carezcan de poder explicativo, sus sumas de cuadrados serán mayores que las de factores o tratamientos con menos unidades. 
+Existen varias razones por las que los diseños no balanceados requieren una estrategia diferente de suma de cuadrados:
 
-Hay muchas razones por las cuales los estudios pueden quedar fuera de balance, desde fallas de diseño, errores o accidentes experimentales u observacionales, hasta dificultades logísticas. Para todos esos casos existe la solución estadística de la suma de cuadrados **Tipo II**.
+1. Los tamaños diferentes de muestra implican sumas de cuadrados más altas para los tratamientos con más observaciones
+2. La varianza "faltante" en los tratamientos con menos observaciones no puede ser explicada por los tratamientos, pues es simplemente un artefacto del diseño
 
-Existe otro tipo de diseños no balanceados con efectos fijos cuando por ejemplo faltan algunas combinaciones de los niveles de los dos factores experimentales (Figura \@ref(fig:No-balance-1)). Este tipo de diseños también se pueden analizar con suma de cuadrados tipo II.
+Es último fenómeno se conoce como "confounding", y la solución en ANOVA es $SS-II$, la cual permite simplemente medir la varianza "faltante" producto de la falta de balance.
+
+Hay muchas razones por las cuales los estudios pueden quedar fuera de balance, desde fallas de diseño, errores o accidentes experimentales u observacionales y hasta dificultades logísticas. 
+
+Existe otro tipo de diseños no balanceados con efectos fijos cuando por ejemplo faltan algunas combinaciones de los niveles de los dos factores experimentales (Figura \@ref(fig:No-balance-1)). Este tipo de diseños también se pueden analizar con $SS-II$.
 
 ```{r No-balance-1, echo = F, fig.cap="Diseño experimental no balanceado con combinaciones de factores faltantes", fig.align = "center"}
 knitr::include_graphics("Diseño-factorial-2.png")
@@ -28,32 +33,26 @@ knitr::include_graphics("Diseño-factorial-2.png")
 
 # La suma de cuadrados **Tipo II**
 
-La suma de cuadrados **Tipo I** se hace de manera secuencial:
-
-1. $SS(A)$
-2. $SS(B|A)$
-3. $SS(AB|A, B)$
-
-Lo que quiere decir que primero se obtiene la suma de cuadrados del factor $A$, después la del factor $B$ en relación al factor $A$ y finalmente la de la interacción $AB$ en relación a la suma de cuadrados de $A$ y de $B$. En la sumade cuadrados tipo II siempre se debe hacer:
+La $SS-II$ difiere principalmente de $SS-I$ en que no está basada de la adición secuencial de factores para su comparación. En cambio, $SS-I$ utiliza como base de comparación de efectos la suma de cuadrados más compleja que omita los efectos de ese factor, de modo que el efecto del factor $A$, $SS(A)$, se mide en relación a $SS(B)$, y viceversa:
 
 1. $SS(A|B)$
 2. $SS(B|A)$
 3. $SS(AB|A, B)$
 
-Siempre se ajusta la suma de cuadrados en relación a la de los otros factores.
+$SS-II$ no está disponible en **R** por default. Se encuentra implementada en el paquete `car` preinstalado en cualquier distribución de **R** y funciona de la siguiente manera:
 
-Esta suma de cuadrados en **R** no está disponible pod default, pero se encuentra implementada en el paquete `car` disponible en cualquier distribución de **R**.
+`m1 <- aov(x ~ A * B, datos); car::Anova(m1, type = "II")`
 
 # Aplicación en **R**
 
-Para este tutorial utilizaremos la misma base de datos `ToothGrowth` pero eliminaremos selectivamente observaciones o combinaciones de niveles de alguno de los factores.
+Para este tutorial utilizaremos la misma base de datos `ToothGrowth` pero eliminaremos selectivamente observaciones o combinaciones de niveles de alguno de los factores. Comenzaremos con la pérdida de unidades experimentales haciendo la comparativa entre $SS-I$ y $SS-II$.
 
 ## Pérdida de unidades experimentales
 
 Comenzaremos por cargar la base de datos y eliminar 20 datos aleatoriamente y ver cómo queda el balance después de la eliminación
 
 ```{r}
-set.seed(21)
+set.seed(213)
 datos <- ToothGrowth
 datos$dose <- as.factor(paste0("D", datos$dose))
 
@@ -79,7 +78,23 @@ library(car)
 Anova(modelo.1, type = "II")
 ```
 
-Aquí cambiaron un poco los niveles de significancia, pero lo que sí cambió mucho fue las sumas de cuadrados de `supp`, pues estas ya no son las que se usan como referencia, ahora estas están calculadas en relación a `dose`. Y también con la suma de cuadrados tipo II para ajustar en ausencia de balance perdemos la interacción `supp:dose`
+Aquí cambiaron un poco los niveles de significancia, pero lo que sí cambió mucho fueron las sumas de cuadrados de `supp`, pues estas ya no son las que se usan como referencia, ahora estas están calculadas en relación a `dose`. Veamos entonces cómo $SS-II$ es más conservador que $SS-I$ para estimar la suma de cuadrados. 
+
+Tenemos que la varianza total según $SS-I$ es:
+
+```{r}
+# supp   dose    supp:dose residuales
+196.45 + 1332.58 + 53.28 + 422.12
+```
+
+y que la varianza explicada por el modelo con $SS-II$ es:
+
+```{r}
+# supp   dose   supp:dose residuales
+219.10 + 1332.58 + 53.28 + 422.12
+```
+
+Con lo que podemos ver que la varianza total según $SS-II$ es mayor que $SS-I$, lo que altera los valores de $P$ para los diferentes factores, en especial `supp` que explicó una mayor varianza en comparación con `dose` en $SS-II$ que en $SS-I$.
 
 ## Pérdida de niveles de un factor
 
@@ -116,18 +131,36 @@ table(datos.3$supp)
 table(datos.3$dose)
 ```
 
-El análisis con $SS$ I:
+El análisis con $SS-I$:
 
 ```{r}
 modelo.3 <- lm(len ~ supp * dose, data = datos.3)
 anova(modelo.3)
 ```
 
-El análisis con $SS$ II:
+El análisis con $SS-II$:
 
 ```{r}
-Anova(modelo.3)
+Anova(modelo.3, type = "II")
 ```
+
+Podemos ver entonces que al haber perdido grados de libertad perdimos la capacidad de rechazar la hipótesis nula del tratamiento `supp` y la interacción `supp : dose` en ambos tipos de suma de cuadrados, pero el valor de $P$ para `supp` fue mayor en $SS-I$.
+
+Ahora, finalmente veamos qué pasa si especificamos el modelo invirtiendo el orden de los factores:
+
+```{r}
+modelo.4 <- lm(len ~ dose * supp, data = datos.3)
+Anova(modelo.4, type = "II")
+```
+
+
+# Conclusiones
+
+Pudimos ver que $SS$ $I$ y $II$ sí producen diferentes resultados y que la pérdida de unidades experimentales y/o combinaciones de tratamientos sí afecta las conclusiones biológicas a las que llegamos independientemente de la estategia de $SS$ que tengamos. Debido a que $SS-II$ es menos sensible a la falta de balance y al orden en que se especifican los términos en los modelos, se recomienda ampliamente el uso de $SS-II$ en comparación con $SS-I$, incluso si los diseños factoriales están balanceados.
+
+# Aplciación del conocimiento
+
+Dirígete al classroom del curso para completar la actividad correspondiente a las secciones de diseños balanceados y no balanceados de la tercera unidad.
 
 [Regresar al índice del curso](../index.html)
 

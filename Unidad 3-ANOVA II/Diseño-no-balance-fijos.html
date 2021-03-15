@@ -1546,9 +1546,14 @@ div.tocify {
 
 <div id="introducción" class="section level1">
 <h1><span class="header-section-number">1</span> Introducción</h1>
-<p>Una de las razones por la que los diseños no balanceados requieren una estrategia diferente de suma de cuadrados es que ésta –la suma de cuadrados– será artificialmente <em>mayor</em> para los tratamientos o factores que tengan más unidades experimentales, de modo que, aunque dichos factores o tratamientos carezcan de poder explicativo, sus sumas de cuadrados serán mayores que las de factores o tratamientos con menos unidades.</p>
-<p>Hay muchas razones por las cuales los estudios pueden quedar fuera de balance, desde fallas de diseño, errores o accidentes experimentales u observacionales, hasta dificultades logísticas. Para todos esos casos existe la solución estadística de la suma de cuadrados <strong>Tipo II</strong>.</p>
-<p>Existe otro tipo de diseños no balanceados con efectos fijos cuando por ejemplo faltan algunas combinaciones de los niveles de los dos factores experimentales (Figura <a href="#fig:No-balance-1">1.1</a>). Este tipo de diseños también se pueden analizar con suma de cuadrados tipo II.</p>
+<p>Existen varias razones por las que los diseños no balanceados requieren una estrategia diferente de suma de cuadrados:</p>
+<ol style="list-style-type: decimal">
+<li>Los tamaños diferentes de muestra implican sumas de cuadrados más altas para los tratamientos con más observaciones</li>
+<li>La varianza “faltante” en los tratamientos con menos observaciones no puede ser explicada por los tratamientos, pues es simplemente un artefacto del diseño</li>
+</ol>
+<p>Es último fenómeno se conoce como “confounding”, y la solución en ANOVA es <span class="math inline">\(SS-II\)</span>, la cual permite simplemente medir la varianza “faltante” producto de la falta de balance.</p>
+<p>Hay muchas razones por las cuales los estudios pueden quedar fuera de balance, desde fallas de diseño, errores o accidentes experimentales u observacionales y hasta dificultades logísticas.</p>
+<p>Existe otro tipo de diseños no balanceados con efectos fijos cuando por ejemplo faltan algunas combinaciones de los niveles de los dos factores experimentales (Figura <a href="#fig:No-balance-1">1.1</a>). Este tipo de diseños también se pueden analizar con <span class="math inline">\(SS-II\)</span>.</p>
 <div class="figure" style="text-align: center"><span id="fig:No-balance-1"></span>
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA38AAAKECAYAAAC3lYPhAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AYht+milIqDhYRcchQO1kQFXHUKhShQqgVWnUwufQPmjQkKS6OgmvBwZ/FqoOLs64OroIg+APi5uak6CIlfpcUWsR4x3EP733vy913gNCoMM3qGgc03TbTyYSYza2KPa8IIoRBmjGZWcacJKXgO77uEeD7XZxn+df9OfrUvMWAgEg8ywzTJt4gnt60Dc77xBFWklXic+Ixky5I/Mh1xeM3zkWXBZ4ZMTPpeeIIsVjsYKWDWcnUiKeIo6qmU76Q9VjlvMVZq9RY6578heG8vrLMdVojSGIRS5AgQkENZVRgI067ToqFNJ0nfPzDrl8il0KuMhg5FlCFBtn1g//B795ahckJLymcALpfHOdjFOjZBZp1x/k+dpzmCRB8Bq70tr/aAGY+Sa+3tegR0L8NXFy3NWUPuNwBhp4M2ZRdKUhLKBSA9zP6phwwcAuE1ry+tc5x+gBkqFepG+DgEIgVKXvd5929nX37t6bVvx9Z4XKdKL6ztAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAVrwAAFa8BBLvHSwAAAAd0SU1FB+UDChYYCDYrdYwAACAASURBVHja7N15nNV1vcfx9yzMsCkgpCIuYLhhIhFihUt6i3DfzSx3ExRcyNSs3NHKPZOUFAX1uksuuaRZmqICpoiZKCLKIIuFjAuMMMu5f3jvXEcWIVlnns/Hg4dyfr+Z85vv73xmzosz55yiQqFQCAAAAI1asSUAAAAQfwAAAIg/AAAA1gSln71gl29/O088/riVAQAAWEN95Zu75OXRf2lwWdFnX/ClqKgob1UtsFqrsaIkm7Qoc55o8jq3KMsD79RYCEiyV6fS7PNUlYWgyWtXVpQR2zdPyXXvWAyatNofdcpnX9vTr30CAAA0AeIPAABA/AEAACD+AAAAEH8AAACIPwAAAMQfAAAAq3X8/eG2W3PG8f0z96OPFrn9xbFjcsbx/fPPCS8tt+u87LxzM+J3Q5e4zxUXnJ8brr5qmT7v0nxMXV1dzji+fx657163KAAAoOnE37hnRueOETdm/vyPF7n9rcmTc8eIGzPt7beX23U+OOru/O3Pjy1xn4fvHZUnHn10mT7v0nxMXV1d7hhxY14aN84tCgAAWC2VNqUv9vd33pNmzZqt8I8BAAAQf59jxrRp+cf48Skra5YevXunTdt2DbZPr6hIi1YtU1RUlHGjn8lW22yTDTfZpH57bW1t/v7cs3l/TmW26dkz62+wQf228vLylJSWLHyd77yTVye8lJatWuUrPb6a1muv/bkf8+qECal4+618efMtssmXv7zYr+fN11/Pm5MmpVBXl85du2azrbZyqwMAAJpu/FUvWJCzB5+c22+8ISWlpamrrU1ZeXlOP39Ijh50Yv1+3+/3nXzzW7vkb39+LO9MnZo2bdvl7xXvJEnmzJ6dfXfsk1deGp/i4uIUCoX86OTB+emFFyVJjthnz6zfacPcdP8fkyQfV1XlFyefmFH/fUuKS0pSqKtLq9Zr5aKhv8ueBxy4yI+pnPNejv/+IXn2ySdSWlqampqanHDaGQt9Pe9MnZoTfvD9vPT8uJSVl6d6wYIUCoV8faedM/K+B1LevLlbHwAA0Dji79brr0vLVq0WuvzlF15Y6LILzzwjd4y4MRf+dmgOOuzwLJg/P5edf17OP+3UbLDRRum3z771+951803pu+deGfKb32bevHkpLf3ky3hx7Jjssf8BueWhh1NWVp5Lzjkr115+abpuuWUOPOzwRV7nqP++JRdceVUOPuLIfFxVlR8fe1QGH31kevTarsEjiv/nZwNPyEvPj8t1d96TXXffPa+98o+ccOghC+136o+OScVbb+X+0c+me8+vpWrevFz1y4tyzaUX5747bs/BRxzp1gcAADSO+Lv03HOWar/KOe/llut+n4MOPyKHHnNskqRZWVnOvuTSPPPEX3LNpZc0iL9WrVrnsutvSIuWLRt8nnU6fCmX/P76+uD8+a8uzl8feTg3XXvNQvE3b+7c3DHixux10MH5wY+Oq7/O86+4Kj8/aVCmT6tYKP7+NWtmHr73D+k/+NR8Z6+9kiTdum+b8y6/Mkfss1f9frW1tene82s55Kij073n15IkLVq2zIk/PTPXXHpx3pg40S0PAABoPPE3+rU30naddRa6/I9335Uzju9f//cJzz+fmurqfPTBB/n9lZc32Le8vHn+8eILqampqX+Er9u22y4UfknS6xvfaPBIY0lJSbbfcafcOXJEaqqrG+z76ssTsmD+/HzzW7s0uLzjhhvmhlGLfsuG8eOeT6FQyPY77tjg8j67/leK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1NXV5cILLzQL4g9WrXbt2qVDhw6L3V5ZWbnYbbNnz84BBxyQp59++nPfBHVZ7LXXXsv8EsYr6lgwC0uaherq6vTt2zfdunXLtddem4qKigwYMCAffPBBTj31VLNAk5qHQqGQ3XffPV27ds3w4cMzZsyY9OvXL+PGjcvWW29tHmhy95OS5NFHH82FF16YQw891P2kNUyxJYCG38y+8pWvpFWrVo6FJuu5557LpEmTMnLkyPTs2TP77LNPzjjjjNx8881mgSZnypQpqampyfXXX58ePXqkf//+6dGjR+6//37zQJM0e/bs9O/fPzvssIP7SWsgj/zBp1RWVmbkyJHp3r37En/1oKkdC03LjjvumJkzZzZ4bsWsWbOW+ER8s0Bjtemmm2b8+PH1f58xY0Zef/31VfZm1OaBVe24447LgAEDUlFR8bmPEJoF8QertYMPPjjJJ893ciw0ZZ8OvYkTJ2bo0KG5+uqrzQJN2t57750nnngi++23X/bbbz/zQJMzfPjwzJo1K6eddlpOOukk95PEHzRu99xzT6qqqtKrV69V9q++sDK9/PLL+e53v5ujjjoqhx9+uFmgyaqrq8ugQYOy99575/TTT8/QoUMzcOBA80CTMXny5Jx11ll5+umnF/s2EWZB/EGjMnDgwMyaNStXXHGFb2o0eo8++mgOOuigDB48OOeee65ZoEkrLi5O3759kyRVVVUZMmRIffyZB5qCE044IZtvvnlGjRqVJBk/fnyqqqpy1VVX1T8KaBbWgO9llgCAzxo1alT23XffXHXVVQuFHzQlY8eObfCod5K0b98+NTU1FocmpXv37ll//fXz/PPP5/nnn8+7776b2bNn54UXXrA4a5Am8cjfvvv0S6F2hrPdyHXu3DmFQmGp9u3atetS7/tpM2fOTK9evbL22msv1f4dOnT4j64HVuUsTJkyJYcddlhOPfXUbL/99pk4cWKSpFmzZvnyl79sFmhS89CpU6fcfffd6devXw499NDMnj07l112WQ444AA/G2hSs3DJJZc0+PugQYNSWVmZESNGmIU1iEf+YBlMmzYtEyZMSM+ePS0GjdYtt9ySefPmZciQIdlqq63q/+y8885mgSanU6dOue222zJ48OB07tw5G2+8cbp165ZLL73UPID7SWucosJncruoqMijZKv/aUtRyfr+pWQV6N27d7bZZpsM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" alt="Diseño experimental no balanceado con combinaciones de factores faltantes" width="448" />
 <p class="caption">
@@ -1558,28 +1563,22 @@ Figure 1.1: Diseño experimental no balanceado con combinaciones de factores fal
 </div>
 <div id="la-suma-de-cuadrados-tipo-ii" class="section level1">
 <h1><span class="header-section-number">2</span> La suma de cuadrados <strong>Tipo II</strong></h1>
-<p>La suma de cuadrados <strong>Tipo I</strong> se hace de manera secuencial:</p>
-<ol style="list-style-type: decimal">
-<li><span class="math inline">\(SS(A)\)</span></li>
-<li><span class="math inline">\(SS(B|A)\)</span></li>
-<li><span class="math inline">\(SS(AB|A, B)\)</span></li>
-</ol>
-<p>Lo que quiere decir que primero se obtiene la suma de cuadrados del factor <span class="math inline">\(A\)</span>, después la del factor <span class="math inline">\(B\)</span> en relación al factor <span class="math inline">\(A\)</span> y finalmente la de la interacción <span class="math inline">\(AB\)</span> en relación a la suma de cuadrados de <span class="math inline">\(A\)</span> y de <span class="math inline">\(B\)</span>. En la sumade cuadrados tipo II siempre se debe hacer:</p>
+<p>La <span class="math inline">\(SS-II\)</span> difiere principalmente de <span class="math inline">\(SS-I\)</span> en que no está basada de la adición secuencial de factores para su comparación. En cambio, <span class="math inline">\(SS-I\)</span> utiliza como base de comparación de efectos la suma de cuadrados más compleja que omita los efectos de ese factor, de modo que el efecto del factor <span class="math inline">\(A\)</span>, <span class="math inline">\(SS(A)\)</span>, se mide en relación a <span class="math inline">\(SS(B)\)</span>, y viceversa:</p>
 <ol style="list-style-type: decimal">
 <li><span class="math inline">\(SS(A|B)\)</span></li>
 <li><span class="math inline">\(SS(B|A)\)</span></li>
 <li><span class="math inline">\(SS(AB|A, B)\)</span></li>
 </ol>
-<p>Siempre se ajusta la suma de cuadrados en relación a la de los otros factores.</p>
-<p>Esta suma de cuadrados en <strong>R</strong> no está disponible pod default, pero se encuentra implementada en el paquete <code>car</code> disponible en cualquier distribución de <strong>R</strong>.</p>
+<p><span class="math inline">\(SS-II\)</span> no está disponible en <strong>R</strong> por default. Se encuentra implementada en el paquete <code>car</code> preinstalado en cualquier distribución de <strong>R</strong> y funciona de la siguiente manera:</p>
+<p><code>m1 &lt;- aov(x ~ A * B, datos); car::Anova(m1, type = &quot;II&quot;)</code></p>
 </div>
 <div id="aplicación-en-r" class="section level1">
 <h1><span class="header-section-number">3</span> Aplicación en <strong>R</strong></h1>
-<p>Para este tutorial utilizaremos la misma base de datos <code>ToothGrowth</code> pero eliminaremos selectivamente observaciones o combinaciones de niveles de alguno de los factores.</p>
+<p>Para este tutorial utilizaremos la misma base de datos <code>ToothGrowth</code> pero eliminaremos selectivamente observaciones o combinaciones de niveles de alguno de los factores. Comenzaremos con la pérdida de unidades experimentales haciendo la comparativa entre <span class="math inline">\(SS-I\)</span> y <span class="math inline">\(SS-II\)</span>.</p>
 <div id="pérdida-de-unidades-experimentales" class="section level2">
 <h2><span class="header-section-number">3.1</span> Pérdida de unidades experimentales</h2>
 <p>Comenzaremos por cargar la base de datos y eliminar 20 datos aleatoriamente y ver cómo queda el balance después de la eliminación</p>
-<pre class="r"><code>set.seed(21)
+<pre class="r"><code>set.seed(213)
 datos &lt;- ToothGrowth
 datos$dose &lt;- as.factor(paste0(&quot;D&quot;, datos$dose))
 
@@ -1588,11 +1587,11 @@ datos &lt;- datos[sample(1:60, 40), ]
 table(datos$supp)</code></pre>
 <pre><code>## 
 ## OJ VC 
-## 24 16</code></pre>
+## 21 19</code></pre>
 <pre class="r"><code>table(datos$dose)</code></pre>
 <pre><code>## 
 ## D0.5   D1   D2 
-##   16   12   12</code></pre>
+##   15   17    8</code></pre>
 <p>Como podemos apreciar el diseño quedó fuera de balance en varios de los niveles de los factores. Haremos primero ANOVA con suma de cuadrados tipo I:</p>
 <pre class="r"><code>modelo.1 &lt;- lm(len ~ supp * dose, data = datos)
 anova(modelo.1)</code></pre>
@@ -1600,10 +1599,10 @@ anova(modelo.1)</code></pre>
 ## 
 ## Response: len
 ##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## supp       1  305.55  305.55 22.0329 4.268e-05 ***
-## dose       2 1773.64  886.82 63.9473 3.007e-12 ***
-## supp:dose  2   43.55   21.78  1.5703    0.2227    
-## Residuals 34  471.51   13.87                      
+## supp       1  196.45  196.45 15.8233  0.000345 ***
+## dose       2 1332.58  666.29 53.6665 3.027e-11 ***
+## supp:dose  2   53.28   26.64  2.1457  0.132568    
+## Residuals 34  422.12   12.42                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Podemos ver que los resultados son muy parecidos a los del <a href="Diseño-balance-fijos.html">análisis balanceado</a>, pero en este caso ya no podemos demostrar si la interacción es significativa.</p>
@@ -1615,13 +1614,22 @@ anova(modelo.1)</code></pre>
 ## 
 ## Response: len
 ##            Sum Sq Df F value    Pr(&gt;F)    
-## supp       154.91  1 11.1705  0.002031 ** 
-## dose      1773.64  2 63.9473 3.007e-12 ***
-## supp:dose   43.55  2  1.5703  0.222699    
-## Residuals  471.51 34                      
+## supp       219.10  1 17.6478 0.0001814 ***
+## dose      1332.58  2 53.6665 3.027e-11 ***
+## supp:dose   53.28  2  2.1457 0.1325679    
+## Residuals  422.12 34                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Aquí cambiaron un poco los niveles de significancia, pero lo que sí cambió mucho fue las sumas de cuadrados de <code>supp</code>, pues estas ya no son las que se usan como referencia, ahora estas están calculadas en relación a <code>dose</code>. Y también con la suma de cuadrados tipo II para ajustar en ausencia de balance perdemos la interacción <code>supp:dose</code></p>
+<p>Aquí cambiaron un poco los niveles de significancia, pero lo que sí cambió mucho fueron las sumas de cuadrados de <code>supp</code>, pues estas ya no son las que se usan como referencia, ahora estas están calculadas en relación a <code>dose</code>. Veamos entonces cómo <span class="math inline">\(SS-II\)</span> es más conservador que <span class="math inline">\(SS-I\)</span> para estimar la suma de cuadrados.</p>
+<p>Tenemos que la varianza total según <span class="math inline">\(SS-I\)</span> es:</p>
+<pre class="r"><code># supp   dose    supp:dose residuales
+196.45 + 1332.58 + 53.28 + 422.12</code></pre>
+<pre><code>## [1] 2004.43</code></pre>
+<p>y que la varianza explicada por el modelo con <span class="math inline">\(SS-II\)</span> es:</p>
+<pre class="r"><code># supp   dose   supp:dose residuales
+219.10 + 1332.58 + 53.28 + 422.12</code></pre>
+<pre><code>## [1] 2027.08</code></pre>
+<p>Con lo que podemos ver que la varianza total según <span class="math inline">\(SS-II\)</span> es mayor que <span class="math inline">\(SS-I\)</span>, lo que altera los valores de <span class="math inline">\(P\)</span> para los diferentes factores, en especial <code>supp</code> que explicó una mayor varianza en comparación con <code>dose</code> en <span class="math inline">\(SS-II\)</span> que en <span class="math inline">\(SS-I\)</span>.</p>
 </div>
 <div id="pérdida-de-niveles-de-un-factor" class="section level2">
 <h2><span class="header-section-number">3.2</span> Pérdida de niveles de un factor</h2>
@@ -1676,36 +1684,60 @@ table(datos.3$supp)</code></pre>
 <pre class="r"><code>table(datos.3$dose)</code></pre>
 <pre><code>## 
 ## D0.5   D1   D2 
-##   17    8   15</code></pre>
-<p>El análisis con <span class="math inline">\(SS\)</span> I:</p>
+##   16    8   16</code></pre>
+<p>El análisis con <span class="math inline">\(SS-I\)</span>:</p>
 <pre class="r"><code>modelo.3 &lt;- lm(len ~ supp * dose, data = datos.3)
 anova(modelo.3)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: len
 ##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## supp       1  127.60  127.60 10.1134  0.003078 ** 
-## dose       2 1692.01  846.01 67.0509 1.068e-12 ***
-## supp:dose  1   33.15   33.15  2.6272  0.114020    
-## Residuals 35  441.61   12.62                      
+## supp       1   37.76   37.76  3.0742    0.0883 .  
+## dose       2 1863.60  931.80 75.8554 1.887e-13 ***
+## supp:dose  1   27.01   27.01  2.1989    0.1471    
+## Residuals 35  429.94   12.28                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>El análisis con <span class="math inline">\(SS\)</span> II:</p>
-<pre class="r"><code>Anova(modelo.3)</code></pre>
+<p>El análisis con <span class="math inline">\(SS-II\)</span>:</p>
+<pre class="r"><code>Anova(modelo.3, type = &quot;II&quot;)</code></pre>
 <pre><code>## Note: model has aliased coefficients
 ##       sums of squares computed by model comparison</code></pre>
 <pre><code>## Anova Table (Type II tests)
 ## 
 ## Response: len
 ##            Sum Sq Df F value    Pr(&gt;F)    
-## supp        88.34  1  7.0013   0.01212 *  
-## dose      1692.01  2 67.0509 1.068e-12 ***
-## supp:dose   33.15  1  2.6272   0.11402    
-## Residuals  441.61 35                      
+## supp        30.42  1  2.4764    0.1246    
+## dose      1863.60  2 75.8554 1.887e-13 ***
+## supp:dose   27.01  1  2.1989    0.1471    
+## Residuals  429.94 35                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p><a href="../index.html">Regresar al índice del curso</a></p>
+<p>Podemos ver entonces que al haber perdido grados de libertad perdimos la capacidad de rechazar la hipótesis nula del tratamiento <code>supp</code> y la interacción <code>supp : dose</code> en ambos tipos de suma de cuadrados, pero el valor de <span class="math inline">\(P\)</span> para <code>supp</code> fue mayor en <span class="math inline">\(SS-I\)</span>.</p>
+<p>Ahora, finalmente veamos qué pasa si especificamos el modelo invirtiendo el orden de los factores:</p>
+<pre class="r"><code>modelo.4 &lt;- lm(len ~ dose * supp, data = datos.3)
+Anova(modelo.4, type = &quot;II&quot;)</code></pre>
+<pre><code>## Note: model has aliased coefficients
+##       sums of squares computed by model comparison</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: len
+##            Sum Sq Df F value    Pr(&gt;F)    
+## dose      1863.60  2 75.8554 1.887e-13 ***
+## supp        30.42  1  2.4764    0.1246    
+## dose:supp   27.01  1  2.1989    0.1471    
+## Residuals  429.94 35                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
+</div>
+<div id="conclusiones" class="section level1">
+<h1><span class="header-section-number">4</span> Conclusiones</h1>
+<p>Pudimos ver que <span class="math inline">\(SS\)</span> <span class="math inline">\(I\)</span> y <span class="math inline">\(II\)</span> sí producen diferentes resultados y que la pérdida de unidades experimentales y/o combinaciones de tratamientos sí afecta las conclusiones biológicas a las que llegamos independientemente de la estategia de <span class="math inline">\(SS\)</span> que tengamos. Debido a que <span class="math inline">\(SS-II\)</span> es menos sensible a la falta de balance y al orden en que se especifican los términos en los modelos, se recomienda ampliamente el uso de <span class="math inline">\(SS-II\)</span> en comparación con <span class="math inline">\(SS-I\)</span>, incluso si los diseños factoriales están balanceados.</p>
+</div>
+<div id="aplciación-del-conocimiento" class="section level1">
+<h1><span class="header-section-number">5</span> Aplciación del conocimiento</h1>
+<p>Dirígete al classroom del curso para completar la actividad correspondiente a las secciones de diseños balanceados y no balanceados de la tercera unidad.</p>
+<p><a href="../index.html">Regresar al índice del curso</a></p>
 </div>
 
 

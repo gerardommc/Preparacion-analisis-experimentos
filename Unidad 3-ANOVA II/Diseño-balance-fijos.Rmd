@@ -78,7 +78,7 @@ summary(modelo.2)
 
 Aquí vemos que la suma de cuadrados de los residuales aumentó un poco y bajó la significancia de `supp`. Esta diferencia entre modelos sugiere que el término de interacción es importante, aunque la dosis es el principal factor que afecta el crecimiento de los dientes. Chequemos ahora los residuales de ambos modelos.
 
-## Invirtiendo el orden de los factores
+### Invirtiendo el orden de los factores
 
 Como se mencionó en [Introducción al modelo ANOVA de dos vías](ANOVA-II.html), el orden de especificación de los factores de primer orden (antes de las interacciones especificaddas con `:`), afecta los resultados, por lo que ahora ajustaremos el modelo haciendo `dose * supp`:
 
@@ -87,12 +87,7 @@ modelo.3 <- aov(len ~ dose * supp, data = datos)
 summary(modelo.3)
 ```
 
-Y efectivamente, los valores de $P$ para `supp` son diferentes que cuando especificamos el modelo como `supp * dose`, pues la base de comparación para `supp` ahora es `dose`. También podemos apreciar que `supp : dose` es igual, y esto se debe a que tiene la misma base de comparación. El valor *idéndico* de $P$ para `dose` se debe a que el número más pequeño que **R** (la computadora) puede mostrar es $2 \times 10^{-16}$.
-
-```{r}
-modelo.4 <- aov(len ~ dose + supp, data = datos)
-summary(modelo.4)
-```
+Y efectivamente, los valores de $P$ para `supp` son diferentes que cuando especificamos el modelo como `supp * dose`, pues la base de comparación para `supp` ahora es `dose`. También podemos apreciar que $P$ para  `supp : dose` es igual, y esto se debe a que tiene la misma base de comparación. El valor *idéndico* de $P$ para `dose` se debe a que el número más pequeño que **R** (la computadora) puede mostrar es $2 \times 10^{-16}$.
 
 ### Diagnóstico de `modelo.1`
 
