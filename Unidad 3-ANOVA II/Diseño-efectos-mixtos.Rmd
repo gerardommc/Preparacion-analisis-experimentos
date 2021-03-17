@@ -44,34 +44,64 @@ Entonces, una vez estimados los parámetros se calculan las probabilidades de qu
 
 ## Ejemplos aplicados
 
-Para este tutorial utilizaremos la base de datos `Arabidopsis` distribuida en el paquete `lme4`. Esta base de datos fue generada en un experimento para ver la tolerancia al daño del meristemo apical en plantas del género *Arabidopsis*. Para ver los detalles completos del experimento pueden leer el [resumen aquí](https://doi.org/10.1111/j.1600-0706.2009.17726.x). En breve, el experimento utilizó plantas de *Arabidopsis thaliana* de tres regiones de Europa para ver cómo el genotipo y la limitación de ciertos nutrientes afectan la tolerancia al daño del meristemo apical (parte del ápice de la planta donde ocurre el crecimiento).
+Comenzaremos por re-analizar la base de datos `npk` de la última actividad. Si recordamos esta base de datos fue generada para su análisis con un ANOVA de tres vías. Aquí lo volveremos a analizar con ANOVA de dos vías pero tomando en cuenta los bloques. Para tener más grados de libertad, asumiremos que el factor `N` no existe, por lo tanto analizaremos la producción `yield` como función de la fertilización con nitrógeno `N` y potasio `K` en plantas que recibieron ambos tratamientos de `P`.
 
-Para ver qué significan las diferentes variables de `Arabidopsis` podemos consultar la ayuda de **R**, corriendo el comando `?Arabidopsis`. Y para ver la naturaleza de cada una de las variables contenidas en la bse de datos:
+Comenzaremos al igual que antes por graficar los efectos fijos de ambos factores. En esta ocasión utilizaremos un método distinto llamado gráficas de violín utilizando un paquete más especializado y potenque que `graphics`, el paquete `ggplot2`.
 
-```{r message = F, warning = F}
+```{r Violin, fig.height=4, fig.width=6, fig.align='center', fig.cap="Gráfico de cajas y violín de `yield` en sustratamientos."}
+npk.1 <- subset(npk, select = c("block", "N", "K", "yield")) #Quitando la columna N
+
+library(ggplot2)
+
+ggplot(npk.1) + geom_violin(aes(x = N, y = yield, colour = factor(K), fill = factor(K)), alpha = 0.3) +
+      geom_boxplot(aes(x = N, y = yield, colour = factor(K), fill = factor(K)), alpha = 0.1) + 
+      labs(colour= "K", fill = "K")
+```
+
+Estas gráficas de violín muestr la **densidad** de `yield`. Las zonas más anchas corresponden a zonas de mayor densidad de observaciones, y por lo tanto cercanas a las medidas de tendencia central (media, mediana). Para referencia en comparación con los gráficos de caja se muestra un boxplot de los mismos datos.
+
+Como podemos ver la distribución de `yield` no es normal, por lo que e posible que haya problemas con ANOVA. Sin embargo, por se un diseño factorial con efectos mixtos, no podemos utilizar `kruskal.test`, pues esta sólo sirve para diseños de una vía. Entonces podemos ver si el modelo con efectos mixtos satiscafe nuestras necesidades.
+
+### Ajustando el modelo `lmer`
+
+Comenzaremos por ajustar el modelo más complejo, es decir aquel que contiene los términos de $1^{er}$ y $2^o$ orden (`N + K + N:K`). Como vimos anteriormente, $SS-II$ es un poco más fácil de interpretar que $SS-I$ pues los resultados son los mismos independientemente de cómo especifiquemos el modelo:
+
+```{r message = F}
 library(lme4)
-data("Arabidopsis")
-str(Arabidopsis)
+
+m1 <- lmer(yield ~ factor(N) * factor(K) + (1|block), npk.1) #Modelo de efectos mixtos
+summary(m1) # Resumen del modelo
+car::Anova(m1, type = 2) # Tabla de ANOVA
 ```
 
-Podemos ver que hay muchas variables, algunas de ellas parecen ser numericas (`int`, por enteros). Algunas de estas de hecho deberían de ser factores, pues por ejemplo `gen` describe genotipos, `rack` se refiere a los invernaderos, y `nutrient` son los 8 nutrientes cuyo efecto se está midiendo. Entonce cuando ajustemos un modelo con estas variables tenemos que especificar que son factores y no variables numéricas.
+En el cómputo de la tabla de ANOVA podemos ver que la suma de cuadrados para la interacción (columna `Chisq`), tiene la menor suma de cuadrados, por lo que volveremos a ajustar el modelo sin la interacción, que además tiene la $P = 0.13$ más grande.
 
-Podemos intuir que la variable de medición de la tolerancia al daño del meristemo es `total.fruits`, por lo que la variable de respuesta es un conteo. De antemano sabemos que los conteos no tienen una distributión normal. Entonces vamos a verificar esto:
-
-```{r fig.height=4, fig.width=6, fig.align='center', fig.cap="Gráfico de cajas para `Arabidopsis`."}
-boxplot(total.fruits ~ factor(gen) + factor(nutrient), Arabidopsis)
+```{r}
+m2 <- lmer(yield ~ factor(N) + factor(K) + (1|block), npk.1)
+car::Anova(m2, type = 2)
 ```
 
-Existen muchos trucos para *normalizar* los datos, aqupi vamos a utilizar el más común de todos ellos, el logaritmo. Aquí, debemos de tomar en cuenta que $\ln(0) = -\infty$, entonces comenzaremos por añadir $0.1$ a toda la variable y despues aplicar el logaritmo:
+Y ahora sí, tenemos un modelo sólo con efectos significativos, con esto podemos empezar a sospechar que:
 
-```{r fig.height=4, fig.width=6}
-ara.2 <- Arabidopsis
-ara.2$fruta.log <- log(ara.2$total.fruits + 0.1)
+1. Podemos rechazar lahipótesis nula de no diferencia entre tratamientos
+2. La fertilización con nitrógeno `N` explica gran parte de esa variabilidad
+3. Es poco probable que haya interacciones entre `N` y `K`.
 
-boxplot(fruta.log ~ factor(gen) + factor(nutrient), ara.2)
+Como de inicio sospechamos que la distribución de los datos dentro de los tratamientos podría se un problema, vamos a hacer sl diagnóstico visual del modelo (para `lmer` es un poco diferente que para `aov` y `lm`):
+
+```{r Diag-m2, fig.height=4, fig.width=4, fig.align="center", fig.cap="Gráfico de diagnóstico de los residuales de `m2`."}
+plot(m2)
 ```
 
- 
+Y vamos a ver si los residuales de `m2` tienen una distribución normal centrada en cero:
+
+```{r}
+resids <- residuals(m2) # Extrayendo los residuales de m2
+mean(resids) # La media de los residuales
+shapiro.test(resids) # Probando la normalidad de los residuales
+```
+
+Con esto podemos ver que `m2` parece robusto para las pruebas de hipótesis.
 
 [Regresar al índice del curso](../index.html)
 
