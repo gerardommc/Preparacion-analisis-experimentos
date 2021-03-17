@@ -1,0 +1,77 @@
+---
+title: "Diseño con efectos mixtos"
+author: "Gerardo Martín"
+date: "17/3/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+Anteriormente vimos la diferencia entre efectos fijos y aleatorios. Fijos son aquellos que, son parte de las condiciones que controlamos en el experimento y que afectan la media de cada tratamiento. En contraste los efectos aleatorios, son aquellos que no estamos controlando, generalmente relacionados con algún factor de agrupación como los bloques y que afectan la varianza del objeto de estudio. Entonces, modelos de efectos mixtos se refiere a aquellos que contienen tanto efectos aleatorios como fijos.
+
+El programa original del curso contempla los modelos de efectos fijos y aleatorios por separado. Por motivos didpacticos yo decidí introducir los modelos de efectos mixtos antes porque considero que es más fácil aprender a distinguir sus diferencias de esta manera. Entonces ahora vamos a ver, sólo como un ejemplo, cómo sería un modelo únicamente con efectos aleatorios.
+
+# Modelo con efectos aleatorios
+
+En los modelos con efectos mixtos vimos cómo se podía estimar la media de cada tratamiento y aislar los efectos de los bloques. En los modelos con efectos mixtos la meta es estimar la media global de la variable de respuesta y evitar que la variabilidad introducida por factores de agrupación alteren las estimaciones de la media. Supongamos que tenemos un diseño experimental para analizar con ANOVA de una vía, y antes de hacer el análisis queremos ver cuál es el promedio global de la variable de respuesta. La manera más correcta de hacer la estimación entonces sería con un modelo de efectos aleatorios. La manera más fácil de hacer esto en **R** con `aov` es:
+
+`modelo <- aov(formula = y ~ 1 + Error(Tratamientos), data = datos)`
+
+Es importante conocer este tipo de modelos porque en muchas áreas del conocimiento, incluyendo la ecología. Por ejemplo, la estimación de parámetros poblacionales como la densidad (cantidad de individuos por unidad de área) frecuente requiere de modelos de efectos aleatorios que se utilizan para tomar en cuenta los efectos del esfuerzo de muestreo o las características ambientales (densidad de vegetación) sobre las estimaciones de los parámetros poblacionales.
+
+# Modelos con efectos mixtos
+
+Como ya hemos ajustado una serie de modelos con efectos mixtos, nos enfocaremos aquí en analizar diseños experimentales factoriales de dos vías con efectos mixtos utilizando métodos más robustos que `aov`.
+
+## Efectos mixtos con `lme4`
+
+La principal diferencia entre `aov` y `lmer` radica en que `lmer` no utiliza las operaciones aritméticas de suma de cuadrados para estimar los efectos, sino el concepto de **máxima verosimilitud**. En breve, este método consiste en *buscar* por medio de una rutina computacional la combinación de parámetros del modelo que mejor se ajustan a los datos experimentales. Al igual que `aov`, `lmer` asume que la variable de respuesta tiene una distribución normal, de modo que se *buscarán* los parámetros $\mu$ (media) y $sigma$ (desviación estándar) que satisfacen la ecuación que describe una [distribución normal](https://es.wikipedia.org/wiki/Distribuci%C3%B3n_normal):
+
+$$
+\frac{1}{\sigma\sqrt{2\pi}} \exp \left( - \frac{(x - \mu)^2}{2 \sigma^2} \right)
+$$
+
+Entonces, una vez estimados los parámetros se calculan las probabilidades de que los tratamientos afecten la media de los datos observados.
+
+## Ejemplos aplicados
+
+Para este tutorial utilizaremos la base de datos `Arabidopsis` distribuida en el paquete `lme4`. Esta base de datos fue generada en un experimento para ver la tolerancia al daño del meristemo apical en plantas del género *Arabidopsis*. Para ver los detalles completos del experimento pueden leer el [resumen aquí](https://doi.org/10.1111/j.1600-0706.2009.17726.x). En breve, el experimento utilizó plantas de *Arabidopsis thaliana* de tres regiones de Europa para ver cómo el genotipo y la limitación de ciertos nutrientes afectan la tolerancia al daño del meristemo apical (parte del ápice de la planta donde ocurre el crecimiento).
+
+Para ver qué significan las diferentes variables de `Arabidopsis` podemos consultar la ayuda de **R**, corriendo el comando `?Arabidopsis`. Y para ver la naturaleza de cada una de las variables contenidas en la bse de datos:
+
+```{r message = F, warning = F}
+library(lme4)
+data("Arabidopsis")
+str(Arabidopsis)
+```
+
+Podemos ver que hay muchas variables, algunas de ellas parecen ser numericas (`int`, por enteros). Algunas de estas de hecho deberían de ser factores, pues por ejemplo `gen` describe genotipos, `rack` se refiere a los invernaderos, y `nutrient` son los 8 nutrientes cuyo efecto se está midiendo. Entonce cuando ajustemos un modelo con estas variables tenemos que especificar que son factores y no variables numéricas.
+
+Podemos intuir que la variable de medición de la tolerancia al daño del meristemo es `total.fruits`, por lo que la variable de respuesta es un conteo. De antemano sabemos que los conteos no tienen una distributión normal. Entonces vamos a verificar esto:
+
+```{r fig.height=4, fig.width=6, fig.align='center', fig.cap="Gráfico de cajas para `Arabidopsis`."}
+boxplot(total.fruits ~ factor(gen) + factor(nutrient), Arabidopsis)
+```
+
+Existen muchos trucos para *normalizar* los datos, aqupi vamos a utilizar el más común de todos ellos, el logaritmo. Aquí, debemos de tomar en cuenta que $\ln(0) = -\infty$, entonces comenzaremos por añadir $0.1$ a toda la variable y despues aplicar el logaritmo:
+
+```{r fig.height=4, fig.width=6}
+ara.2 <- Arabidopsis
+ara.2$fruta.log <- log(ara.2$total.fruits + 0.1)
+
+boxplot(fruta.log ~ factor(gen) + factor(nutrient), ara.2)
+```
+
+ 
+
+[Regresar al índice del curso](../index.html)
+
