@@ -44,3 +44,5 @@ output:
 3. [Diseño no balanceado con efectos fijos](Unidad 3-ANOVA II/Diseño-no-balance-fijos.html)
 
 4. [Diseños con efectos mixtos (fijos y aleatorios)](Unidad 3-ANOVA II/Diseño-efectos-mixtos.html)
+
+5. [Interpretación de las interacciones](Unidad 3-ANOVA II/Interpretacion-interacciones.html)

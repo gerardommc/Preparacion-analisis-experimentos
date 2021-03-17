@@ -1,0 +1,88 @@
+---
+title: "Interpretación de las interacciones"
+author: "Gerardo Martín"
+date: "17/3/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+Interpretar las interacciones entre variables nn análisis de regresión es un poco más sencillo que en ANOVA, así que veamos un ejemplo con una ecuación lineal donde $y$ es una función de dos variables $x_1$ y $x_2$:
+
+
+\begin{equation}
+y(x_1, x_2) = a + b_1 x_1 + b_2 x_2  (\#eq:lineal)
+\end{equation}
+
+
+En un espacio lineal el producto $x_1 \cdot x_2$ no puede existir, por lo que la ecuación:
+
+\begin{equation}
+y(x_1, x_2) = a + b_1 x_1 + b_2 x_2 + b_3 x_1 x_2 (\#eq:lineal-2)
+\end{equation}
+
+tampoco existe en un espacio lineal. Sin embargo si $x_3 = x_1 \cdot x_2$, de modo que la pendiente $b_3$ de la interacción $x_1 \cdot x_2$ es lineal con respecto de $x_3$ la ecuación
+
+$$ 
+y(x_1, x_2) = a + b_1 x_1 + b_2 x_2 + b_3 x_3
+$$
+sí existe en un espacio lineal. Es en este contexto que se estiman las interacciones estadísticas entre variables independientes $x$. Geométricamente, una ecuación lineal (ecuación \@ref(eq:lineal)) sin interacciones se ve así:
+
+```{r wire-1, echo=F, fig.align="center", fig.cap="Gráfica de perspectiva de una ecuación lineal sin interacciones con $a=0$, $b_1 = 1$ y $b_2 = 1$.", fig.height=4, fig.width=4}
+df.1 <- expand.grid(x1 = 1:10, x2 = 1:10)
+df.1$y <- with(df.1,  x1 + x2)
+
+lattice::wireframe(y ~ x1 + x2, df.1, drape = T,
+                   xlab = expression(x[2]), 
+                   ylab = expression(x[1]), 
+                   zlab = expression(y))
+```
+
+y cuando hay interacciones \@ref(eq:lineal-2):
+
+```{r wire-inter, echo=F, fig.align="center", fig.cap="Gráfica de perspectiva de una ecuación lineal con interacciones con $a=0$, $b_1 = 1$, $b_2 = 1$ y $b3 = 0.5$.", fig.height=4, fig.width=4}
+df.1$y2 <- with(df.1, x1 + x2 + 0.5 * x1 * x2)
+lattice::wireframe(y2 ~ x1 + x2, df.1, drape = T,
+                   xlab = expression(x[2]), 
+                   ylab = expression(x[1]), 
+                   zlab = expression(y))
+```
+
+En las gráficas se puede apreciar cómo los valores de $y$ aumentan más rápido cuando más grandes son los valores de $x_1$ y $x_2$. Este efecto, sin embargo no es universal pues es posible que la pendiente de $b_3 < 0$:
+
+```{r wire-inter-2, echo=F, fig.align="center", fig.cap="Gráfica de perspectiva de una ecuación lineal con interacciones con $a=0$, $b_1 = 1$, $b_2 = 1$ y $b3 = - 0.5$.", fig.height=4, fig.width=4}
+df.1$y3 <- with(df.1, x1 + x2 - 0.5 * x1 * x2)
+lattice::wireframe(y3 ~ x1 + x2, df.1, drape = T,
+                   xlab = expression(x[2]), 
+                   ylab = expression(x[1]), 
+                   zlab = expression(y))
+```
+
+Debido a la existencia de grupos discretos con medias "arbitrarias" dentro de cada variable independiente ($x_1$ y $x_2$), las interacciones pueden tener efectos diversos dependiento de los niveles que interactúen. Por ejemplo, es posible que ciertas combinaciones de tratamientos de un estudio factorial tengan efectos negativos sobre ma media, mientras que otros incrementaron el valor promedio. En general, se considera que la interacciones son significativas cuando el efecto de un tratamiento depende de la presencia de otro tratamiento. Entonces, para interpretar correctamente las interacciones es necesario ver las diferencias entre grupos y los efectos estimados para cada combinación de tratamientos por el modelo estadístico.
+
+# Hipótesis estadísticas para interacciones
+
+Si pensamos en una ANOVA de una vía, donde la variable dependiente $y$ proviene de $n$ tratamientos de un factor, la hipótesis nula establece que las medias de cada tratamiento $i$ son:
+
+$$ H_0 : \bar y_1 = \bar y_2 = \dots = \bar y_n$$
+En un ANOVA de dos vías aditivo, si las medias de cada tratamiento del primer factor las denotamos por $\alpha_i$, las hipótesis nulas con respecto del efecto del primer factor independiente son:
+
+$$ H_0 : \alpha_1 = \alpha_1 = \alpha_2 = \alpha_3 = \dots = \alpha_{n-1} = \alpha_{n} $$
+y las medias del segundo factor, denotadas por  $\beta_j$ son
+
+$$H_1 :  \beta_1 = \beta_2 = \beta_3 = \dots = \beta_{m-1} = \beta_m$$
+
+En ambos casos la cantidad de efectos estimados corresponde con la cantidad de niveles que haya en cada factor. En as interacciones, el número total de efectos está determinado por el producto de la cantidad de niveles $n \times m$. Si cada efecto estimado para las diferentes interacciones es $\gamma_{i, j}$ tenemos que la hipótesis nula que se prueba es:
+
+$$ H_2 : \gamma_{1, 1} = \gamma_{1, 2} = \dots = \gamma_{2, 1} = \dots = \gamma_{n, m}$$
+
+Es por esta razon que en una tabla de ANOVA para un modelo de dos vías con interacciones se tienen tres valores de suma de cuadrados y de significancia, una para cada factor por separado y otra para cada interacción.
