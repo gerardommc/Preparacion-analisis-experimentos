@@ -86,3 +86,67 @@ En ambos casos la cantidad de efectos estimados corresponde con la cantidad de n
 $$ H_2 : \gamma_{1, 1} = \gamma_{1, 2} = \dots = \gamma_{2, 1} = \dots = \gamma_{n, m}$$
 
 Es por esta razon que en una tabla de ANOVA para un modelo de dos vías con interacciones se tienen tres valores de suma de cuadrados y de significancia, una para cada factor por separado y otra para cada interacción.
+
+# Ejemplos
+
+Aquí volveremos a analizar la base de datos `npk` y construiremos el modelo probando varias combinaciones de las variables `N`, `P` y `K`. De entrada podemos identificar tres modelos con base en las diferentes combinaciones:
+
+1. `yield ~ N * P`
+2. `yield ~ N * K`
+3. `yield ~ P * K`
+
+Para ahorrar código, ajustaremos los tres modelos con `lm` únicamente con efectos fijos (asumiremos para este análisis que no hay bloques experimentales), analizaremos sus respectivas sumas de cuadrados con $SS-II$:
+
+```{r message = F}
+data(npk)
+m1 <- lm(yield ~ N * P, data = npk)
+m2 <- lm(yield ~ N * K, data = npk)
+m3 <- lm(yield ~ P * K, data = npk)
+
+car::Anova(m1, type = 2)
+car::Anova(m2, type = 2)
+car::Anova(m3, type = 2)
+```
+
+Para comenzar a comparar los modelos podemos ver cuál tiene la suma de cuadrados más pequeña para los residuales, es decir, en promedio cuál modelo predice mejor los datos pues estos están más cercanos a las verdaderas medias de los grupos. Con esto podemos ver que `m2` con fómula `yield ~ N * K` tiene la menor suma de cuadrados de los residuales y también es el modelo en el cual la interacción tiene una $SS$ más alta. Sin embargo, en todos los casos las interacciones no parecen afectar las medias de los grupos de las distintas combinaciones de uno y otro factor. En este caso los niveles de cada factor son `1` y `0`, con lo que las comparaciones entre grupos con interacciones son sumamente sencillas, donde
+los grupos relevantes son:
+
+```{r grupos, echo = F}
+tabla <- expand.grid(N = c(0, 1), K = c(0,1))
+knitr::kable(tabla, caption = "Combinaciones de tratamientos de las interacciones", align = "c")
+```
+
+Si recordamos el significado de las interacciones en un modelo lineal como en la ecuación \@ref(eq:lineal) es $x_1 \times x_2$. Debido a que los valores de `N` y `K` son `0` y `1`, los únicos valores posibles de la interacción son `0` y `1`, es decir que sólo estamos haciendo la comparación entre los grupos que recibieron ambos tratamientos `N` y `K`. Viendo la tabla ANOVA de este modelo:
+
+```{r}
+car::Anova(m2, type = 2)
+```
+
+No podemos rechazar $H_0$ de no hay diferencia entre los tratamientos que recibieron nitrógeno y potasio y los que sí los recibieron. Debido a que este modelo es el mejor pues sus residuales fueron menores, podemos proceder a evaluar el efecto de los bloques con un modelo de efectos mixtos:
+
+```{r message = F}
+library(lme4)
+m4 <- lmer(yield ~ N * K + (1|block), data = npk)
+car::Anova(m4, type = 2)
+```
+
+En este modelo, el factor de agrupación experimental ayudó a que los tratamientos experimentales explicaran más variabilidad, lo que disminuyó los valores de $P$. Aún así podemos seguir rechazando $H_0$ de no diferencia entre los tratamientos que sí recibieron `N` y `K` y los que no los recibieron. Con base en esto, sería sensible volver a ajustar un modelo sin la interacción:
+
+```{r}
+m5 <- lmer(yield ~ N + K + (1|block), data = npk)
+car::Anova(m5, type = 2)
+```
+
+Ahora sí, me parece que este es el mejor modelo, y concluimos, biológicamente, que el efecto del nitrógeno no depende de la aplciación de potasio y viceversa. Para saber si sus efectos son positivos o negativos veamos los coeficientes ajustados:
+
+```{r}
+m5
+```
+
+Con esto vemos que la aplicación de nitrógeno aumentó la producción (`N1 = 5.617`), y que la aplicación de potasio disminuyó la producción (`K1 = - 3.983`).
+
+# Aplicación del conocimiento
+
+Dirígete a classroom para completar la actividad correspondiente.
+
+[Regresar al índice del curso](../index.html)

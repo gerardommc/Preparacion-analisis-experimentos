@@ -1593,6 +1593,137 @@ y las medias del segundo factor, denotadas por <span class="math inline">\(\beta
 <p><span class="math display">\[ H_2 : \gamma_{1, 1} = \gamma_{1, 2} = \dots = \gamma_{2, 1} = \dots = \gamma_{n, m}\]</span></p>
 <p>Es por esta razon que en una tabla de ANOVA para un modelo de dos vías con interacciones se tienen tres valores de suma de cuadrados y de significancia, una para cada factor por separado y otra para cada interacción.</p>
 </div>
+<div id="ejemplos" class="section level1">
+<h1><span class="header-section-number">3</span> Ejemplos</h1>
+<p>Aquí volveremos a analizar la base de datos <code>npk</code> y construiremos el modelo probando varias combinaciones de las variables <code>N</code>, <code>P</code> y <code>K</code>. De entrada podemos identificar tres modelos con base en las diferentes combinaciones:</p>
+<ol style="list-style-type: decimal">
+<li><code>yield ~ N * P</code></li>
+<li><code>yield ~ N * K</code></li>
+<li><code>yield ~ P * K</code></li>
+</ol>
+<p>Para ahorrar código, ajustaremos los tres modelos con <code>lm</code> únicamente con efectos fijos (asumiremos para este análisis que no hay bloques experimentales), analizaremos sus respectivas sumas de cuadrados con <span class="math inline">\(SS-II\)</span>:</p>
+<pre class="r"><code>data(npk)
+m1 &lt;- lm(yield ~ N * P, data = npk)
+m2 &lt;- lm(yield ~ N * K, data = npk)
+m3 &lt;- lm(yield ~ P * K, data = npk)
+
+car::Anova(m1, type = 2)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: yield
+##           Sum Sq Df F value  Pr(&gt;F)  
+## N         189.28  1  5.7585 0.02627 *
+## P           8.40  1  0.2556 0.61868  
+## N:P        21.28  1  0.6474 0.43049  
+## Residuals 657.40 20                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>car::Anova(m2, type = 2)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: yield
+##           Sum Sq Df F value  Pr(&gt;F)  
+## N         189.28  1  6.7752 0.01702 *
+## K          95.20  1  3.4077 0.07975 .
+## N:K        33.14  1  1.1860 0.28908  
+## Residuals 558.75 20                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>car::Anova(m3, type = 2)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: yield
+##           Sum Sq Df F value Pr(&gt;F)
+## P           8.40  1  0.2176 0.6459
+## K          95.20  1  2.4655 0.1321
+## P:K         0.48  1  0.0125 0.9122
+## Residuals 772.28 20</code></pre>
+<p>Para comenzar a comparar los modelos podemos ver cuál tiene la suma de cuadrados más pequeña para los residuales, es decir, en promedio cuál modelo predice mejor los datos pues estos están más cercanos a las verdaderas medias de los grupos. Con esto podemos ver que <code>m2</code> con fómula <code>yield ~ N * K</code> tiene la menor suma de cuadrados de los residuales y también es el modelo en el cual la interacción tiene una <span class="math inline">\(SS\)</span> más alta. Sin embargo, en todos los casos las interacciones no parecen afectar las medias de los grupos de las distintas combinaciones de uno y otro factor. En este caso los niveles de cada factor son <code>1</code> y <code>0</code>, con lo que las comparaciones entre grupos con interacciones son sumamente sencillas, donde
+los grupos relevantes son:</p>
+<table>
+<caption><span id="tab:grupos">Table 3.1: </span>Combinaciones de tratamientos de las interacciones</caption>
+<thead>
+<tr class="header">
+<th align="center">N</th>
+<th align="center">K</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td align="center">1</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+<p>Si recordamos el significado de las interacciones en un modelo lineal como en la ecuación <a href="#eq:lineal">(1.1)</a> es <span class="math inline">\(x_1 \times x_2\)</span>. Debido a que los valores de <code>N</code> y <code>K</code> son <code>0</code> y <code>1</code>, los únicos valores posibles de la interacción son <code>0</code> y <code>1</code>, es decir que sólo estamos haciendo la comparación entre los grupos que recibieron ambos tratamientos <code>N</code> y <code>K</code>. Viendo la tabla ANOVA de este modelo:</p>
+<pre class="r"><code>car::Anova(m2, type = 2)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: yield
+##           Sum Sq Df F value  Pr(&gt;F)  
+## N         189.28  1  6.7752 0.01702 *
+## K          95.20  1  3.4077 0.07975 .
+## N:K        33.14  1  1.1860 0.28908  
+## Residuals 558.75 20                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>No podemos rechazar <span class="math inline">\(H_0\)</span> de no hay diferencia entre los tratamientos que recibieron nitrógeno y potasio y los que sí los recibieron. Debido a que este modelo es el mejor pues sus residuales fueron menores, podemos proceder a evaluar el efecto de los bloques con un modelo de efectos mixtos:</p>
+<pre class="r"><code>library(lme4)
+m4 &lt;- lmer(yield ~ N * K + (1|block), data = npk)
+car::Anova(m4, type = 2)</code></pre>
+<pre><code>## Analysis of Deviance Table (Type II Wald chisquare tests)
+## 
+## Response: yield
+##       Chisq Df Pr(&gt;Chisq)    
+## N   13.1780  1  0.0002833 ***
+## K    6.6281  1  0.0100385 *  
+## N:K  2.3069  1  0.1288009    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>En este modelo, el factor de agrupación experimental ayudó a que los tratamientos experimentales explicaran más variabilidad, lo que disminuyó los valores de <span class="math inline">\(P\)</span>. Aún así podemos seguir rechazando <span class="math inline">\(H_0\)</span> de no diferencia entre los tratamientos que sí recibieron <code>N</code> y <code>K</code> y los que no los recibieron. Con base en esto, sería sensible volver a ajustar un modelo sin la interacción:</p>
+<pre class="r"><code>m5 &lt;- lmer(yield ~ N + K + (1|block), data = npk)
+car::Anova(m5, type = 2)</code></pre>
+<pre><code>## Analysis of Deviance Table (Type II Wald chisquare tests)
+## 
+## Response: yield
+##     Chisq Df Pr(&gt;Chisq)    
+## N 12.1829  1  0.0004823 ***
+## K  6.1275  1  0.0133091 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Ahora sí, me parece que este es el mejor modelo, y concluimos, biológicamente, que el efecto del nitrógeno no depende de la aplciación de potasio y viceversa. Para saber si sus efectos son positivos o negativos veamos los coeficientes ajustados:</p>
+<pre class="r"><code>m5</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: yield ~ N + K + (1 | block)
+##    Data: npk
+## REML criterion at convergence: 131.394
+## Random effects:
+##  Groups   Name        Std.Dev.
+##  block    (Intercept) 3.644   
+##  Residual             3.942   
+## Number of obs: 24, groups:  block, 6
+## Fixed Effects:
+## (Intercept)           N1           K1  
+##      54.058        5.617       -3.983</code></pre>
+<p>Con esto vemos que la aplicación de nitrógeno aumentó la producción (<code>N1 = 5.617</code>), y que la aplicación de potasio disminuyó la producción (<code>K1 = - 3.983</code>).</p>
+</div>
+<div id="aplicación-del-conocimiento" class="section level1">
+<h1><span class="header-section-number">4</span> Aplicación del conocimiento</h1>
+<p>Dirígete a classroom para completar la actividad correspondiente.</p>
+<p><a href="../index.html">Regresar al índice del curso</a></p>
+</div>
 
 
 
