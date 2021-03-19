@@ -1634,8 +1634,201 @@ car::Anova(m1, type = 2)</code></pre>
 <p>Podemos ver que ninguno de los términos de grado mayor a primero son significativos y que tienen sumas de cuadrados más bajas. Entonces es posible que un modelo más sencillo sea el que mejor explique los datos observados. El mismo proceso exhaustivo de eliminación de términos no significativos nos lleva a la misma conclusión que vimos en el tutorial de <a href="../Unidad%203-ANOVA%20II/Interpretacion-interacciones.html">intepretación de las interacciones</a>.</p>
 </div>
 </div>
-<div id="análisis-de-data-con-interacciones" class="section level2">
-<h2><span class="header-section-number">2.2</span> Análisis de <code>data</code> con interacciones</h2>
+<div id="análisis-de-heartattack" class="section level2">
+<h2><span class="header-section-number">2.2</span> Análisis de <code>heartattack</code></h2>
+<p>El paquete <code>datasets</code> contiene las bases más populares para enseñanza en <strong>R</strong>, y <code>datarium</code> está especializado en datos para su análisis con ANOVA. La base que analizaremos hoy está contenida en <code>datarium</code> y se llama <code>heartattack</code>. En breve, esta base de datos fue generada en un estudio para medir la efectividad de tres medicamentos (<code>A</code>, <code>B</code> y <code>C</code>) para disminuir los niveles de colesterol sanguíneo en hombres y mujeres (<code>male</code> y <code>female</code>) en dos categorías de riesgo (<code>low</code> y <code>high</code>) de infarto al miocardio.</p>
+<pre class="r"><code>colesterol &lt;- datarium::heartattack
+knitr::kable(head(colesterol))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">gender</th>
+<th align="left">risk</th>
+<th align="left">drug</th>
+<th align="right">cholesterol</th>
+<th align="right">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">male</td>
+<td align="left">low</td>
+<td align="left">A</td>
+<td align="right">5.238730</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">male</td>
+<td align="left">low</td>
+<td align="left">A</td>
+<td align="right">5.075693</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">male</td>
+<td align="left">low</td>
+<td align="left">A</td>
+<td align="right">4.678654</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">male</td>
+<td align="left">low</td>
+<td align="left">A</td>
+<td align="right">5.361076</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">male</td>
+<td align="left">low</td>
+<td align="left">A</td>
+<td align="right">4.957381</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">male</td>
+<td align="left">low</td>
+<td align="left">A</td>
+<td align="right">4.828897</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>knitr::kable(tail(colesterol))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">gender</th>
+<th align="left">risk</th>
+<th align="left">drug</th>
+<th align="right">cholesterol</th>
+<th align="right">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">female</td>
+<td align="left">high</td>
+<td align="left">C</td>
+<td align="right">4.953143</td>
+<td align="right">67</td>
+</tr>
+<tr class="even">
+<td align="left">female</td>
+<td align="left">high</td>
+<td align="left">C</td>
+<td align="right">5.468236</td>
+<td align="right">68</td>
+</tr>
+<tr class="odd">
+<td align="left">female</td>
+<td align="left">high</td>
+<td align="left">C</td>
+<td align="right">5.367793</td>
+<td align="right">69</td>
+</tr>
+<tr class="even">
+<td align="left">female</td>
+<td align="left">high</td>
+<td align="left">C</td>
+<td align="right">5.311907</td>
+<td align="right">70</td>
+</tr>
+<tr class="odd">
+<td align="left">female</td>
+<td align="left">high</td>
+<td align="left">C</td>
+<td align="right">5.755958</td>
+<td align="right">71</td>
+</tr>
+<tr class="even">
+<td align="left">female</td>
+<td align="left">high</td>
+<td align="left">C</td>
+<td align="right">5.258370</td>
+<td align="right">72</td>
+</tr>
+</tbody>
+</table>
+<p>Tenemos entonces que la variable de respuesta es <code>cholesterol</code>, y que las variables independientes son <code>gender</code>, <code>risk</code> y <code>drug</code>. La columna <code>id</code> es la identidad del voluntario en el estudio. Los niveles con que cuenta cada factor experimental son 2, 2, y 3, por lo que tenemos 12 combinaciones totales de tratamientos:</p>
+<pre class="r"><code>tabla.combn &lt;- expand.grid( #Creando la tabla de combinaciones
+      gender = c(&quot;male&quot;, &quot;female&quot;),
+      risk = c(&quot;low&quot;, &quot;high&quot;),
+      drug = c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;)
+      )
+knitr::kable(tabla.combn, caption = &quot;Tabla de combinaciones de tratamientos de `heartattack`&quot;)</code></pre>
+<table>
+<caption><span id="tab:colester-combn">Table 2.1: </span>Tabla de combinaciones de tratamientos de <code>heartattack</code></caption>
+<thead>
+<tr class="header">
+<th align="left">gender</th>
+<th align="left">risk</th>
+<th align="left">drug</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">male</td>
+<td align="left">low</td>
+<td align="left">A</td>
+</tr>
+<tr class="even">
+<td align="left">female</td>
+<td align="left">low</td>
+<td align="left">A</td>
+</tr>
+<tr class="odd">
+<td align="left">male</td>
+<td align="left">high</td>
+<td align="left">A</td>
+</tr>
+<tr class="even">
+<td align="left">female</td>
+<td align="left">high</td>
+<td align="left">A</td>
+</tr>
+<tr class="odd">
+<td align="left">male</td>
+<td align="left">low</td>
+<td align="left">B</td>
+</tr>
+<tr class="even">
+<td align="left">female</td>
+<td align="left">low</td>
+<td align="left">B</td>
+</tr>
+<tr class="odd">
+<td align="left">male</td>
+<td align="left">high</td>
+<td align="left">B</td>
+</tr>
+<tr class="even">
+<td align="left">female</td>
+<td align="left">high</td>
+<td align="left">B</td>
+</tr>
+<tr class="odd">
+<td align="left">male</td>
+<td align="left">low</td>
+<td align="left">C</td>
+</tr>
+<tr class="even">
+<td align="left">female</td>
+<td align="left">low</td>
+<td align="left">C</td>
+</tr>
+<tr class="odd">
+<td align="left">male</td>
+<td align="left">high</td>
+<td align="left">C</td>
+</tr>
+<tr class="even">
+<td align="left">female</td>
+<td align="left">high</td>
+<td align="left">C</td>
+</tr>
+</tbody>
+</table>
 <p><a href="../index.html">Regresar al índice del curso</a></p>
 </div>
 </div>

@@ -62,7 +62,26 @@ car::Anova(m1, type = 2)
 
 Podemos ver que ninguno de los términos de grado mayor a primero son significativos y que tienen sumas de cuadrados más bajas. Entonces es posible que un modelo más sencillo sea el que mejor explique los datos observados. El mismo proceso exhaustivo de eliminación de términos no significativos nos lleva a la misma conclusión que vimos en el tutorial de [intepretación de las interacciones](../Unidad 3-ANOVA II/Interpretacion-interacciones.html).
 
-## Análisis de `data` con interacciones
+## Análisis de `heartattack`
+
+El paquete `datasets` contiene las bases más populares para enseñanza en **R**, y `datarium` está especializado en datos para su análisis con ANOVA. La base que analizaremos hoy está contenida en `datarium` y se llama `heartattack`. En breve, esta base de datos fue generada en un estudio para medir la efectividad de tres medicamentos (`A`, `B` y `C`) para disminuir los niveles de colesterol sanguíneo en hombres y mujeres (`male` y `female`) en dos categorías de riesgo (`low` y `high`) de infarto al miocardio.
+
+```{r}
+colesterol <- datarium::heartattack
+knitr::kable(head(colesterol))
+knitr::kable(tail(colesterol))
+```
+
+Tenemos entonces que la variable de respuesta es `cholesterol`, y que las variables independientes son `gender`, `risk` y `drug`. La columna `id` es la identidad del voluntario en el estudio. Los niveles con que cuenta cada factor experimental son 2, 2, y 3, por lo que tenemos 12 combinaciones totales de tratamientos:
+
+```{r colester-combn}
+tabla.combn <- expand.grid( #Creando la tabla de combinaciones
+      gender = c("male", "female"),
+      risk = c("low", "high"),
+      drug = c("A", "B", "C")
+      )
+knitr::kable(tabla.combn, caption = "Tabla de combinaciones de tratamientos de `heartattack`")
+```
 
 
 
