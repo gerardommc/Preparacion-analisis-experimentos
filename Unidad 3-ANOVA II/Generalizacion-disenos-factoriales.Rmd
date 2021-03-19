@@ -36,7 +36,7 @@ lo que equivale a la fórmula expandida:
 
 `yield ~ N + P + K + N:P + N:K + P:K + N:P:K`
 
-Si nos referimos a la clase de [interpretación de las interacciones](../Unidad 3-ANOVA II/Interpretación-interacciones.html), recordaremos que para una interacción de tres factores la hipótesis nula que estamos probando es la de no diferencia entre los grupos que recibieron nitrógeno, fósforo y potasio con aquellos que no los recibieron todos. La misma interpretación aplica para los términos de segundo orden (`N:P`, `N:K` y `K:P`). 
+Si nos referimos a la clase de [interpretación de las interacciones](../Unidad 3-ANOVA II/Interpretacion-interacciones.html), recordaremos que para una interacción de tres factores la hipótesis nula que estamos probando es la de no diferencia entre los grupos que recibieron nitrógeno, fósforo y potasio con aquellos que no los recibieron todos. La misma interpretación aplica para los términos de segundo orden (`N:P`, `N:K` y `K:P`). 
 
 La $SS-II$ para este modelo es más complicada que para el ANOVA de dos vías. Para comprender la manera en que los efectos se están estimando veamos cuáles son las sumas de cuadrados que se ajustan y los modelos con los que se evalúa la significancia de la suma de cuadrados para cada término del modelo:
 
