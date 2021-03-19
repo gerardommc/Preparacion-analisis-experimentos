@@ -46,3 +46,5 @@ output:
 4. [Diseños con efectos mixtos (fijos y aleatorios)](Unidad 3-ANOVA II/Diseño-efectos-mixtos.html)
 
 5. [Interpretación de las interacciones](Unidad 3-ANOVA II/Interpretacion-interacciones.html)
+
+6. [Generalización a modelos con más criterios de clasificación](Unidad 3-ANOVA II/Generalizacion-disenos-factoriales.html)

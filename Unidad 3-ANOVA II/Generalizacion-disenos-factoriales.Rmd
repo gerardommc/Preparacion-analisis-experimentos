@@ -1,0 +1,69 @@
+---
+title: "Generalización a modelos factoriales con más de dos criterios de clasificación"
+author: "Gerardo Martín"
+date: "19/3/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+El modelo ANOVA de dos vías es la puerta a la extensión de los diseños factoriales con todos los criterios de clasificación posibles. En teoría es *posible* hacer un experimento y su análisis con un número muy grande de factores con muchos niveles. Sin embargo la interpretación de los análisis de diseños experimentales con muchos factores con muchos niveles puede ser muy complicado. Es por ello que se recomienda que los experimentos sean tan sencillos como sea posible o sensible desde un punto de vista estadístico y biológico.
+
+Como es de esperarse el primer modelo más complejo que el ANOVA de dos vías es aquel que utiliza tres criterios de clasificación. Estadísticamente, es complicado hacer el análisis de dichos diseños, máxime si existen factores de agrupación como los bloques experimentales. De hecho, los paquetes estadísticos de **R** especializados en la modelación con efectos mixtos únicamente permiten la especificación de efectos de segundo nivel, es decir, interacciones de dos factores, independientemente de la existencia de más factores experimentales.
+
+Para esta clase haremos el análisis completo de la base `npk` con efectos mixtos utilizando el paquete `lme4`. 
+
+# Ejemplos de análisis
+
+## ANOVA de tres vías
+
+### Análisis de `npk` con interacción de $3^{er}$ grado
+
+Para una descripción de la base `npk` pueden dirigirse a la clase [Diseños con efectos mixtos](../Unidad 3-ANOVA II/Diseño-efectos-mixtos.html). Aquí nos limitaremos a analizar la base de datos comenzando por el modelo:
+
+`yield ~ N * P * K`
+
+lo que equivale a la fórmula expandida:
+
+`yield ~ N + P + K + N:P + N:K + P:K + N:P:K`
+
+Si nos referimos a la clase de [interpretación de las interacciones](../Unidad 3-ANOVA II/Interpretación-interacciones.html), recordaremos que para una interacción de tres factores la hipótesis nula que estamos probando es la de no diferencia entre los grupos que recibieron nitrógeno, fósforo y potasio con aquellos que no los recibieron todos. La misma interpretación aplica para los términos de segundo orden (`N:P`, `N:K` y `K:P`). 
+
+La $SS-II$ para este modelo es más complicada que para el ANOVA de dos vías. Para comprender la manera en que los efectos se están estimando veamos cuáles son las sumas de cuadrados que se ajustan y los modelos con los que se evalúa la significancia de la suma de cuadrados para cada término del modelo:
+
+
+| **Término ** | Modelo nulo                  | Modelo alternativo                   |
+|:-------------|:-----------------------------|:-------------------------------------|
+| `N`          |`P + K + P:K`                 |`N + P + K + P:K`                     |
+| `P`          |`N + K + N:K`                 |`N + P + K + N:K`                     |
+| `K`          |`N + P + N:P`                 |`N + P + K + N:P`                     |
+| `N:P`        |`N + P + K + N:K + P:K`       |`N + P + K + N:P + N:K + P:K`         |
+| `N:K`        |`N + P + K + N:P + P:K`       |`N + P + K + N:P + N:K + P:K`         |
+| `P:K`        |`N + P + K + N:P + N:K`       |`N + P + K + N:P + N:K + P:K`         |
+| `N:P:K`      |`N + P + K + N:P + N:K + P:K` |`N + P + K + N:P + N:K + P:K + N:P:K` |
+
+En esta tabla, *modelo nulo* es el modelo con que el modelo alternativo se compara. Nota que el término para el cual se estiman los efectos **siempre** está presente en el modelo alternativo. Además, nunca hay términos de mayor grado que incluyan al término cuyo efecto se está estimando, lo cual se conoce como principio de marginalidad.
+
+Continuando con el análisis:
+
+```{r}
+m1 <- lme4::lmer(yield ~ N * P * K + (1|block), npk)
+car::Anova(m1, type = 2)
+```
+
+Podemos ver que ninguno de los términos de grado mayor a primero son significativos y que tienen sumas de cuadrados más bajas. Entonces es posible que un modelo más sencillo sea el que mejor explique los datos observados. El mismo proceso exhaustivo de eliminación de términos no significativos nos lleva a la misma conclusión que vimos en el tutorial de [intepretación de las interacciones](../Unidad 3-ANOVA II/Interpretacion-interacciones.html).
+
+## Análisis de `data` con interacciones
+
+
+
+[Regresar al índice del curso](../index.html)
