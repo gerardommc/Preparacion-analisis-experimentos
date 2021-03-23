@@ -55,7 +55,7 @@ En esta tabla, *modelo nulo* es el modelo con que el modelo alternativo se compa
 
 Continuando con el análisis:
 
-```{r}
+```{r message = F}
 m1 <- lme4::lmer(yield ~ N * P * K + (1|block), npk)
 car::Anova(m1, type = 2)
 ```
@@ -83,6 +83,54 @@ tabla.combn <- expand.grid( #Creando la tabla de combinaciones
 knitr::kable(tabla.combn, caption = "Tabla de combinaciones de tratamientos de `heartattack`")
 ```
 
+### Análisis previo de normalidad
 
+Comenzaremos por verificar visualmente si `cholesterol` cumple con el supuesto de normalidad:
+
+```{r fig.height=4, fig.width=8}
+boxplot(cholesterol ~ gender + risk + drug, colesterol)
+```
+
+Parece que en este caso también tenemos razones para sospechar que `colesterol`, dentro de cada grupo experimental no es normal. Entonces revisaremos con `shapiro.test` dentro de cada grupo. Vamos a utilizar un método que nos permitirá hacer la prueba con sólo un [comando](https://www.datanovia.com/en/lessons/anova-in-r/#summary-statistics-1):
+
+```{r }
+library(tidyverse); library(rstatix)
+shap.test <- colesterol %>%
+   group_by(gender, risk, drug) %>%
+   shapiro_test(cholesterol)
+knitr::kable(shap.test, caption = "Resultados de la prueba de Shapiro dentro de cada grupo experimental.")
+```
+Podemos ver que sólo hay uhn grupo (`female, high, A`) que no cumple con el supuesto de normalidad. Veamos entonces si este grupo solo puede afectar la validez de toda la prueba. Haremos ANOVA con `lm` ya que no hay ningún factor de agrupación de tratamientos experimentales (bloques).
+
+```{r}
+m1 <- lm(cholesterol ~ gender * risk * drug, data = colesterol)
+car::Anova(m1, type = 2)
+```
+Como podemos ver, la triple interacción `gender:risk:drug` es bastante significativa, y de hecho explica una buena parte de la variación, pero también tenemos dos términos de segundo orden, `gender:risk` y `risk:drug` que no son significativos, y de hecho sus sumas de cuadrados son bastante pequeñas. Es importante notar esto, pues si recordamos el principio de marginalidad, la base para $SS-II$, indica que si un término de mayor orden incluye otro término de orden menor ambos deberán estar en el modelo. Este principio es sólo eso, un principio y se puede ignorar, porque de manera práctica podríamos ajustar un modelo que no incluya esos términos que no fueron significativos. Antes de proceder, podemos verificar que el modelo sea correcto:
+
+```{r fig.height=6, fig.width=6}
+par(mfrow = c(2,2))
+plot(m1)
+```
+
+Este diagnóstico sugiere que el modelo es adecuado para los datos. Entonces sólo vamos a hacer una comparación con un modelo que no incluya al término con la menor suma de cuadrados (`gender:risk`), y compararemos ambos modelos usando `anova`:
+
+```{r}
+m2 <- lm(cholesterol ~ gender + risk + drug + gender:drug + risk:drug + gender : risk : drug, data = colesterol)
+anova(m1, m2)
+```
+
+Y la diferencia en la suma de cuadrados explicada por ambos modelos es mínima, por lo que es probable que eliminar ese término no beneficie ni perjudique. Por lo tanto concluimos que el efecto de la droga depende tanto de si el que la recibe es hombre o mujer y se est@ está en un grupo de alto riesgo. Ahora, para ver si el nivel de colesterol fue significativamente diferente de la media global podemos volver a ajustar un modelo con las medias para `male` y `female`  como intercepto y ver el coeficiente para las triples interacciones:
+
+```{r}
+m3 <- lm(cholesterol ~ 0 + gender * risk * drug, colesterol)
+summary(m3)
+```
+
+Los dos efectos estimados para las triples interacciones son significativamente diferentes de su respectivo intercepto, y efectivamente disminuyeron la concentracion de colesterol.
+
+# Aplicación del conocimiento
+
+Dirígete a classroom para completar la actividad correspondiente a esta sección.
 
 [Regresar al índice del curso](../index.html)

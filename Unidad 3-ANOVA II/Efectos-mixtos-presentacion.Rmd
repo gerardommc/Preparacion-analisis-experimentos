@@ -1,0 +1,104 @@
+---
+title: "Modelos con efectos mixtos"
+author: "Gerardo Martín"
+date: "22/3/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Intro
+
+1. Efectos fijos + aleatorios = efectos mixtos
+
+      1.1. Fijos - Afectan la media de tratamientos
+      
+      1.2. Aleatorios - Afectan varianza de toda la respuesta
+      
+# Efectos fijos
+
+## En distribución normal
+
+```{r echo = F}
+curve(dnorm(x, mean = 0, sd = 1), from = -3, to = 3)
+curve(dnorm(x, mean = 1, sd = 1), from = -3, to = 3, col = "red", add = T)
+abline(v = 0)
+abline(v = 1, col = "red")
+```
+
+# Efectos aleatorios
+
+## En distribución normal
+
+```{r echo = F}
+curve(dnorm(x, mean = 0, sd = 1), from = -3, to = 3)
+curve(dnorm(x, mean = 1, sd = 1), from = -3, to = 3, col = "red", add = T)
+abline(v = c(-1, 1), lty = 2)
+abline(v = c(0, 2), col = "red", lty = 2)
+```
+
+# Modelos de efectos aleatorios
+
+## Ejemplo en ANOVA
+
+1. Estimación de medias
+
+      1.1. Media global de experimento
+      
+            1.1.2. Tratamientos son efectos aleatorios:
+            
+            `aov(formula = y ~ 1 + Error(1/Tratamientos), datos)`
+            
+## Otras aplicaciones
+
+1. Modelo de captura, marca-recaptura (estimación de parámetros poblacionales)
+
+      1.1. Tasa reproductiva
+      
+      1.2. Densidad poblacional
+      
+2. Efecto aleatorio
+      
+      2.1. Temporada de muestreo
+      
+      2.2. Número de sesión de muestreo
+      
+      2.3. Parcela/sitio
+      
+# Modelos mixtos en **R**
+
+## `aov` vs `lmer`
+
+1. `aov` - Usa operaciones aritméticas de suma de cuadrados
+
+2. `lmer` - Usa máxima verosimilitud:
+
+      2.1. Rutina computacional para optimizar:
+      
+     $$ \frac{1}{\sigma_i\sqrt{2\pi}} \exp \left( - \frac{(x_i - \mu_i)^2}{2 \sigma_i^2} \right) $$
+
+donde $x_i$ valores de tratamiento $i$, $\mu_i$ media, $\sigma_i$ desviación estándar.
+
+## Ejemplo
+
+```{r echo = F}
+curve(dnorm(x, mean = 0, sd = 1), from = -3, to = 3)
+curve(dnorm(x, mean = 1, sd = 2), from = -3, to = 3, col = "grey80", add = T)
+curve(dnorm(x, mean = 0.5, sd = 1.5), from = -3, to = 3, col = "grey80", add = T)
+curve(dnorm(x, mean = 0.25, sd = 1.25), from = -3, to = 3, col = "grey80", add = T)
+curve(dnorm(x, mean = 0.125, sd = 1.125), from = -3, to = 3, col = "grey80", add = T)
+curve(dnorm(x, mean = 0.06125, sd = 1.06125), from = -3, to = 3, col = "grey80", add = T)
+```
+
+## Para efectos mixtos
+
+1. $\sigma_2$ global es una matriz de covarianza entre tratamientos:
+
+|    | t1 | t2 | t3 |
+| t1 | 0  | $\sigma_1 \sigma_2$   |  $\sigma_1 \sigma_3$  |
+| t2 |  $\sigma_2 \sigma_1$  | 0  |  $\sigma_2 \sigma_3$  |
+| t3 |  $\sigma_3 \sigma_1$  | $\sigma_3 \sigma_2$  | 0  |
+
+      
