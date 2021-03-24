@@ -1,0 +1,42 @@
+---
+title: "Split-plot"
+author: "Gerardo Martín"
+date: "23/3/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+El diseño split-plot, o de parcelas divididas fue diseñado para combinar factores que tienen escalas espaciales dispares. Como la mayoría de métodos de diseño y análisis de experimentos fueron diseñados en agricultura, el ejemplo clásico de este diseño sería la combinación de tipos de suelo y fertilizante. El tipo de suelo es un atributo geográfico que es difícil de manipular, por lo que el diseño más práctico es la identificación de parcelas con cada tipo de suelo de interés y la aplicación de los fertilizantes en diferentes parcelas dentro de cada tipo de suelo ([Yates 1935](https://www.jstor.org/stable/2983638?seq=1)).
+
+He aquí un breve esquema de un diseño split-plot:
+
+```{r split-plot, echo=F, fig.height=4, fig.width=6, fig.align='center', fig.cap="Esquema de un diseño split-plot. Los colores indican los tipos de suelo y las letras los fertilizantes. El esquema no muestra ningún tipo de disposición espacial de las unidades experimentales y es meramente ilustrativo del concepto."}
+source("../Random-functions/Shuffle.R")
+df.1 <- expand.grid(x = 1:3, y = 1:2)
+df.1$Suelo <- rep(LETTERS[1:3], 2)
+x.fert <- c(0.75, 1.25, 1.75, 2.25, 2.75, 3.25)
+y.fert <- c(1,2)
+
+xy.fert <- expand.grid(x = x.fert, y = y.fert)
+xy.fert$Fertilizante <- rep(LETTERS[4:5], 6)
+
+library(ggplot2)
+
+ggplot() + geom_tile(aes(x = x, y = y, fill = Suelo), data = df.1) + 
+      geom_text(aes(x = x, y = y, label = Fertilizante), data = xy.fert) +
+      theme(legend.position = "none",
+            axis.text = element_blank(),
+            axis.title = element_blank(),
+            axis.ticks = element_blank())
+```
+
