@@ -51,7 +51,7 @@ output:
 
 # Otros diseños frecuentemente usados
 
-1. [Diseños "split-plot" (parcelas divididas)](Unidad 3-Otros disenos/Split-plot.html)
+1. [Diseños "split-plot" (parcelas divididas)](Unidad 4-Otros disenos/Split-plot.html)
 
 2. [Cuadrado latino]
 
