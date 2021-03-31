@@ -18,18 +18,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 El diseño de cuadrado latino se propuso, en estudios de agricultura, con dos objetivos generales:
 
-1. Aumentar la heterogeneidad de efectos externos no medidos para contar con réplicas
+1. Aumentar la heterogeneidad de efectos externos no medidos en las réplicas experimentales
 2. Combinar tratamientos de experimentos factoriales
 
-La característica principal del cuadrado latino es que en cada fila y columna sólo debe aparecer una vez cada factor o combinación de factores. El caso del primer objetivo del cuadrado latino, lo vimos marginalmente en el la unidad 1.
+La característica principal del cuadrado latino es que en cada fila y columna aparece sólo una vez cada factor o combinación de factores. El caso del primer objetivo del cuadrado latino, lo vimos marginalmente en el la unidad 1. Y con base en este objetivo, podemos ver que para justificar la utilización de un cuadrado latino es necesario identificar si:
 
-```{r Cuadrado, echo = F, fig.align="center", fig.cap="Diseño de cuadrado latino para aumentar la heterogeneidad de los factores externos."}
+1. Existe algún componente heterogéneo en el espacio físico donde haremos el experimento
+2. El espacio es compatible con el tamaño mínimo de las parcelas para el experimento
+3. Hay espacio suficiente en cada parcela para la operación de algún equipo especializado para su mantenimiento o para registrar las observaciones o mediciones
+
+```{r Cuadrado, echo = F, fig.align="center", fig.cap="Diseño de cuadrado latino para aumentar la heterogeneidad de los factores externos.", out.width="70%"}
 knitr::include_graphics("../Unidad 1-Introducción/Fertilizante-cuadrado.png")
 ```
 
-El ejemplo de la tabla \@ref(tab:Cuadrado) aumenta la heterogeneidad de las condiciones de manera homogénea para cada tratamiento, y en dicho ejemplo existen pocas variantes posibles del cuadrado pues solamente considera tres tratamientos. El número de cuadrados latinos posibles aumenta considerablemente cuando existen más tratamientos, pues la colocación de los tratamientos en cada celda puede ser aleatorio mientras se cumpla la condición de no-repetición por fila y columna. Como es de intuirse, el diseño de cuadrado latino tiene ciertas limitantes para diseños de una vía, y la principal es que el número de réplicas depende del número de niveles del factor experimental. Esta limitación del cuadrado latino tiene implicaciones importantes en diseños factoriales.
+El ejemplo de la figura \@ref(fig:Cuadrado) aumenta la heterogeneidad de las condiciones de manera homogénea para cada tratamiento, y en dicho ejemplo existen pocas variantes posibles del cuadrado pues solamente considera tres tratamientos. El número de cuadrados latinos posibles aumenta considerablemente cuando existen más tratamientos, pues la colocación de los tratamientos en cada celda puede ser aleatorio mientras se cumpla la condición de no-repetición por fila y columna. Como es de intuirse, el diseño de cuadrado latino tiene ciertas limitantes para diseños de una vía, y la principal es que el número de réplicas depende del número de niveles del factor experimental. Esta limitación del cuadrado latino tiene implicaciones importantes en diseños factoriales, la primera de ellas es que sólo permite la realización de experimentos con factores con el mismo número de niveles.
 
-## Limitaciones del cuadrado latino para diseños factoriales
+# Limitaciones del cuadrado latino para diseños factoriales
 
 Para comenzar consideremos un diseño de dos factores con tres niveles cada uno:
 
@@ -46,6 +50,10 @@ Si vemos con atención, tenemos que cada tratamiento aparece tres veces, por lo 
 
 Para poder estimar los efectos de las interacciones, entonces, sería necesario contar con repeticiones del diseño de cuadrado latino. Como hemos visto anteriormente, las interacciones pueden o no occurrir en el mundo real (análisis de `npk`), por lo que la decisión del diseño experimental debe tomar en cuenta si pueden existir interacciones entre los factores experimentales.
 
-En caso de contar con repeticiones del cuadrado latino, el análisis se reducirá a un ANOVA de dos vías (en caso de contar con sólo dos factores experimentales) con efectos mixtos (El factor de agrupación experimental será cada cuadrado latino). Como es de esperarse también, el número de cuadrados latinos depende del número de factores experimentales, idealmente se debe contar con $N+1$ cuadrados latinos donde $N$ es el número de factores.
+En caso de contar con repeticiones del cuadrado latino, el análisis se reducirá a un ANOVA de dos vías (en caso de contar con sólo dos factores experimentales) con efectos mixtos (El factor de agrupación experimental será cada cuadrado latino). Como es de esperarse también, el número de cuadrados latinos necesarios para estimar las interacciones depende del número de factores experimentales. En todos los casos, se debe contar cuano menos con $N+1$ cuadrados latinos si $N$ es el número de factores experimentales.
+
+# Verificación del conocimiento
+
+Dirígete a classroom para completar la actividad correspondiente a esta sección.
 
 [Regresar al índice del curso](../index.html)
