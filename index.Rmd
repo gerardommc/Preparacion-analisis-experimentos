@@ -61,6 +61,8 @@ output:
 
 3. [Diseño de medidas repetidas sin réplicas](Unidad 4-Otros disenos/Medidas-repetidas.html)
 
+      3.1 [Medidas repetidas y diseños anidados](Unidad 4-Otros disenos/Medidas-slides.html)
+
 4. [Control asimétrico](Unidad 4-Otros disenos/Control-asimetrico.html)
 
 # Regresión y correlación

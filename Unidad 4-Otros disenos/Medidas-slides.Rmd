@@ -1,0 +1,12 @@
+---
+title: "Medidas repetidas"
+author: "Gerardo Martín"
+date: "2/4/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Introducción

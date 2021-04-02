@@ -110,7 +110,7 @@ lmer(y ~ x1 + x2 + (1|filas) + (1|columnas), datos)
 
 El modelo es aditivo porque no podemos ajustar la interacción $x_1 : x_2$
 
-# Limitaciones
+# Ventajas y limitaciones
 
 ## Logísticas
 
@@ -144,7 +144,7 @@ knitr::include_graphics("../Unidad 1-Introducción/Diseño-1.png")
 
       1.1. Cualidades heterogéneas del suelo
       
-```{r Nitro, echo = F, eval = T, out.width="60%", fig.cap="Ejemplo de gradiente espacial", fig.align='center'}
+```{r Nitro, echo = F, eval = T, out.width="70%", fig.cap="Ejemplo de gradiente espacial", fig.align='center'}
 x <- 1:10
 y <- 1:10
 
