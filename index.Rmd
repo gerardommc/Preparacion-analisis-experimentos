@@ -57,7 +57,7 @@ output:
 
 2. [Cuadrado latino](Unidad 4-Otros disenos/Cuadrado-latino.html)
 
-      2.1. [Ventajas y limitaciones](Unidad 4-Otros disenos/Cuadrado-vent-lim-slides.html)
+      2.1. [Características, ventajas y limitaciones](Unidad 4-Otros disenos/Cuadrado-vent-lim-slides.html)
 
 3. [Diseño de medidas repetidas sin réplicas](Unidad 4-Otros disenos/Medidas-repetidas.html)
 
