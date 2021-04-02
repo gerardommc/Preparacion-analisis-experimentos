@@ -66,7 +66,7 @@ Desde un punto de vista estadístico, la varianza de los datos en el diseño com
 
 Los experimentos con mediciones repetidas generalmente se consideran como un diseño distinto al split-plot, aunque en esencia y estadísticamente son equivalentes. Las mediciones repetidas sobre la misma unidad experimental pueden ocurrir tanto con el objetivo de registrar el efecto del tiempo de exposición al tratamiento, como con el objetivo de reducir costos.
 
-#### Eefecto del tiempo de exposición al tratamiento
+#### Efecto del tiempo de exposición al tratamiento
 
 El paquete `datarium` contiene ejemplos de mediciones repetidas con este objetivo. El primero es la base de datos `selfesteem2` (autoestima 2), que consiste del registro del *nivel* de autoestima de 12 individuos inscritos en dos experimentos clínicos para ver el efecto de una dieta especial comparadas con un placebo. A cada individuo se le registró el nivel de autoestima en tres ocasiones durante un período de cuatro semanas que corresponden con el inicio, intermedio y final del experimento. Los mismos individuos participaron en la aplicación de ambos tratamientos (dieta y placebo), por lo que el experimento consta de  medidas repetidas de dos tratamiento en cada individuo (factor de anidación).
 
@@ -102,7 +102,7 @@ names(auto.l) <- c("id", "tratamiento", "tiempo", "auto")
 
 Para comenzar, veremos cómo se distribuyen los datos alrededor de la media, y si éstos se desvían significativamente de la normalidad con `shapiro_test`:
 
-```{r fig.height=4, fig.width=8, fig.cap="Gráfico de cajas del nivel de autoestima en función del tiempo y la dieta.", fig.align="center"}
+```{r box-self, fig.height=4, fig.width=8, fig.cap="Gráfico de cajas del nivel de autoestima en función del tiempo y la dieta.", fig.align="center"}
 boxplot(auto ~ tiempo + tratamiento, auto.l)
 ```
 
@@ -121,13 +121,13 @@ m1 <- aov(auto ~ tiempo * tratamiento, auto.l)
 summary(m1)
 ```
 
-A estas alturas, nos resulta evidente que hay pocas razones para rechazar las hipótesis, nulas, excepto por el efecto de `tratamiento`. Como ya sabemos, los datos de este experimento fueron generados con un diseño split-plot. En este experimento, ambos factores están anidados en los individuos, de modo que en `aov` debemos especificarlo en los efectos aleatorios como `Error(id/(tiempo * tratamiento))`. Esta especificación hará que los efectos de ambos factores experimentales se estimen para cada individuo participante y que por lo tanto se pierdan muchos grados de libertad en los residuales:
+A estas alturas, nos resulta evidente que hay pocas razones para rechazar las hipótesis, nulas, excepto por el efecto de `tratamiento`. Como ya sabemos, los datos de este experimento fueron generados con un diseño split-plot. En este experimento, ambos factores están anidados en los individuos, y `tiempo` está anidado en `tratamiento`, de modo que en `aov` debemos especificarlo en los efectos aleatorios como `Error(id/tratamiento/tiempo)`. Esta especificación hará que los efectos de ambos factores experimentales se estimen para cada individuo participantey que el efecto de tiempo se estime para cada nivel de `tratamiento` y que por lo tanto se pierdan grados de libertad en los residuales:
 
 ```{r message = 4}
-m2 <- aov(auto ~ tiempo * tratamiento + Error(id/(tiempo * tratamiento)), auto.l)
+m2 <- aov(auto ~ tiempo * tratamiento + Error(id/tratamiento/tiempo), auto.l)
 summary(m2)
 ```
-Como podemos ver, las conclusiones serían completamente diferentes entre un método y otro. Cuando incluimos correctamente los efectos aleatorios, rechazamos todas las hipótesis nulas, particularmente sobre la interacción `tiempo:tratamiento`, con lo que concluimos que el efecto del tratamiento con dieta depende del tiempo que ésta dure.
+Como podemos ver, las conclusiones serían completamente diferentes entre un método y otro. Cuando incluimos correctamente los efectos aleatorios, rechazamos todas las hipótesis nulas, particularmente sobre la interacción `tiempo:tratamiento`, con lo que concluimos que el efecto del tratamiento con dieta depende del tiempo que ésta dure, pues como resulta evidente en la figura \@ref(fig:box-self), el nivel de autoestima incrementa con el tiempo cuando los individuos consumieron la dieta en comparación con el control, donde el nivel de autoestima disminuyó con el tiempo.
 
 [Regresar al índice del curso](../index.html)
 

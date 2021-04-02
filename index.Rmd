@@ -53,6 +53,8 @@ output:
 
 1. [Diseños "split-plot" (parcelas divididas)](Unidad 4-Otros disenos/Split-plot.html)
 
+      1.1. [Presentación de split-plot](Unidad 4-Otros disenos/Split-plot-slides.html)
+
 2. [Cuadrado latino](Unidad 4-Otros disenos/Cuadrado-latino.html)
 
 3. [Diseño de medidas repetidas sin réplicas](Unidad 4-Otros disenos/Medidas-repetidas.html)
