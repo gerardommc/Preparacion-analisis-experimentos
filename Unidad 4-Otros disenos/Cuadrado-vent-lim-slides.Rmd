@@ -1,5 +1,5 @@
 ---
-title: 'Cuadrado latino: ventajas y limitaciones'
+title: 'El cuadrado latino'
 author: "Gerardo Martín"
 date: "2/4/2021"
 output: ioslides_presentation
@@ -35,6 +35,8 @@ $$ \mathrm{Factor\ B} = \{\alpha, \beta, \gamma \}$$
 | $c, \beta$  | $a, \gamma$| $b, \alpha$ |
 | $b, \gamma$ | $c, \alpha$ | $a,  \beta$ |
 
+
+A este diseño también se le conoce como cuadrado greco-latino
 
 ## Resultado de combinaciones
 
@@ -94,3 +96,55 @@ Donde el número de tratamientos de $x_1$ es el mismo que de $x_2$
 aov(y = x1 * x2 + Error(bloque/(x1*x2)), datos)
 ```
 
+## Modelos alternativos
+
+1. Frecuentemente en diseños CL se considera que
+
+      1.1. Hay dos factores de agrupación --filas y columnas
+      1.2. Es posible modelarlos con efectos aleatorios
+      
+```{r echo = T, eval = F}
+library(lme4)
+lmer(y ~ x1 + x2 + (1|filas) + (1|columnas), datos)
+```
+
+El modelo es aditivo porque no podemos ajustar la interacción $x_1 : x_2$
+
+# Limitaciones
+
+## Logísticas
+
+```{r out.width="50%", fig.cap="Diseño de cuadrado latino simple", fig.align='center'}
+knitr::include_graphics("../Unidad 1-Introducción/Fertilizante-cuadrado.png")
+```
+
+## Logísticas
+
+1. Complejidad crece a ritmo $N^2$
+
+2. Pocos tratamientos = Pocos grados de libertad
+
+3. Se recomienda:
+
+      3.1. $4 \geq N \leq 8$
+
+4. Si interacciones biológicas son posibles $\rightarrow$ **EVITAR**
+      
+## Ventajas
+
+```{r out.width="70%", fig.align='center', fig.cap="Diseño de cuadrado latino con cuatro tratamientos (no balanceado)."}
+knitr::include_graphics("../Unidad 1-Introducción/Diseño-1.png")
+```
+
+## Consideraciones
+
+1. Muy útil cuando hay un gradiente espacial
+
+      1.1. Cualidades heterogéneas del suelo
+      
+      1.2. Efecto de borde en invernadero
+      
+2. Si no hay un gradiente que tomar en cuenta $\rightarrow$ **EVITAR**
+
+
+[Regresar al índice del curso](../index.html)
