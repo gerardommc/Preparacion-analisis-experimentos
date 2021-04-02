@@ -1,0 +1,96 @@
+---
+title: 'Cuadrado latino: ventajas y limitaciones'
+author: "Gerardo Martín"
+date: "2/4/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Introducción al cuadrado latino
+
+## Historia y cualidades
+
+1. Desarrollado para:
+
+      1.1. Aumentar condiciones externas en experimentos
+      
+      1.2. Combinar varios factores
+
+2. Arreglo en filas y columnas de factores experimentales
+
+      2.1. Cada factor aparece 1 vez por fila y columna
+      
+      2.2. Factor con $N$ niveles $\rightarrow$ cuadro $N \times N$
+      
+## Combinación de varios factores
+
+$$ \mathrm{Factor\ A} = \{a, b, c \} $$
+$$ \mathrm{Factor\ B} = \{\alpha, \beta, \gamma \}$$
+
+| $a, \alpha$ | $b, \beta$ | $c, \gamma$|
+|:---|:---|:---|
+| $c, \beta$  | $a, \gamma$| $b, \alpha$ |
+| $b, \gamma$ | $c, \alpha$ | $a,  \beta$ |
+
+
+## Resultado de combinaciones
+
+1. Sólo para estudios simétricos (factores con mismo número de niveles)
+
+      1.1. Cuadrados superpuestos
+
+2. Cada combinación aparece 1 vez
+
+3. Estadísticamente:
+
+      3.1. Sólo se estiman efectos aditivos (no hay grados de libertad para interacciones)
+      
+      3.2. Se necesitan más cuadrados para estimar interacciones
+      
+            3.2.1. Deben ser aleatorizados
+            
+# Análisis
+
+## Un sólo cuadrado
+
+1. Cada *bloque* es una réplica
+
+2. $N$ tratamientos = $N$ réplicas
+
+3. Para análisis de 1 sólo factor  en **R**:
+
+```{r echo = T, eval=F}
+aov(y ~ x, datos)
+lm(y ~ x, datos)
+```
+
+4. De dos factores (efectos aditivos únicamente):
+
+```{r echo = T, eval = F}
+aov(y ~ x1 + x2, datos)
+lm(y ~ x1 + x2, datos)
+```
+
+Donde el número de tratamientos de $x_1$ es el mismo que de $x_2$
+
+## Más de un cuadrado
+
+1. Cada cuadrado aleatorizado = bloque
+
+2. Todos los tratamientos están contenidos en cada bloque
+
+3. Factor de agrupamiento es el bloque
+
+      3.1. Efecto aleatorio por bloque
+      
+      3.2. Bloques necesarios para interacciones = Tratamientos + 1
+
+4. El análisis:
+
+```{r echo = T, eval = F}
+aov(y = x1 * x2 + Error(bloque/(x1*x2)), datos)
+```
+
