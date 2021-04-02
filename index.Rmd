@@ -55,9 +55,9 @@ output:
 
 2. [Cuadrado latino](Unidad 4-Otros disenos/Cuadrado-latino.html)
 
-3. [Diseño de medidas repetidas sin réplicas]
+3. [Diseño de medidas repetidas sin réplicas](Unidad 4-Otros disenos/Medidas-repetidas.html)
 
-4. [Control asimétrico]
+4. [Control asimétrico](Unidad 4-Otros disenos/Control-asimetrico.html)
 
 # Regresión y correlación
 

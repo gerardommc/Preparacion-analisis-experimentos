@@ -1,0 +1,32 @@
+---
+title: "Diseños de medidas repetidas sin réplicas"
+author: "Gerardo Martín"
+date: "31/3/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+En la clase del diseño [split-plot](Split-plot.html) se mencionó que los diseños de medidas repetidas pueden se considerados estadísticamente análogos, pues los tratamientos están anidados en las unidades experimentales. La principal diferencia entre ambos diseños radica en que el anidamiento en los diseños split-plot es espacial, mientras que en los diseños de medidas repetidas el anidamiento es temporal. Las mediciones repetidas en las unidades experimentales pueden corresponder a la aplicación secuencial de tratamientos, o a la medición del efecto acumulado del mismo tratamiento. Debido a este componente temporal, los diseños de medidas repetidas tienden a durar más tiempo que otros diseños donde se aplican todos los tratamientos al mismo tiempo pero en unidades experimentales diferentes.
+
+Como podemos ver, en los diseños de medidas repetidas hay una serie de trueques. Por un lado, estos diseños permiten que los experimentos se realicen con menos unidades experimentales, pero requieren de más tiempo. Existen además importantes consideraciones biológicas, pues en necesario que los tratamientos no tendrán un efecto sobre el comportamiento de la unidad experimental que ya recibió otro tratamiento.
+
+Resulta evidente entonces que, como en todos los diseños experimentales, la decisión de hacer mediciones repetidas debe estar basada en en una serie de criterios:
+
+1. **Logísticos** Se debe asegurar que habrá personal calificado para toda la duración del experimento
+2. **Éticos** Se debe asegurar que la aplicación de trataientos subsecuentes no resultará en daño a los organismos experimentales (en caso de existir).
+
+# Análisis de diseños de medidas repetidas
+
+Este análisis es igual al de los diseños split-plot, porque en esencia consiste de un ANOVA anidado. Por lo tanto, la mayor complicación del análisis es la identificación correcta de la estructura de anidación ---¿qué tratamientos están contenidos dentro de cada unidad experimental?
+
+[Regresar al índice del curso](../index.html)
