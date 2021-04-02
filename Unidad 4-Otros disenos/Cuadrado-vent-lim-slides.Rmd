@@ -132,19 +132,66 @@ knitr::include_graphics("../Unidad 1-Introducción/Fertilizante-cuadrado.png")
       
 ## Ventajas
 
-```{r out.width="70%", fig.align='center', fig.cap="Diseño de cuadrado latino con cuatro tratamientos (no balanceado)."}
+- Cuando $N$ tratamientos es manejable es un diseño robusto
+
+```{r out.width="50%", fig.align='center', fig.cap="Diseño de cuadrado latino con cuatro tratamientos (no balanceado)."}
 knitr::include_graphics("../Unidad 1-Introducción/Diseño-1.png")
 ```
 
 ## Consideraciones
 
-1. Muy útil cuando hay un gradiente espacial
+-Gradiente espacial
 
       1.1. Cualidades heterogéneas del suelo
       
-      1.2. Efecto de borde en invernadero
+```{r Nitro, echo = F, eval = T, out.width="60%", fig.cap="Ejemplo de gradiente espacial", fig.align='center'}
+x <- 1:10
+y <- 1:10
+
+coords <- expand.grid(x = x, y = y)
+coords$z <- with(coords, sqrt((x - 2)^2 + (y - 7)^2))
+
+library(ggplot2)
+
+ggplot(coords) + geom_tile(aes(x = x, y = y, fill = z)) +
+      coord_fixed(ratio = 1) +
+      labs(fill = "Concentración\ de\ nitrógeno")+
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            axis.text = element_blank(),
+            axis.title = element_blank(),
+            axis.ticks = element_blank()) 
+```
+
+## Consideraciones
+
+      1.2. Efecto de borde
+
       
-2. Si no hay un gradiente que tomar en cuenta $\rightarrow$ **EVITAR**
+```{r dist, echo = F, eval = T, out.width="70%", fig.cap="Efecto de borde", fig.align='center'}
+x <- 1:10
+y <- 1:10
+
+coords <- expand.grid(x = x, y = y)
+coords$z2 <- with(coords, sqrt((x - 5)^2 + (y - 5)^2))
+
+library(ggplot2)
+
+ggplot(coords) + geom_tile(aes(x = x, y = y, fill = z2)) +
+      coord_fixed(ratio = 1) +
+      labs(fill = "Distancia al borde")+
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            axis.text = element_blank(),
+            axis.title = element_blank(),
+            axis.ticks = element_blank()) 
+```
+
+## Consideraciones 
+      
+- Si no hay un gradiente identificado que tomar en cuenta $\rightarrow$ **EVITAR**
+
+- Identificar el gradiente puede incluso ayudar a incluir en análisis y aislar varianza que explica (modelo ANCOVA)
 
 
 [Regresar al índice del curso](../index.html)
