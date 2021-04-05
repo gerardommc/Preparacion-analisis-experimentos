@@ -193,4 +193,20 @@ summary(m2)
       
       1.3. Para ver los efectos expecíficos, hay que ver las medias de `auto` en cada grupo experimental ([ver lección](Split-plot.html))
 
+## Notas precautorias
+
+- Análisis de diseños anidados es controversial
+
+- Mucha literatura, poca consistencia
+
+- Al diseñar experimento, considerar existencia de anidación
+
+- Al analizar datos, considerar todas las posibilidades
+      
+   - Medidas repetidas $\rightarrow$ efectos aleatorios
+         
+   - Bloques de bloques $\rightarrow$ efectos aleatorios
+         
+   - Anidación en efectos fijos y aleatorios
+
 [Regresar al índice del curso](../index.html)
