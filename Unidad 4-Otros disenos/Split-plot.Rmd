@@ -135,9 +135,8 @@ summary(m2)
 Como podemos ver, cuando el modelo esta anidado, no se puede separar el efecto del factor de anidacion del factor anidado, de modo que **SIEMPRE** se estima la interacción, y podemos ver que la conclusió sobre $H_0$ sigue siendo la misma, aunque nos queda por tomar en cuenta al individup, `id`, como efecto aleatorio:
 
 ```{r message = F, warning = F}
-library(lme4)
-m3 <- lmer(auto ~ tratamiento / tiempo + (1|id), auto.l)
-car::Anova(m3, type = 2)
+m3 <- aov(auto ~ tratamiento / tiempo + Error(id/tratamiento/tiempo), auto.l)
+summary(m3)
 ```
 
 Como podemos ver, las conclusiones serían completamente diferentes entre un método y otro. Cuando incluimos correctamente los efectos aleatorios (variación entre individuos en el valor de `auto`), rechazamos todas las hipótesis nulas, particularmente sobre la interacción `tratamiento:tiempo`, con lo que concluimos que el efecto del tratamiento con dieta depende del tiempo que ésta dure, pues como resulta evidente en la figura \@ref(fig:box-self), el nivel de autoestima incrementa con el tiempo cuando los individuos consumieron la dieta en comparación con el control, donde el nivel de autoestima disminuyó con el tiempo.

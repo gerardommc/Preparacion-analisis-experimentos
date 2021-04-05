@@ -1881,15 +1881,24 @@ summary(m2)</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Como podemos ver, cuando el modelo esta anidado, no se puede separar el efecto del factor de anidacion del factor anidado, de modo que <strong>SIEMPRE</strong> se estima la interacción, y podemos ver que la conclusió sobre <span class="math inline">\(H_0\)</span> sigue siendo la misma, aunque nos queda por tomar en cuenta al individup, <code>id</code>, como efecto aleatorio:</p>
-<pre class="r"><code>library(lme4)
-m3 &lt;- lmer(auto ~ tratamiento / tiempo + (1|id), auto.l)
-car::Anova(m3, type = 2)</code></pre>
-<pre><code>## Analysis of Deviance Table (Type II Wald chisquare tests)
+<pre class="r"><code>m3 &lt;- aov(auto ~ tratamiento / tiempo + Error(id/tratamiento/tiempo), auto.l)
+summary(m3)</code></pre>
+<pre><code>## 
+## Error: id
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals 11   4641   421.9               
 ## 
-## Response: auto
-##                     Chisq Df Pr(&gt;Chisq)    
-## tratamiento        41.037  1  1.494e-10 ***
-## tratamiento:tiempo 68.040  4  5.885e-14 ***
+## Error: id:tratamiento
+##             Df Sum Sq Mean Sq F value Pr(&gt;F)   
+## tratamiento  1  316.7   316.7   15.54 0.0023 **
+## Residuals   11  224.2    20.4                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Error: id:tratamiento:tiempo
+##                    Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## tratamiento:tiempo  4  525.1  131.26   28.84 8.56e-12 ***
+## Residuals          44  200.3    4.55                     
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Como podemos ver, las conclusiones serían completamente diferentes entre un método y otro. Cuando incluimos correctamente los efectos aleatorios (variación entre individuos en el valor de <code>auto</code>), rechazamos todas las hipótesis nulas, particularmente sobre la interacción <code>tratamiento:tiempo</code>, con lo que concluimos que el efecto del tratamiento con dieta depende del tiempo que ésta dure, pues como resulta evidente en la figura <a href="#fig:box-self">2.1</a>, el nivel de autoestima incrementa con el tiempo cuando los individuos consumieron la dieta en comparación con el control, donde el nivel de autoestima disminuyó con el tiempo.</p>

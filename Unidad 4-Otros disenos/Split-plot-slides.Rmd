@@ -172,9 +172,11 @@ summary(m1)
 ## Con efectos aleatorios
 
 ```{r echo = T, eval = T}
-m2 <- aov(auto ~ tratamiento / tiempo + Error(id),
+m2 <- aov(auto ~ tratamiento / tiempo + Error(id/tratamiento/tiempo),
           auto.l)
 ```
+
+Tenemos que espeficicar cómo los factores están contenidos --anidados-- en los bloques o individuos, `id`.
 
 ## El resultado
 ```{r echo = F, eval = T}

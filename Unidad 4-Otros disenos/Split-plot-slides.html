@@ -3395,8 +3395,10 @@ summary(m1)</pre>
 
 </article></slide><slide class=""><hgroup><h2>Con efectos aleatorios</h2></hgroup><article  id="con-efectos-aleatorios">
 
-<pre class = 'prettyprint lang-r'>m2 &lt;- aov(auto ~ tratamiento / tiempo + Error(id),
+<pre class = 'prettyprint lang-r'>m2 &lt;- aov(auto ~ tratamiento / tiempo + Error(id/tratamiento/tiempo),
           auto.l)</pre>
+
+<p>Tenemos que espeficicar cómo los factores están contenidos –anidados– en los bloques o individuos, <code>id</code>.</p>
 
 </article></slide><slide class=""><hgroup><h2>El resultado</h2></hgroup><article  id="el-resultado">
 
@@ -3405,11 +3407,17 @@ summary(m1)</pre>
 ##           Df Sum Sq Mean Sq F value Pr(&gt;F)
 ## Residuals 11   4641   421.9               
 ## 
-## Error: Within
+## Error: id:tratamiento
+##             Df Sum Sq Mean Sq F value Pr(&gt;F)   
+## tratamiento  1  316.7   316.7   15.54 0.0023 **
+## Residuals   11  224.2    20.4                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Error: id:tratamiento:tiempo
 ##                    Df Sum Sq Mean Sq F value   Pr(&gt;F)    
-## tratamiento         1  316.7   316.7   41.04 3.53e-08 ***
-## tratamiento:tiempo  4  525.1   131.3   17.01 3.92e-09 ***
-## Residuals          55  424.4     7.7                     
+## tratamiento:tiempo  4  525.1  131.26   28.84 8.56e-12 ***
+## Residuals          44  200.3    4.55                     
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</pre>
 
