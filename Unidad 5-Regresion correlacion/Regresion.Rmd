@@ -45,6 +45,49 @@ y(x) = \beta_0 + \beta_1 x (\#eq:lineal)
 
 Al igual que en ANOVA, puede existir cualquier número de variables $x$ de tal modo que $y$ puede ser una función $y(x_1, x_2, \dots, x_n)$, siempre y cuando existan grados de libertad suficientes de $y$, y existan observaciones de $x$ para cada todas y cada una de las $y$. 
 
+# Ejemplos de diseños experimentales con factores contínuos
+
+La base de datos `cars` de cualquier instalación de **R** es ya, un ejemplo clásico de una relación lineal entre dos variables aleatorias, la cual muestra con 50 observaciones la distancia recorrida por un auto hasta alcanzar una velocidad de 0 km/h mientras viaja a una velocidad establecida (figura \@ref(fig:cars-1)). 
+
+```{r cars-1, echo=F, fig.align='center', fig.cap="Relacion entre velocidad y distancia recorrida de frenado en `cars`.", fig.height=4, fig.width=4, message=FALSE}
+library(ggplot2)
+ggplot(cars) + geom_point(aes(x =  speed, y = dist)) + 
+      labs(x = "Velocidad", y = "Distancia")
+```
+
+Una regresión lineal que represente a la distancia de frenado como función de la velocidad, estimaría dos parámetros, $\beta_0$ y $\beta_1$ (ecuación \@ref(eq:lineal)). $\beta_0$ corresponde al intercepto, que es el valor de $y$ cuando $x=0$, y el segundo es $\beta_1$, el cambio de unidades de $y$ por unidad de cambio de $x$, o la pendiente de la recta:
+
+```{r cars-2, echo=F, fig.align='center', fig.cap="Recta de regresión entre velocidad y distancia de frenado en `cars`.", fig.height=4, fig.width=4, message=FALSE}
+library(ggplot2)
+ggplot(cars) + geom_point(aes(x =  speed, y = dist)) + 
+      geom_smooth(aes(x = speed, y = dist), method = "lm") +
+      labs(x = "Velocidad", y = "Distancia")
+```
+
+Para estimar estos parámetros en **R**, utilizamos la función `lm`, poniendo atención a la variable dependiente (lado izquierdo, `dist`) e independiente (lado derecho, `speed`):
+
+```{r}
+data(cars)
+
+m1 <- lm(dist ~ speed, cars)
+summary(m1)
+```
+
+El significado de los coeficientes en la columna `Estimate` es el descrito arriba, sin embargo, estos adquieren implicaciones adicionales en estadística. Por ejemplo, podemos que que el intercepto tiene un valor de -17.59, lo cual es, en términos del fenómeno físico, falso, pues en este caso sólo es relevante para los datos analizados, en decir para velocidades de 5-25 km/h, con el (los) automóvil(es) utilizado(s) en esas mediciones. El parámetro $\beta_1$ para speed, es un poco más generalizable, y quiere decir que **en promedio**, por cada km/h adicioanl de velocidad, necesitamos 3.93m más para frenar por completo el automóvil. Las estimaciones de significancia estadística indican qué tan probable es que $\beta_{0, 1} = 0$, es decir, qué tan probable es que el efecto de $x$ sobre $y$ sea 0
+
+## Varianza explicada en regresión lineal
+
+Una medida muy importante en regresión lineal es $R^2$, que indica qué tan cerca pasa la línea. dibujada por la ecuación, de los datos observados. Veamos por ejemplo, que en la figura \@ref(fig:cars-2), la línea de regresión pasa por en medio de la nube de puntos, y la mayoría de estos se encuentran a una distancia determinada de la línea. $R^2$ es justamente una medida de la distancia promedio de los puntos a la línea tal que:
+
+1. $R^2 = 0$ indica que la variable independente no explica a la variable dependiente
+2. $R^2 = 1$ indica que la variable dependiente explica perfectamente a la variable dependiente
+
+En **R**, el valor de $R^2$ lo encontramos en la penúltima línea del `summary`, en análisis de `cars`, tenemos:
+
+`Multiple R-squared:  0.6511,	Adjusted R-squared:  0.6438`
+
+dos valores de $R^2$, y como es de esperarse, es mejor confiar en el método más conservador de la $R^2$ ajustada. En el caso de `cars`, la velocidad explica una buena parte de la distancia de frenado.
+
 # ¿Cómo se hace una regresión lineal?
 
 [Regresar al índice del curso](../index.html)
