@@ -1,0 +1,50 @@
+---
+title: "Regresión lineal"
+author: "Gerardo Martín"
+date: "5/4/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+Todos los ejmplos de análisis que hemos visto hasta la fecha han sido sobre comparaciones de medias, es decir de cómo diferentes tratamientos estrictamente categóricos, afectan el valor más probable de ser observado. Categóricos pueden considerarse variables como:
+
+1. Diferentes fertilizantes
+2. Diferentes tipos de suelo
+3. Diferentes medicamentos
+4. Diferentes especies de organismos
+
+Ninguna de estas variables, como tal, puede considerarse con un valor numérico, por lo que sus efectos sólo pueden ser estimados para los grupos experimentales. Las variables contínuas, a diferencia de las categóricas, sí pueden tener valores numéricos, de modo que es posible estimar valores numéricos para sus efecos. Ejemplos de variables contínuas son:
+
+1. Temperatura
+2. Dosis de medicamento
+3. Concentración de contaminantes en el agua
+
+Como es de esperarse, las variables contínuas también pueden representarse como categóricas. Por ejemplo se puede comparar la velocidad de crecimiento de una especie de crutáceo a dos o tres temperaturas. Cuando el número de valores de temperatura es lo suficientemente grande, sin embargo, resulta más interesante estimar por ejemplo, cómo cambia la velocidad de crecimiento con el el cambio de temperatura, como en una ecuación lineal:
+
+\begin{equation}
+\mathrm{Crecimiento} = \mathrm{Promedio} + \mathrm{Tasa} \times 
+\mathrm{Temperatura} (\#eq:crecimiento)
+\end{equation}
+
+
+Donde no hay ningún tipo de restricción sobre el valor que $\mathrm{Tasa}$ pueda tomar, es decir puede ir desde $-\infty$ hasta $+ \infty$. La regresión lineal, tiene como objetivo, justamente ese, estimar el valor de $\mathrm{Tasa}$ para cualquier par de variables numéricas $x$ y $y$. De manera más general, la ecuación \@ref(eq:crecimiento) puede ser representada como:
+
+\begin{equation}
+y(x) = \beta_0 + \beta_1 x (\#eq:lineal)
+\end{equation}
+
+Al igual que en ANOVA, puede existir cualquier número de variables $x$ de tal modo que $y$ puede ser una función $y(x_1, x_2, \dots, x_n)$, siempre y cuando existan grados de libertad suficientes de $y$, y existan observaciones de $x$ para cada todas y cada una de las $y$. 
+
+# ¿Cómo se hace una regresión lineal?
+
+[Regresar al índice del curso](../index.html)
