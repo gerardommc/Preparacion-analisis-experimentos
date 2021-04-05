@@ -16,9 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-El diseño split-plot, o de parcelas divididas fue diseñado para combinar factores que tienen escalas espaciales dispares. Como la mayoría de métodos de diseño y análisis de experimentos fueron diseñados en agricultura, el ejemplo clásico de este diseño sería la combinación de tipos de suelo y fertilizante. El tipo de suelo es un atributo geográfico que es difícil de manipular, por lo que el diseño más práctico es la identificación de parcelas con cada tipo de suelo de interés y la aplicación de los fertilizantes en diferentes parcelas dentro de cada tipo de suelo ([Yates 1935](https://www.jstor.org/stable/2983638?seq=1)).
-
-He aquí un esquema de un diseño split-plot sencillo:
+El diseño split-plot, o de parcelas divididas fue diseñado para combinar factores que tienen escalas espaciales dispares. Como la mayoría de métodos de diseño y análisis de experimentos fueron diseñados en agricultura, el ejemplo clásico de este diseño sería la combinación de tipos de suelo y fertilizante. El tipo de suelo es un atributo geográfico que es difícil de manipular, por lo que el diseño más práctico es la identificación de parcelas con cada los tipos de suelo de interés y aplicar los fertilizantes a cada tipo de suelo ([Yates 1935](https://www.jstor.org/stable/2983638?seq=1); figura \@ref(fig:split-plot)).
 
 ```{r split-plot, echo=F, fig.height=4, fig.width=6, fig.align='center', fig.cap="Esquema de un diseño split-plot. Los colores indican los tipos de suelo y las letras los fertilizantes aplicados en cada tipo de suelo. El esquema no muestra ningún tipo de disposición espacial de las unidades experimentales y es meramente ilustrativo del concepto.", message = F}
 source("../Random-functions/Shuffle.R")
@@ -41,17 +39,17 @@ ggplot() + geom_tile(aes(x = x, y = y, fill = Suelo), data = df.1) +
             axis.title = element_blank(),
             axis.ticks = element_blank())
 ```
-Una de las consecuencias de este diseño experimental es que uno de los factores (tipo de suelo en este caso), se convierte en un factor de agrupación de otro factor experimental. A dicha agrupación de un factor experimental dentro de otro se le denomina **anidación**, la cual da origen a un **diseño anidado**. Es importante saber identificar la anidación porque el factor experimental que está anidado (fertilizante) dentro de otro factor será afectado por las fuentes de variabilidad que ocurren dentro del factor de anidación (tipo de suelo). Entonces, el análisis de datos de un diseño anidado requiere de un modelo de efectos mixtos. Debido a que el componente aleatorio de un diseño anidado está relacionado con el factor experimental de anidación, es necesario contar con réplicas verdaderas de este factor.
+Una de las consecuencias de este diseño experimental es que uno de los factores (tipo de suelo en este caso), se convierte en un factor de agrupación de otro factor experimental. A dicha agrupación de un factor experimental dentro de otro se le conoce como **anidación**, la cual da origen a un **diseño anidado**. Es importante saber identificar la anidación porque el factor experimental que está anidado (fertilizante) dentro de otro factor será afectado por las fuentes de variabilidad que ocurren dentro del factor de anidación (tipo de suelo). Entonces, el análisis de un diseño anidado requiere de una especificación diferente a los modelos que hemos visto a la fecha. Debido a que el componente aleatorio de un diseño anidado está relacionado con el factor experimental de anidación, es necesario contar con réplicas verdaderas de este factor.
 
 A diferencia de los diseños con efectos aleatorios y mixtos que vimos anteriormente, la especificación de los efectos aleatorios en los diseños split-plot es un poco más complicada, pues depende de los factores de anidación y los factores anidados. Una incorrecta especificación de los efectos aleatorios en relación a los factores de anidación y los anidados resultará en la estimación incorreta de efectos y sus significancias, debido a que los grados de libertad por tratamiento cambian dependiendo de la estructura de anidación, lo que afecta las estimaciones del estadístico $F$ y la significancia estadística (valores de $P$).
 
 ## Ejemplos de diseños split-plot
 
-Es común que los diseños split-plot tengan un componente espacial difícil de manipular aunque hay excepciones. Por ejemplo, hay muchos estudios clínicos donde los individuos participantes son sujetos a diferentes tratamientos o a medidas repetidas. Tratamientos diferentes que puedan ser aplicados al mismo individuo podrían ser medicamentos tópicos (en la piel) para tratar condiciones generalizadas, aquellos que requieran observaciones repetidas del efecto acumulado de otro medicamento (común en psiquiatría). En ecología, la mayoría de los diseños split-plot involucran un componente espacial importante.
+Es común que los diseños split-plot tengan un componente espacial difícil de manipular aunque hay excepciones. Por ejemplo, hay muchos estudios clínicos donde los individuos participantes son sujetos a diferentes tratamientos o a medidas repetidas. Tratamientos diferentes que puedan ser aplicados al mismo individuo podrían ser medicamentos tópicos (en la piel) para tratar condiciones generalizadas, aquellos que requieran observaciones repetidas del efecto acumulado de otro medicamento (común en psiquiatría). En ecología, la mayoría de los diseños split-plot tienen un componente espacial importante.
 
 ### Competencia entre larvas de tricópteros 
 
-[Wissinger et al. (1996)](https://esajournals.onlinelibrary.wiley.com/doi/abs/10.2307/2265743) estudiaron el efecto de la competencia sobre el reclutamiento de larvas acuáticas (transformación a adultos potencialmente reproductores) de los tricópteros *Asynarchus nigriculus* y *Limnephilus externus*. El experimento consistió en crear condiciones que regularan la competencia entre larvas por medio del regímen hídrico y la densidad poblacional de cada especie. Para hacer ello Wissinger et al. seleccinaron sitios a las orillas de una posa más grande con regímenes de inundación permanente y efímera. En cada sitio colocaron seis cajas de madera que contenían seis niveles de densidad poblacional de cada especie tricóptero (Figura \@ref(fig:Wissinger)).
+[Wissinger et al. (1996)](https://esajournals.onlinelibrary.wiley.com/doi/abs/10.2307/2265743) estudiaron el efecto de la competencia sobre el reclutamiento de larvas acuáticas (metamórfosis a adultos potencialmente reproductores) de los tricópteros *Asynarchus nigriculus* y *Limnephilus externus*. El experimento consistió en crear condiciones que regularan la competencia entre larvas por medio del regímen hídrico y la densidad poblacional de cada especie. Para hacer ello Wissinger et al. seleccinaron sitios a las orillas de una posa más grande con regímenes de inundación permanente y efímera. En cada sitio colocaron seis cajas de madera que contenían seis niveles de densidad poblacional de cada especie tricóptero (Figura \@ref(fig:Wissinger)).
 
 ```{r Wissinger, echo = F, fig.align="center", fig.cap="Esquema del diseño experimental split-plot de Wissinger et al. (1996), tomado de [Quinn et al. (2012)](https://www.cambridge.org/core/books/experimental-design-and-data-analysis-for-biologists/BAF276114278FF40A7ED1B0FE77D691A). Los colores gris y blanco indican el tipo de régimen hídrico y los números el nivel de densidad poblacional de tricópteros."}
 knitr::include_graphics("Wissinger-1.png")
@@ -70,29 +68,34 @@ Los experimentos con mediciones repetidas generalmente se consideran como un dis
 
 El paquete `datarium` contiene ejemplos de mediciones repetidas con este objetivo. El primero es la base de datos `selfesteem2` (autoestima 2), que consiste del registro del *nivel* de autoestima de 12 individuos inscritos en dos experimentos clínicos para ver el efecto de una dieta especial comparadas con un placebo. A cada individuo se le registró el nivel de autoestima en tres ocasiones durante un período de cuatro semanas que corresponden con el inicio, intermedio y final del experimento. Los mismos individuos participaron en la aplicación de ambos tratamientos (dieta y placebo), por lo que el experimento consta de  medidas repetidas de dos tratamiento en cada individuo (factor de anidación).
 
-Como en el ejemplo de Wissinger, hay varias alternativa para este experimento. La primera, era aplicar los tratamientos a grupos diferentes de pacientes, lo que duplicaría el número de voluntarios para el experimento. Aún así existiría el factor de anidación para las mediciones repetidas del efecto de cada tratamiento en el nivel de autoestima. Para eliminar este último nivel de anidación se requeriría consguir más coluntarios a quienes se les midiera el *nivel* de autoestima en los diferentes tiempos. Este diseño incrementaría drásticamente la variabilidad, sin mencionar el gran reto logístico de coordinar un experimento de tal magnitud. Para comprender la estructura de los datos, podemos echar un vistazo a la base de datos:
+```{r echo = F, fig.align="center", fig.cap="Esquema del diseño experimental de `selfesteem2`."}
+knitr::include_graphics("Selfeseem2.png")
+```
+
+Como en el ejemplo de Wissinger, hay varias alternativas para este experimento. La primera, era aplicar ambos tratamientos a grupos diferentes de pacientes, lo que duplicaría el número de voluntarios para el experimento. Aún así existiría el factor de anidación para las mediciones repetidas del efecto de cada tratamiento en el nivel de autoestima. Para eliminar este último nivel de anidación sería necesario conseguir más voluntarios a quienes se les midiera el *nivel* de autoestima en los diferentes tiempos. Este diseño incrementaría drásticamente la variabilidad, sin mencionar el gran reto logístico de coordinar un experimento de tal magnitud. Para comprender la estructura de los datos, podemos echar un vistazo a la base de datos:
 
 ```{r selfesteem, echo = F}
 base <- datarium::selfesteem2
 knitr::kable(base, caption = "Base de datos de `selfesteem2`, un diseño anidado con mediciones repetidas por tratamiento y en el tiempo por individuo participante. Las columnas `t1`, `t2` y `t3` muestran el nivel de autoestima. `id` es la identidad del individuo participante", align = "c")
 ```
 
+## Diseños split-plot y la reducción de unidades experimentales
 
-#### Reducción de unidades experimentales
-
-En la primera unidad vimos cómo el diseño experimental puede ayudarnos a solventar problemas logísticos en la sección de [Unidad experimental](/..Unidad 1-Introducción/Unidad-exper.html), particularmente mediante la aplicación secuencial de tratamientos a unidades experimentales como animales para reducir el número de animales requeridos para completar el experimento.
+En la primera unidad, en la sección de [Unidad experimental](/..Unidad 1-Introducción/Unidad-exper.html), vimos cómo el diseño experimental puede solventar problemas logísticos , particularmente mediante la aplicación secuencial de tratamientos a unidades experimentales como animales para reducir el número de animales requeridos para completar el experimento (figura \@ref(fig:ratas)).
 
 ```{r ratas, echo = F, fig.align="center", fig.cap="Diseño de medidas repetidas mediante la aplicación secuencial aleatoria de tratamientos (colores). Figura original tomada de la [Iniciativa para reducir el uso de animales experimentales](http://www.3rs-reduction.co.uk/)."}
 knitr::include_graphics("http://www.3rs-reduction.co.uk/assets/images/expU302.JPG")
 ```
 
+La reducción de unidades por medio de diseños de medidas repetidas, es posible gracias al desarrollo de las técnicas analíticas para diseños anidados que surgieron con la introducción del diseño split-plot.
+
 # Analisis estadístico de diseños split-plot con **R**
 
-Como se mencionó arriba, en los diseños split-plot hay que saber identificar los factores de anidación para así incluirlos adecuadamente en el análisis. Una errónea especificación llevaría a un uso equivocado de los grados de libertad. Comenzaremos por ver el análisis de la base `selfesteem`.
+Como se mencionó arriba, en los diseños split-plot hay que saber identificar los factores de anidación para así incluirlos adecuadamente en el análisis. Una errónea especificación llevaría a un uso equivocado de los grados de libertad. Comenzaremos por ver esto con el análisis de `selfesteem`.
 
 ## Análisis de `selfesteem2`
 
-La base de datos mostrada en la tabla \@ref(tab:selfesteem) es la que analizaremos ahora. En la tabla podemos ver que hay seis mediciones de autoestima en cada individuo participante, por lo que, para medir el efecto de tiempo hay cinco grados de libertad, y para medir el efecto del tratamiento hay dos (tres observaciones por tratamiento), y el factor de anidación es el individuo (columna `id`). El formato de la base es ancho por lo que hay que transformarla a largo para el análisis:
+La base de datos mostrada en la tabla \@ref(tab:selfesteem) es la que analizaremos ahora. En la tabla podemos ver que hay seis mediciones de autoestima en cada individuo participante, por lo que, para medir el efecto de tiempo hay cinco grados de libertad, y para medir el efecto del tratamiento hay dos (tres observaciones por tratamiento), y el factor de anidación es el individuo (columna `id`). Aquí, el factor `tiempo` está anidado en el factor `tratamiento` y existe un factor de agrupación que corresponde al individuo.  El formato de la base es ancho por lo que hay que transformarla a largo para el análisis:
 
 ```{r}
 auto <- datarium::selfesteem2
@@ -114,20 +117,30 @@ shap.test <- auto.l %>%
 knitr::kable(shap.test, caption = "Resultados de la prueba de Shapiro dentro de cada grupo experimental.", align = "c")
 ```
 
-Con esto podemos ver que sólo hay una combinación de tratamientos que se desvía significativamente de la normalidad. Ahora sí continuemos con el análisis utilizando `aov`. Comenzaremos con ver qué inferiríamos sobre $H_0$ si omitimos la estructura del error (efectos aleatorios):
+Con esto podemos ver que sólo hay una combinación de tratamientos que se desvía significativamente de la normalidad. Ahora sí, continuemos con el análisis utilizando `aov`. Comenzaremos por ver qué inferiríamos sobre $H_0$ si omitimos la estructura de anidamiento y  los efectos aleatorios:
 
 ```{r}
 m1 <- aov(auto ~ tiempo * tratamiento, auto.l)
 summary(m1)
 ```
 
-A estas alturas, nos resulta evidente que hay pocas razones para rechazar las hipótesis, nulas, excepto por el efecto de `tratamiento`. Como ya sabemos, los datos de este experimento fueron generados con un diseño split-plot. En este experimento, ambos factores están anidados en los individuos, y `tiempo` está anidado en `tratamiento`, de modo que en `aov` debemos especificarlo en los efectos aleatorios como `Error(id/tratamiento/tiempo)`. Esta especificación hará que los efectos de ambos factores experimentales se estimen para cada individuo participantey que el efecto de tiempo se estime para cada nivel de `tratamiento` y que por lo tanto se pierdan grados de libertad en los residuales:
+A estas alturas, nos resulta evidente que hay pocas razones para rechazar las hipótesis, nulas, excepto por el efecto de `tratamiento`. Como ya sabemos, los datos de este experimento fueron generados con un diseño split-plot. En este experimento, ambos factores están anidados en los individuos, y `tiempo` está anidado en `tratamiento`, de modo que en `aov` debemos especificarlo en la fórmula y en los efectos aleatorios. Prosigamos primero, especificando un modelos con los factores anidados de acuerdo con su estructura: `tratamiento` contiene a `tiempo`, por lo que:
 
-```{r message = 4}
-m2 <- aov(auto ~ tiempo * tratamiento + Error(id/tratamiento/tiempo), auto.l)
+
+```{r}
+m2 <- aov(auto ~ tratamiento / tiempo , auto.l)
 summary(m2)
 ```
-Como podemos ver, las conclusiones serían completamente diferentes entre un método y otro. Cuando incluimos correctamente los efectos aleatorios, rechazamos todas las hipótesis nulas, particularmente sobre la interacción `tiempo:tratamiento`, con lo que concluimos que el efecto del tratamiento con dieta depende del tiempo que ésta dure, pues como resulta evidente en la figura \@ref(fig:box-self), el nivel de autoestima incrementa con el tiempo cuando los individuos consumieron la dieta en comparación con el control, donde el nivel de autoestima disminuyó con el tiempo.
+
+Como podemos ver, cuando el modelo esta anidado, no se puede separar el efecto del factor de anidacion del factor anidado, de modo que **SIEMPRE** se estima la interacción, y podemos ver que la conclusió sobre $H_0$ sigue siendo la misma, aunque nos queda por tomar en cuenta al individup, `id`, como efecto aleatorio:
+
+```{r message = F, warning = F}
+library(lme4)
+m3 <- lmer(auto ~ tratamiento / tiempo + (1|id), auto.l)
+car::Anova(m3, type = 2)
+```
+
+Como podemos ver, las conclusiones serían completamente diferentes entre un método y otro. Cuando incluimos correctamente los efectos aleatorios (variación entre individuos en el valor de `auto`), rechazamos todas las hipótesis nulas, particularmente sobre la interacción `tratamiento:tiempo`, con lo que concluimos que el efecto del tratamiento con dieta depende del tiempo que ésta dure, pues como resulta evidente en la figura \@ref(fig:box-self), el nivel de autoestima incrementa con el tiempo cuando los individuos consumieron la dieta en comparación con el control, donde el nivel de autoestima disminuyó con el tiempo.
 
 [Regresar al índice del curso](../index.html)
 

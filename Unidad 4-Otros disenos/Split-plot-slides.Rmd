@@ -12,7 +12,9 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Intro
 
 - Split-plot = Parcelas divididas
-- Aquí, parcela = bloque = tratamiento
+
+- Aquí, parcela = bloque $\approx$ tratamiento
+
 - Cada bloque contiene todos tratamientos de otro factor
 
 # Ejemplos
@@ -54,7 +56,7 @@ df.1 <- data.frame(
       Aleatorizado = c("Logística más complicada",
                        "Más unidades experimentales",
                        "Mayor varianza ambiental",
-                       "Riesgo de pérdida manejable")
+                       "Pérdida de unidad sólo afecta a esa combinación de factores")
 )
 
 knitr::kable(df.1, caption = "Ventajas y desventajas de cada diseño.")
@@ -81,24 +83,26 @@ knitr::kable(df.2, caption = "Comparación de análisis estadístico de ambos di
 
 2. Anidamiento resulta, casi siempre, de algún componente espacial
 
-3. Los diseños anidados **siempre** requieren de la presencia de efectos aleatorios
+3. Los diseños anidados **siempre** requieren especificar correctamente la estructura de anidación
 
 4. Los diseños anidados **siempre** requieren de réplicas
 
 # Análisis estadístico
 
-## Especificación de efectos aleatorios
+## Especificación de estructura de anidación
 
 1. En Wissinger et al. (1996)
 
-      1.1. Tratamiento de densidad anidado en régimen
+      1.1. Régimen contiene a densidad
       
-      1.2. Régimen se confunde con bloque
+      1.2. Anidación se especifica con operador `/`:
       
-      1.3. Aunque el régimen se confunde con bloque, efecto aleatorio se especifica por bloque
+`x1/x2 = x1 + x1:x2`
+
+2. En Wissinger et al. (1996):
 
 ```{r echo = TRUE, eval=FALSE}
-m <- aov(Reclutamiento ~ Densidad * Regimen + Error(Densidad/Bloque),
+m <- aov(Reclutamiento ~ Regimen / Densidad + Error(Densidad/Bloque),
               data = Wissinger)
 ```
 
@@ -127,11 +131,15 @@ knitr::include_graphics("Selfeseem2.png")
 
       1.1. Ambos tratamientos están anidados en cada individuo
       
-      1.2. Tiempo está anidado en dieta:
+      1.2. Tiempo está anidado en dieta
+      
+      1.3. `tratamiento` y `tiempo` contenidos en `id` $\rightarrow$ efectos aleatorios para `id`
       
 ```{r echo=T, eval=F}
-m1 <- aov(auto ~ tratamiento * tiempo + Error(id/tratamiento/tiempo),
+m1 <- aov(auto ~ tratamiento / tiempo + Error(id),
           selfesteem2)
+m2 <- lmer(auto ~ tratamiento / tiempo + (1|id),
+           selfesteem2)
 ```
 
 El primer término dentro de `Error` es el bloque experimental (el individuo), el segundo, es el tratamiento que agrupa los niveles del segundo factor, y el tercero, es el factor anidado.
@@ -149,7 +157,7 @@ names(auto.l) <- c("id", "tratamiento", "tiempo", "auto")
 ```
 
 ```{r echo = T, eval = T}
-m1 <- aov(auto ~ tratamiento * tiempo, auto.l)
+m1 <- aov(auto ~ tratamiento / tiempo, auto.l)
 summary(m1)
 ```
 
@@ -164,7 +172,7 @@ summary(m1)
 ## Con efectos aleatorios
 
 ```{r echo = T, eval = T}
-m2 <- aov(auto ~ tratamiento * tiempo + Error(id/tratamiento/tiempo),
+m2 <- aov(auto ~ tratamiento / tiempo + Error(id),
           auto.l)
 ```
 

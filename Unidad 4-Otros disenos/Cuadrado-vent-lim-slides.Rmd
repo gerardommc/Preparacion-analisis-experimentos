@@ -9,13 +9,13 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-# Introducción al cuadrado latino
+# Introducción
 
 ## Historia y cualidades
 
 1. Desarrollado para:
 
-      1.1. Aumentar condiciones externas en experimentos
+      1.1. Controlar efecto de condiciones ajenas al experimento
       
       1.2. Combinar varios factores
 
@@ -25,7 +25,20 @@ knitr::opts_chunk$set(echo = FALSE)
       
       2.2. Factor con $N$ niveles $\rightarrow$ cuadro $N \times N$
       
-## Combinación de varios factores
+## Diseño clásico
+
+1. Control de efectos ajenos
+
+   1.1. 1 Factor experimental con 3 niveles:
+
+```{r out.width="50%", fig.align='center'}
+knitr::include_graphics("../Unidad 1-Introducción/Fertilizante-cuadrado.png")
+```
+
+
+## Diseño alternativo --cuadrado greco-latino
+
+- Combinación de dos factores
 
 $$ \mathrm{Factor\ A} = \{a, b, c \} $$
 $$ \mathrm{Factor\ B} = \{\alpha, \beta, \gamma \}$$
@@ -36,9 +49,7 @@ $$ \mathrm{Factor\ B} = \{\alpha, \beta, \gamma \}$$
 | $b, \gamma$ | $c, \alpha$ | $a,  \beta$ |
 
 
-A este diseño también se le conoce como cuadrado greco-latino
-
-## Resultado de combinaciones
+## Sobre el cuadrado greco-latino
 
 1. Sólo para estudios simétricos (factores con mismo número de niveles)
 
@@ -54,7 +65,77 @@ A este diseño también se le conoce como cuadrado greco-latino
       
             3.2.1. Deben ser aleatorizados
             
-# Análisis
+# Consideraciones generales de CL's
+
+## Logísticas
+
+1. Complejidad crece a ritmo $N^2$
+
+2. Pocos tratamientos = Pocos grados de libertad
+
+3. Se recomienda:
+
+      3.1. $4 \geq N \leq 8$
+
+4. Si interacciones biológicas son posibles $\rightarrow$ **EVITAR**
+
+## Biológicas
+
+- Cualidades heterogéneas del suelo
+      
+```{r Nitro, echo = F, eval = T, out.width="70%", fig.cap="Ejemplo de gradiente espacial", fig.align='center'}
+x <- 1:10
+y <- 1:10
+
+coords <- expand.grid(x = x, y = y)
+coords$z <- with(coords, sqrt((x - 2)^2 + (y - 7)^2))
+
+library(ggplot2)
+
+ggplot(coords) + geom_tile(aes(x = x, y = y, fill = z)) +
+      coord_fixed(ratio = 1) +
+      labs(fill = "Concentración\ de\ nitrógeno")+
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            axis.text = element_blank(),
+            axis.title = element_blank(),
+            axis.ticks = element_blank()) 
+```
+
+## Biológicas
+
+- Efecto de borde
+
+```{r dist, echo = F, eval = T, out.width="70%", fig.cap="Efecto de borde", fig.align='center'}
+x <- 1:10
+y <- 1:10
+
+coords <- expand.grid(x = x, y = y)
+coords$z2 <- with(coords, sqrt((x - 5)^2 + (y - 5)^2))
+
+library(ggplot2)
+
+ggplot(coords) + geom_tile(aes(x = x, y = y, fill = z2)) +
+      coord_fixed(ratio = 1) +
+      labs(fill = "Distancia al borde")+
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            axis.text = element_blank(),
+            axis.title = element_blank(),
+            axis.ticks = element_blank()) 
+```
+      
+## Ventajas
+
+1. Cuando $N$ tratamientos es manejable es un diseño robusto
+
+2. Pueden existir réplicas --cuadrado latino extendido
+
+      2.1. Réplicas suficientes $\rightarrow$ estimación de interacciones
+
+3. Puede ser aleatorizado
+
+# Análisis de diseños en cuadrado latino
 
 ## Un sólo cuadrado
 
@@ -69,7 +150,7 @@ aov(y ~ x, datos)
 lm(y ~ x, datos)
 ```
 
-4. De dos factores (efectos aditivos únicamente):
+4. De dos factores (efectos aditivos únicamente) --cuadrado greco-latino:
 
 ```{r echo = T, eval = F}
 aov(y ~ x1 + x2, datos)
@@ -78,7 +159,7 @@ lm(y ~ x1 + x2, datos)
 
 Donde el número de tratamientos de $x_1$ es el mismo que de $x_2$
 
-## Más de un cuadrado
+## CLs extendidos
 
 1. Cada cuadrado aleatorizado = bloque
 
@@ -110,88 +191,11 @@ lmer(y ~ x1 + x2 + (1|filas) + (1|columnas), datos)
 
 El modelo es aditivo porque no podemos ajustar la interacción $x_1 : x_2$
 
-# Ventajas y limitaciones
-
-## Logísticas
-
-```{r out.width="50%", fig.cap="Diseño de cuadrado latino simple", fig.align='center'}
-knitr::include_graphics("../Unidad 1-Introducción/Fertilizante-cuadrado.png")
-```
-
-## Logísticas
-
-1. Complejidad crece a ritmo $N^2$
-
-2. Pocos tratamientos = Pocos grados de libertad
-
-3. Se recomienda:
-
-      3.1. $4 \geq N \leq 8$
-
-4. Si interacciones biológicas son posibles $\rightarrow$ **EVITAR**
-      
-## Ventajas
-
-- Cuando $N$ tratamientos es manejable es un diseño robusto
-
-```{r out.width="50%", fig.align='center', fig.cap="Diseño de cuadrado latino con cuatro tratamientos (no balanceado)."}
-knitr::include_graphics("../Unidad 1-Introducción/Diseño-1.png")
-```
-
-## Consideraciones
-
--Gradiente espacial
-
-      1.1. Cualidades heterogéneas del suelo
-      
-```{r Nitro, echo = F, eval = T, out.width="70%", fig.cap="Ejemplo de gradiente espacial", fig.align='center'}
-x <- 1:10
-y <- 1:10
-
-coords <- expand.grid(x = x, y = y)
-coords$z <- with(coords, sqrt((x - 2)^2 + (y - 7)^2))
-
-library(ggplot2)
-
-ggplot(coords) + geom_tile(aes(x = x, y = y, fill = z)) +
-      coord_fixed(ratio = 1) +
-      labs(fill = "Concentración\ de\ nitrógeno")+
-      theme_minimal() +
-      theme(legend.position = "bottom",
-            axis.text = element_blank(),
-            axis.title = element_blank(),
-            axis.ticks = element_blank()) 
-```
-
-## Consideraciones
-
-      1.2. Efecto de borde
-
-      
-```{r dist, echo = F, eval = T, out.width="70%", fig.cap="Efecto de borde", fig.align='center'}
-x <- 1:10
-y <- 1:10
-
-coords <- expand.grid(x = x, y = y)
-coords$z2 <- with(coords, sqrt((x - 5)^2 + (y - 5)^2))
-
-library(ggplot2)
-
-ggplot(coords) + geom_tile(aes(x = x, y = y, fill = z2)) +
-      coord_fixed(ratio = 1) +
-      labs(fill = "Distancia al borde")+
-      theme_minimal() +
-      theme(legend.position = "bottom",
-            axis.text = element_blank(),
-            axis.title = element_blank(),
-            axis.ticks = element_blank()) 
-```
-
 ## Consideraciones 
       
-- Si no hay un gradiente identificado que tomar en cuenta $\rightarrow$ **EVITAR**
+- Si no hay un gradiente identificado que tomar en cuenta $\rightarrow$ **EVITAR CL**
 
-- Identificar el gradiente puede incluso ayudar a incluir en análisis y aislar varianza que explica (modelo ANCOVA)
+- Identificar el gradiente puede incluso ayudar a incluir en análisis y aislar varianza que explica dicho gradiente (modelo ANCOVA en Unidad 5)
 
 
 [Regresar al índice del curso](../index.html)
