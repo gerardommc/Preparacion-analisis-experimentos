@@ -31,4 +31,56 @@ El análisis de los diseños con medidas repetidas es igual al de los diseños s
 
 Aquí haremos otro análisis anidado de un diseño de tres vías con medidas repetidas. La base analizada está contenida en `datarium` bajo el nombre `weightloss`.
 
+## `Weightloss`
+
+Comenzaremos, nuevamente, cargando la base de datos, viendo en qué formato está y si es necesario transformarla.
+
+```{r}
+weight <- datarium::weightloss
+knitr::kable(head(weight)) # Imprimiendo las primeras seis filas de weightloss
+```
+
+Al igual que los otros diseños anidados que vimos (`slefesteem2`), está en formato ancho en el factor tiempo, por lo que hay que utilizar `reshape2::melt` para darle formato largo. Para que `melt` funcione como queremos (mantener una columna para cada factor experimental), necesitamos especificar qué columnas permanecerán así en el argumento `id.vars`:
+
+```{r}
+weight.l <- reshape2::melt(weight, id.vars = c("id", "diet", "exercises"))
+names(weight.l) <- c("id", "diet", "exercises", "time", "loss")
+knitr::kable(head(weight.l)) #Imprimiendo las primeras seis filas de la tabla resultante
+```
+
+Al igual que `selfesteem2`, `weightloss` contiene tres mediciones de la pérdida de peso por cada tratamiento aplicado a los individuos. Los factores `diet` y `exercises` fueron aplicados simultáneamente, por lo que sólo `time` está anidado en ambos, lo cual constituye la principal diferencia con `selfesteem2` que sólo incluye dos factores anidados en los individuos. Con base en esta estructura experimental, podemos contemplar la existencia de interacciones entre `diet` y `exercises`. La interacción con tiempo debe existir porque está anidado en ambos factores.
+
+Antes de continuar con el análisis hagamos una rápida verificación de la distribución de `loss`, esta vez, utilizando únicamente la pruebe de shapiro para cada grupo experimental:
+
+```{r shapiro-1, message = F, warning = F}
+library(tidyverse); library(rstatix)
+shap.test <- weight.l %>%
+   group_by(diet, exercises, time) %>%
+   shapiro_test(loss)
+knitr::kable(shap.test, caption = "Resultados de la prueba de Shapiro dentro de cada grupo experimental.", align = "c")
+```
+
+Los resultados sugieren que podemos aceptar la hipótesis nula de no diferencias con una distribución normal.
+
+Entonces procedamos con el análisis de `weightloss`. Para comenzar, sabemos que puede haber interacción `diet:exercises`, por lo que comenzaremos con el modelo más complicado:
+
+```{r message = F, warning = F}
+library(lme4)
+m1 <- lmer(loss ~ (diet * exercises)/time + (1|id), weight.l)
+car::Anova(m1, type = 2)
+```
+Esta especificación del modelo, con `tiempo` anidado en `diet` y `exercises` parece tener todos los términos relevantes para los datos, por ahora sólo falta examinar los residuales. Como ya se habrán dado cuenta, las gráficas de diagnóstico del paquete `lmer` sólo muestran la primera gráfica de `aov` y `lm`, pero ésta es suficiente:
+
+```{r}
+plot(m1)
+```
+
+Con este diagnóstico, podemos entonces rechazar todas las hipótesis nulas. Para ver rápidamente los efectos, podemos ahora sí, ver los grupos experimentales de `loss`:
+
+```{r cajas-weight, fig.height=4, fig.width=8, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Gráfico de cajas de `loss` en cada grupo experimental."}
+boxplot(loss ~ diet:exercises:time, weight.l)
+```
+
+Los que sugiere que los efectos de dieta, ejercicio y tiempo, son todos positivos, es decir, que la dieta, ejercicio y tiempo sobre la pérdida de peso dependen de que todos estén presentes para que haya una mayor pérdida de peso.
+
 [Regresar al índice del curso](../index.html)

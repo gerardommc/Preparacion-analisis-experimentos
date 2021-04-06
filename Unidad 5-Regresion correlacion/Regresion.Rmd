@@ -90,4 +90,10 @@ dos valores de $R^2$, y como es de esperarse, es mejor confiar en el método má
 
 # ¿Cómo se hace una regresión lineal?
 
+## Estimación de los coeficientes de regresión
+
+## Estimación de $R^2$
+
+## Estimación de significancia estadística
+
 [Regresar al índice del curso](../index.html)
