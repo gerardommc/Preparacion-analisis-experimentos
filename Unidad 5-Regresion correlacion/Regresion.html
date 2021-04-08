@@ -1644,10 +1644,10 @@ summary(m1)</code></pre>
 </ul>
 <p>Una vez obtenidas estas sumas, las utilizaremos para estimar <span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span>:</p>
 <p><span class="math display" id="eq:beta0">\[\begin{equation}
-      \beta_0 = \frac{ \sum y \cdot \sum x^2 – \sum x \cdot \sum xy} {n \cdot \sum x^2 – \left(\sum x \right)^2} \tag{3.1}
+      \beta_0 = \frac{ \sum y_i \cdot \sum x_i^2 – \sum x \cdot \sum x_iy_i} {n \cdot \sum x_i^2 – \left(\sum x_i \right)^2} \tag{3.1}
 \end{equation}\]</span></p>
 <p><span class="math display" id="eq:beta1">\[\begin{equation}
-      \beta_1 = \frac{n\cdot \sum xy - \sum x \cdot \sum y}{n \cdot \sum x^2 - \left( \sum x \right)^2} \tag{3.2}
+      \beta_1 = \frac{n\cdot \sum x_i y_i - \sum x_i \cdot \sum y_i}{n \cdot \sum x_i^2 - \left( \sum x_i \right)^2} \tag{3.2}
 \end{equation}\]</span></p>
 </div>
 <div id="estimación-de-r2" class="section level2">
@@ -1656,16 +1656,31 @@ summary(m1)</code></pre>
 <p><span class="math display">\[\begin{equation} R^2 = 1 - \frac{SS_{Error}}{SS_{Totales}} \end{equation}\]</span></p>
 <p><span class="math inline">\(SS_{Error}\)</span> es la varianza de los residuales, es decir, la variabilidad que la regresión no logró explicar, y <span class="math inline">\(SS_{Totales}\)</span> es la varianza cruda:</p>
 <p><span class="math display" id="eq:SS-err">\[\begin{equation}
-   SS_{Error} = \sum y^2 - \beta_0 \sum y - \beta_1 \sum x y \tag{3.3}
+   SS_{Error} = \sum y_i^2 - \beta_0 \sum y_i - \beta_1 \sum x_i y_i \tag{3.3}
 \end{equation}\]</span></p>
 <p><span class="math display" id="eq:SS-tot">\[\begin{equation}
-   SS_{Total} = \sum y^2 - \frac{\left( \sum y \right)^2}{n} \tag{3.4}
+   SS_{Total} = \sum y_i^2 - \frac{\left( \sum y_i \right)^2}{n} \tag{3.4}
 \end{equation}\]</span></p>
 </div>
 <div id="estimación-de-significancia-estadística" class="section level2">
 <h2><span class="header-section-number">3.3</span> Estimación de significancia estadística</h2>
-<p><a href="../index.html">Regresar al índice del curso</a></p>
+<p>Este último paso nos permitirá, en el caso de la regresión simple, poner a prueba las hipótesis nulas:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_0 = 0\)</span></li>
+<li><span class="math inline">\(H_1\)</span>: <span class="math inline">\(\beta_1 = 0\)</span></li>
+</ol>
+<p>O sea que se trata de rechazar la hipótesis de que la variable <span class="math inline">\(x\)</span> no tiene un efecto sobre los valores de <span class="math inline">\(y\)</span>. Para entender esto, podemos ver</p>
+<p><span class="math display">\[ y(x) = \beta_0 + \beta_1 x\]</span>
+que si ambos coeficientes <span class="math inline">\(\beta_0 = 0\)</span> y <span class="math inline">\(\beta_1 = 0\)</span>, no hay ningún cambio de <span class="math inline">\(y\)</span> con respecto de <span class="math inline">\(x\)</span>, pues <span class="math inline">\(0 \times x =0\)</span>, para todos los valores posibles de <span class="math inline">\(x\)</span>, por lo que <span class="math inline">\(y(x)\)</span> formará una línea horizontal</p>
+<p>Para rechazar <span class="math inline">\(H_0\)</span> y <span class="math inline">\(H_1\)</span>, entonces, necesitamos estimar la probabilidad de que estas tengan un valor de <span class="math inline">\(0\)</span>, utilizando el estadístico <span class="math inline">\(t\)</span> (<span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span> tienen una distribución <span class="math inline">\(t\)</span>, similar a la normal). Para estimar este último necesitamos calcular las siguientes cantidades:</p>
+<ul>
+<li></li>
+</ul>
 </div>
+</div>
+<div id="discusión" class="section level1">
+<h1><span class="header-section-number">4</span> Discusión</h1>
+<p><a href="../index.html">Regresar al índice del curso</a></p>
 </div>
 
 

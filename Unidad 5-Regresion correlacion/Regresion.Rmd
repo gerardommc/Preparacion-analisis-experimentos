@@ -113,11 +113,11 @@ El primer paso para calcular los coeficientes es obtener las sumas (operador $\s
 Una vez obtenidas estas sumas, las utilizaremos para estimar $\beta_0$ y $\beta_1$:
 
 \begin{equation}
-      \beta_0 = \frac{ \sum y \cdot \sum x^2 – \sum x \cdot \sum xy} {n \cdot \sum x^2 – \left(\sum x \right)^2} (\#eq:beta0)
+      \beta_0 = \frac{ \sum y_i \cdot \sum x_i^2 – \sum x \cdot \sum x_iy_i} {n \cdot \sum x_i^2 – \left(\sum x_i \right)^2} (\#eq:beta0)
 \end{equation}
 
 \begin{equation}
-      \beta_1 = \frac{n\cdot \sum xy - \sum x \cdot \sum y}{n \cdot \sum x^2 - \left( \sum x \right)^2} (\#eq:beta1)
+      \beta_1 = \frac{n\cdot \sum x_i y_i - \sum x_i \cdot \sum y_i}{n \cdot \sum x_i^2 - \left( \sum x_i \right)^2} (\#eq:beta1)
 \end{equation}
 
 ## Estimación de $R^2$
@@ -129,14 +129,37 @@ El valor de $R^2$ expresa la proporción de varianza explicada por la regresión
 $SS_{Error}$ es la varianza de los residuales, es decir, la variabilidad que la regresión no logró explicar, y $SS_{Totales}$ es la varianza cruda:
 
 \begin{equation}
-   SS_{Error} = \sum y^2 - \beta_0 \sum y - \beta_1 \sum x y (\#eq:SS-err)
+   SS_{Error} = \sum y_i^2 - \beta_0 \sum y_i - \beta_1 \sum x_i y_i (\#eq:SS-err)
 \end{equation}
 
 \begin{equation}
-   SS_{Total} = \sum y^2 - \frac{\left( \sum y \right)^2}{n} (\#eq:SS-tot)
+   SS_{Total} = \sum y_i^2 - \frac{\left( \sum y_i \right)^2}{n} (\#eq:SS-tot)
 \end{equation}
 
-
 ## Estimación de significancia estadística
+
+Este último paso nos permitirá, en el caso de la regresión simple, poner a prueba las hipótesis nulas:
+
+1. $H_0$: $\beta_0 = 0$
+2. $H_1$: $\beta_1 = 0$
+
+O sea que se trata de rechazar la hipótesis de que la variable $x$ no tiene un efecto sobre los valores de $y$. Para entender esto, podemos ver
+
+$$ y(x) = \beta_0 + \beta_1 x$$
+que si ambos coeficientes $\beta_0 = 0$ y $\beta_1 = 0$, no hay ningún cambio de $y$ con respecto de $x$, pues $0 \times x =0$, para todos los valores posibles de $x$, por lo que $y(x)$ formará una línea horizontal
+
+Para rechazar $H_0$ y $H_1$, entonces, necesitamos estimar la probabilidad de que estas tengan un valor de $0$, utilizando el estadístico $t$ ($\beta_0$ y $\beta_1$ tienen una distribución $t$, similar a la normal). Para estimar este último necesitamos calcular las siguientes cantidades:
+
+- 
+
+
+
+
+
+# Discusión
+
+
+
+
 
 [Regresar al índice del curso](../index.html)

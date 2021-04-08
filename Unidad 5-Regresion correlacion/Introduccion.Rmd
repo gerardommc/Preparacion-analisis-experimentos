@@ -20,8 +20,8 @@ La correlación y regresión, en primera instancia, son conceptos difíciles de 
 library(ggplot2)
 
 set.seed(123)
-x <- rnorm(100, 10, 1)
-y <- x * runif(100, 2, 2.7) + runif(100, 10, 12)
+x <- rnorm(100, 0, 1)
+y <- x + rnorm(100, 0, 1)
 
 df.1 <- data.frame(x = x, y = y)
 ggplot(df.1) + geom_point(aes(x = x, y = y)) + 
@@ -40,20 +40,31 @@ ggplot(df.1) + geom_point(aes(x = x, y = y)) +
 
 Como se puede observar en ambas figuras, los datos varían alrededor de la línea recta producida por $y(x)$. Cuanto mayor sea la variación alrededor de dicha línea menor será la correlación entre $x$ y $y$ (figura \@ref(fig:correlacion)).
 
-```{r correlacion, echo=F, fig.align='center', fig.cap="Diferentes correlaciones", fig.height=4.5, fig.width=8, warning=F, message=F}
-x1 <- rnorm(100, 10, 1)
-y1 <- x1 * runif(100, 2, 2.05) + runif(100, 10, 12)
+```{r correlacion, echo=F, fig.align='center', fig.cap="Diferentes tipos correlaciones entre dos variables aleatorias $x$ y $y$. *Negativa* o *Positiva* indica si $y$ disminuye o aumenta, repectivamente, con respecto de $x$, mientras que *Alta* y *Baja* indican qué tan cerca o lejor de la línea de regresión están los valores de $y$.", fig.height=6, fig.width=6, warning=F, message=F}
+y1 <- x + rnorm(100, 0, 0.2)
+y2 <- -x + rnorm(100, 0, 1)
+y3 <- -x + rnorm(100, 0, 0.2)
 
 df.1$Correlación <- "Baja"
+df.1$Signo <- "Positiva"
 
-df.2 <- data.frame(x = x1, y = y1)
+df.2 <- data.frame(x = x, y = y1)
 df.2$Correlación <- "Alta"
+df.2$Signo <- "Positiva"
 
-df.3 <- rbind(df.1, df.2)
+df.3 <- data.frame(x = x, y = y2)
+df.3$Correlación <- "Baja"
+df.3$Signo <- "Negativa"
 
-ggplot(df.3) + geom_point(aes(x = x, y = y)) + 
+df.4 <- data.frame(x = x, y = y3)
+df.4$Correlación <- "Alta"
+df.4$Signo <- "Negativa"
+
+df.5 <- rbind(df.1, df.2, df.3, df.4)
+
+ggplot(df.5) + geom_point(aes(x = x, y = y)) + 
       geom_smooth(aes(x = x, y = y), method = "lm") + 
-      facet_wrap(~ Correlación) + 
+      facet_grid(vars(Correlación), vars(Signo)) + 
       theme_bw()
 ```
 
