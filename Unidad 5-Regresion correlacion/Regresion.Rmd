@@ -32,7 +32,7 @@ Ninguna de estas variables, como tal, puede considerarse con un valor numérico,
 Como es de esperarse, las variables contínuas también pueden representarse como categóricas. Por ejemplo se puede comparar la velocidad de crecimiento de una especie de crutáceo a dos o tres temperaturas. Cuando el número de valores de temperatura es lo suficientemente grande, sin embargo, resulta más interesante estimar por ejemplo, cómo cambia la velocidad de crecimiento con el el cambio de temperatura, como en una ecuación lineal:
 
 \begin{equation}
-\mathrm{Crecimiento} = \mathrm{Promedio} + \mathrm{Tasa} \times 
+\mathrm{Crecimiento} = \mathrm{Intercepto} + \mathrm{Tasa} \times 
 \mathrm{Temperatura} (\#eq:crecimiento)
 \end{equation}
 
@@ -90,9 +90,52 @@ dos valores de $R^2$, y como es de esperarse, es mejor confiar en el método má
 
 # ¿Cómo se hace una regresión lineal?
 
+El proceso de una regresión lineal involucra tres estimaciones secuenciales:
+
+1. Coeficientes de regresión $\beta_0$ y $\beta_1$
+2. $R^2$
+3. Significancia estadística
+
+A continuación se describe el proceso para cada uno de los pasos
+
 ## Estimación de los coeficientes de regresión
 
+De acuerdo con las convenciones matemáticas en este tutorial $x$ es la variable independiente $y$ es la dependiente, por lo que $y(x) = f(x)$.
+
+El primer paso para calcular los coeficientes es obtener las sumas (operador $\sum$):
+
+- $\sum_{i = 1}^n x_i = x_1 + x_2 + \dots + x_n$
+- $\sum_{i = 1}^n y_i = y_1 + y_2 + \dots + y_n$
+- $\sum_{i = 1}^n x_i y_i = x_1 \times y_1 + x_2 \times y_2 + \dots + x_n \times y_n$
+- $\sum_{i = 1}^n x_i^2 = x_1^2 + x_2^2 + \dots + x_n^2$
+- $\sum_{i = 1}^n y_i^2 = y_1^2 + y_2^2 + \dots + y_n^2$
+
+Una vez obtenidas estas sumas, las utilizaremos para estimar $\beta_0$ y $\beta_1$:
+
+\begin{equation}
+      \beta_0 = \frac{ \sum y \cdot \sum x^2 – \sum x \cdot \sum xy} {n \cdot \sum x^2 – \left(\sum x \right)^2} (\#eq:beta0)
+\end{equation}
+
+\begin{equation}
+      \beta_1 = \frac{n\cdot \sum xy - \sum x \cdot \sum y}{n \cdot \sum x^2 - \left( \sum x \right)^2} (\#eq:beta1)
+\end{equation}
+
 ## Estimación de $R^2$
+
+El valor de $R^2$ expresa la proporción de varianza explicada por la regresión lineal, de modo que se obtiene de restar el conciente de la suma de cuadrados del error y la suma de cuadrados totales de la unidad (varianza total):
+
+\begin{equation} R^2 = 1 - \frac{SS_{Error}}{SS_{Totales}} \end{equation}
+
+$SS_{Error}$ es la varianza de los residuales, es decir, la variabilidad que la regresión no logró explicar, y $SS_{Totales}$ es la varianza cruda:
+
+\begin{equation}
+   SS_{Error} = \sum y^2 - \beta_0 \sum y - \beta_1 \sum x y (\#eq:SS-err)
+\end{equation}
+
+\begin{equation}
+   SS_{Total} = \sum y^2 - \frac{\left( \sum y \right)^2}{n} (\#eq:SS-tot)
+\end{equation}
+
 
 ## Estimación de significancia estadística
 

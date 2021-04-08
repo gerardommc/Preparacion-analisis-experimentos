@@ -1,0 +1,63 @@
+---
+title: "Introducción a la regresión y correlación"
+author: "Gerardo Martín"
+date: "7/4/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+La correlación y regresión, en primera instancia, son conceptos difíciles de distinguir, pues ambas hacen referencia a relaciones lineales entre dos variables aleatorias. El concepto de *relación lineal* quiere decir que los valores de dos variables aleatorias graficadas en el plano euclidiano (intersección perpendicular de dos rectas) formarán, en promedio, una línea aproximadamente recta (figura \@ref(fig:rel-lin)).
+
+```{r rel-lin, fig.height=4, fig.width=4, fig.align="center", fig.cap="Relación lineal entre dos variables aleatorias $x, y$.", echo=FALSE}
+library(ggplot2)
+
+set.seed(123)
+x <- rnorm(100, 10, 1)
+y <- x * runif(100, 2, 2.7) + runif(100, 10, 12)
+
+df.1 <- data.frame(x = x, y = y)
+ggplot(df.1) + geom_point(aes(x = x, y = y)) + 
+      theme_bw()
+```
+
+Ambos métodos estadísticos, regresión y correlación, se pueden usar para medir el grado de dependencia entre $x$ y $y$, es decir, cuánta variación de $y$ depende de la variación de $x$. La principal diferencia, sin embargo radica en que la regresión provee se puede utilizar para medir los cambios de $y$ con respecto de $x$. La correlación, en cambio simplemente mide la varianza que $x$ y $y$ comparten, independientemente de sus respectivos valores. por lo tanto, la regresión lineal se puede utilizar para generar una función matemática que describe el comportamiento promedio de los datos analizados (figura \@ref(fig:lin-func)).
+
+
+```{r lin-func, echo=FALSE,fig.height=4, fig.width=4, fig.align="center", fig.cap="Relación lineal entre $x$ y $y$ con la predicción de la función $y(x)$ en azul y los intervalos de confianza asociados.", warning = F, message = F}
+df.1 <- data.frame(x = x, y = y)
+ggplot(df.1) + geom_point(aes(x = x, y = y)) + 
+      geom_smooth(aes(x = x, y = y), method = "lm") +
+      theme_bw()
+```
+
+Como se puede observar en ambas figuras, los datos varían alrededor de la línea recta producida por $y(x)$. Cuanto mayor sea la variación alrededor de dicha línea menor será la correlación entre $x$ y $y$ (figura \@ref(fig:correlacion)).
+
+```{r correlacion, echo=F, fig.align='center', fig.cap="Diferentes correlaciones", fig.height=4.5, fig.width=8, warning=F, message=F}
+x1 <- rnorm(100, 10, 1)
+y1 <- x1 * runif(100, 2, 2.05) + runif(100, 10, 12)
+
+df.1$Correlación <- "Baja"
+
+df.2 <- data.frame(x = x1, y = y1)
+df.2$Correlación <- "Alta"
+
+df.3 <- rbind(df.1, df.2)
+
+ggplot(df.3) + geom_point(aes(x = x, y = y)) + 
+      geom_smooth(aes(x = x, y = y), method = "lm") + 
+      facet_wrap(~ Correlación) + 
+      theme_bw()
+```
+
+Estos métodos, sus variaciones y aplicaciones son el tema de la presente unidad.
+
+[Regresar al índice del curso](../index.html)
+

@@ -81,6 +81,6 @@ Con este diagnóstico, podemos entonces rechazar todas las hipótesis nulas. Par
 boxplot(loss ~ diet:exercises:time, weight.l)
 ```
 
-Los que sugiere que los efectos de dieta, ejercicio y tiempo, son todos positivos, es decir, que la dieta, ejercicio y tiempo sobre la pérdida de peso dependen de que todos estén presentes para que haya una mayor pérdida de peso.
+Lo que sugiere que los efectos de dieta, ejercicio y tiempo, son todos positivos, es decir, que la dieta, ejercicio y tiempo sobre la pérdida de peso dependen de que todos estén presentes para que haya una mayor pérdida de peso.
 
 [Regresar al índice del curso](../index.html)
