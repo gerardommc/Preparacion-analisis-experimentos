@@ -37,11 +37,13 @@ Como es de esperarse, las variables contínuas también pueden representarse com
 \end{equation}
 
 
-Donde no hay ningún tipo de restricción sobre el valor que $\mathrm{Tasa}$ pueda tomar, es decir puede ir desde $-\infty$ hasta $+ \infty$. La regresión lineal, tiene como objetivo, justamente ese, estimar el valor de $\mathrm{Tasa}$ para cualquier par de variables numéricas $x$ y $y$. De manera más general, la ecuación \@ref(eq:crecimiento) puede ser representada como:
+Donde no hay ningún tipo de restricción sobre el valor que $\mathrm{Tasa}$ pueda tomar, es decir puede ir desde $-\infty$ hasta $+ \infty$. La regresión lineal, tiene como objetivo, justamente ese, estimar el valor de $\mathrm{Tasa}$ para cualquier par de variables numéricas $x$ y $y$. De manera más general en estadística, la ecuación \@ref(eq:crecimiento) puede ser representada como:
 
 \begin{equation}
-y(x) = \beta_0 + \beta_1 x (\#eq:lineal)
+y(x) = \beta_0 + \beta_1 x + \epsilon_i (\#eq:lineal)
 \end{equation}
+
+Donde el término aditional $\epsilon_i$ representa el error, o la diferencia entre la línea recta y las observaciones $y_i$ (los residuales).
 
 Al igual que en ANOVA, puede existir cualquier número de variables $x$ de tal modo que $y$ puede ser una función $y(x_1, x_2, \dots, x_n)$, siempre y cuando existan grados de libertad suficientes de $y$, y existan observaciones de $x$ para cada todas y cada una de las $y$. 
 
@@ -100,27 +102,32 @@ A continuación se describe el proceso para cada uno de los pasos
 
 ## Estimación de los coeficientes de regresión
 
-De acuerdo con las convenciones matemáticas en este tutorial $x$ es la variable independiente $y$ es la dependiente, por lo que $y(x) = f(x)$.
+Comenzaremos por definir las variables aleatorias independiente como $X$ y la variable independiente como $Y$, de modo que esta será tratada como una función de $X$ ($Y(X)$). De cada una de estas variables, que representan muestras de una población, las medias corresponden a $E(Y) = \bar{Y}$ y $E(X) = \bar{X}$. Estas últimas serán utilizadas para calcular:
 
-El primer paso para calcular los coeficientes es obtener las sumas (operador $\sum$):
+- $x_i = X_i - \bar{X}$
+- $y_i = Y_i - \bar{X}$
 
-- $\sum_{i = 1}^n x_i = x_1 + x_2 + \dots + x_n$
-- $\sum_{i = 1}^n y_i = y_1 + y_2 + \dots + y_n$
-- $\sum_{i = 1}^n x_i y_i = x_1 \times y_1 + x_2 \times y_2 + \dots + x_n \times y_n$
-- $\sum_{i = 1}^n x_i^2 = x_1^2 + x_2^2 + \dots + x_n^2$
-- $\sum_{i = 1}^n y_i^2 = y_1^2 + y_2^2 + \dots + y_n^2$
+Y con estas últimas se obtendrán las sumas (operador $\sum$):
 
-Una vez obtenidas estas sumas, las utilizaremos para estimar $\beta_0$ y $\beta_1$:
+- $\sum_{i = 1}^n x_i = \sum x = x_1 + x_2 + \dots + x_n$
+- $\sum_{i = 1}^n y_i = \sum y = y_1 + y_2 + \dots + y_n$
+- $\sum_{i = 1}^n x_i y_i = \sum xy = x_1 \times y_1 + x_2 \times y_2 + \dots + x_n \times y_n$
+- $\sum_{i = 1}^n x_i^2 = \sum x^2 = x_1^2 + x_2^2 + \dots + x_n^2$
+- $\sum_{i = 1}^n y_i^2 = \sum y^2 = y_1^2 + y_2^2 + \dots + y_n^2$
+
+Una vez obtenidas estas sumas, las utilizaremos para estimar $\beta_1$:
 
 \begin{equation}
-      \beta_0 = \frac{ \sum y_i \cdot \sum x_i^2 – \sum x \cdot \sum x_iy_i} {n \cdot \sum x_i^2 – \left(\sum x_i \right)^2} (\#eq:beta0)
+      \beta_1 = \frac{\sum xy}{\sum x^2} (\#eq:beta1)
 \end{equation}
+
+Estimar $\beta_0$ es más sencillo, pues utilizamos el valor estimado de $\beta_1$:
 
 \begin{equation}
-      \beta_1 = \frac{n\cdot \sum x_i y_i - \sum x_i \cdot \sum y_i}{n \cdot \sum x_i^2 - \left( \sum x_i \right)^2} (\#eq:beta1)
+a = \bar{Y} - \beta_1 \bar{X} (\#eq:beta0)
 \end{equation}
 
-## Estimación de $R^2$
+## Estimación del coeficiente de determinación ($R^2$)
 
 El valor de $R^2$ expresa la proporción de varianza explicada por la regresión lineal, de modo que se obtiene de restar el conciente de la suma de cuadrados del error y la suma de cuadrados totales de la unidad (varianza total):
 
@@ -129,11 +136,11 @@ El valor de $R^2$ expresa la proporción de varianza explicada por la regresión
 $SS_{Error}$ es la varianza de los residuales, es decir, la variabilidad que la regresión no logró explicar, y $SS_{Totales}$ es la varianza cruda:
 
 \begin{equation}
-   SS_{Error} = \sum y_i^2 - \beta_0 \sum y_i - \beta_1 \sum x_i y_i (\#eq:SS-err)
+   SS_{Error} = \sum y^2 - \beta_0 \sum y - \beta_1 \sum x y (\#eq:SS-err)
 \end{equation}
 
 \begin{equation}
-   SS_{Total} = \sum y_i^2 - \frac{\left( \sum y_i \right)^2}{n} (\#eq:SS-tot)
+   SS_{Total} = \sum y^2 - \frac{\left( \sum y \right)^2}{n} (\#eq:SS-tot)
 \end{equation}
 
 ## Estimación de significancia estadística
@@ -148,13 +155,25 @@ O sea que se trata de rechazar la hipótesis de que la variable $x$ no tiene un 
 $$ y(x) = \beta_0 + \beta_1 x$$
 que si ambos coeficientes $\beta_0 = 0$ y $\beta_1 = 0$, no hay ningún cambio de $y$ con respecto de $x$, pues $0 \times x =0$, para todos los valores posibles de $x$, por lo que $y(x)$ formará una línea horizontal
 
-Para rechazar $H_0$ y $H_1$, entonces, necesitamos estimar la probabilidad de que estas tengan un valor de $0$, utilizando el estadístico $t$ ($\beta_0$ y $\beta_1$ tienen una distribución $t$, similar a la normal). Para estimar este último necesitamos calcular las siguientes cantidades:
+Para poner a prueba $H_0$ y $H_1$, entonces, necesitamos estimar la probabilidad de que estas tengan un valor de $0$, utilizando al igual que en ANOVA el estadístico $F$. Para estimar este último necesitamos:
 
-- 
+- La suma de cuadrados totales: $SS_{Total} = \sum \left( Y_i - \bar{Y} \right) = \sum y^2$
+- La suma de cuadrados de la regresión: $SS_{Regresion} = b \sum xy$
+- La suma de cuadrados de los residuales (alternativa): $SS_{Residuales} = SS_{Totales} - SS_{Regresión}$
 
+Estas $SS$ serán utilizadas para calcular sus respectivas medias de cuadrados ($MS$), el dividirlas por sus grados de libertad, los totales y de la regresión:
 
+- $MS_{Totales} = \frac{SS_{Totales}}{DF_{Totales}}$; $DF_{Totales} = n-1$
+- $MS_{Regresión} = \frac{SS_{Regresión}}{DF_{Regresión}}$; $DF_{Regresión} = 1$ (en regresión simple; sería 2, si hubiera dos variables $X$)
+- $MS_{Residuales} = \frac{SS_{Residuales}}{DF_{Residuales}}$; $DF_{Residuales} = DF_{Totales} - DF_{Regresión} = n-2$
 
+Finalmente:
 
+\begin{equation}
+F = \frac{MS_{Regresión}}{MS_{Residuales}}
+\end{equation}
+
+El resto de la prueba de hipótesis transcurre tal como en ANOVA. La implementación en **R** asume que $\beta_0$ y $\beta_1$ tienen una distribución $t$, por lo que este es el estadístico reportado  (columna `t value` arriba). la prueba de hipótesis para este estadístico se basa en otros cálculos, pero las conclusiones e interpretación son las mismas.
 
 # Discusión
 

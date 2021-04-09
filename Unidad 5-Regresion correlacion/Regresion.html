@@ -1564,10 +1564,11 @@ div.tocify {
 \mathrm{Crecimiento} = \mathrm{Intercepto} + \mathrm{Tasa} \times 
 \mathrm{Temperatura} \tag{1.1}
 \end{equation}\]</span></p>
-<p>Donde no hay ningún tipo de restricción sobre el valor que <span class="math inline">\(\mathrm{Tasa}\)</span> pueda tomar, es decir puede ir desde <span class="math inline">\(-\infty\)</span> hasta <span class="math inline">\(+ \infty\)</span>. La regresión lineal, tiene como objetivo, justamente ese, estimar el valor de <span class="math inline">\(\mathrm{Tasa}\)</span> para cualquier par de variables numéricas <span class="math inline">\(x\)</span> y <span class="math inline">\(y\)</span>. De manera más general, la ecuación <a href="#eq:crecimiento">(1.1)</a> puede ser representada como:</p>
+<p>Donde no hay ningún tipo de restricción sobre el valor que <span class="math inline">\(\mathrm{Tasa}\)</span> pueda tomar, es decir puede ir desde <span class="math inline">\(-\infty\)</span> hasta <span class="math inline">\(+ \infty\)</span>. La regresión lineal, tiene como objetivo, justamente ese, estimar el valor de <span class="math inline">\(\mathrm{Tasa}\)</span> para cualquier par de variables numéricas <span class="math inline">\(x\)</span> y <span class="math inline">\(y\)</span>. De manera más general en estadística, la ecuación <a href="#eq:crecimiento">(1.1)</a> puede ser representada como:</p>
 <p><span class="math display" id="eq:lineal">\[\begin{equation}
-y(x) = \beta_0 + \beta_1 x \tag{1.2}
+y(x) = \beta_0 + \beta_1 x + \epsilon_i \tag{1.2}
 \end{equation}\]</span></p>
+<p>Donde el término aditional <span class="math inline">\(\epsilon_i\)</span> representa el error, o la diferencia entre la línea recta y las observaciones <span class="math inline">\(y_i\)</span> (los residuales).</p>
 <p>Al igual que en ANOVA, puede existir cualquier número de variables <span class="math inline">\(x\)</span> de tal modo que <span class="math inline">\(y\)</span> puede ser una función <span class="math inline">\(y(x_1, x_2, \dots, x_n)\)</span>, siempre y cuando existan grados de libertad suficientes de <span class="math inline">\(y\)</span>, y existan observaciones de <span class="math inline">\(x\)</span> para cada todas y cada una de las <span class="math inline">\(y\)</span>.</p>
 </div>
 <div id="ejemplos-de-diseños-experimentales-con-factores-contínuos" class="section level1">
@@ -1633,33 +1634,38 @@ summary(m1)</code></pre>
 <p>A continuación se describe el proceso para cada uno de los pasos</p>
 <div id="estimación-de-los-coeficientes-de-regresión" class="section level2">
 <h2><span class="header-section-number">3.1</span> Estimación de los coeficientes de regresión</h2>
-<p>De acuerdo con las convenciones matemáticas en este tutorial <span class="math inline">\(x\)</span> es la variable independiente <span class="math inline">\(y\)</span> es la dependiente, por lo que <span class="math inline">\(y(x) = f(x)\)</span>.</p>
-<p>El primer paso para calcular los coeficientes es obtener las sumas (operador <span class="math inline">\(\sum\)</span>):</p>
+<p>Comenzaremos por definir las variables aleatorias independiente como <span class="math inline">\(X\)</span> y la variable independiente como <span class="math inline">\(Y\)</span>, de modo que esta será tratada como una función de <span class="math inline">\(X\)</span> (<span class="math inline">\(Y(X)\)</span>). De cada una de estas variables, que representan muestras de una población, las medias corresponden a <span class="math inline">\(E(Y) = \bar{Y}\)</span> y <span class="math inline">\(E(X) = \bar{X}\)</span>. Estas últimas serán utilizadas para calcular:</p>
 <ul>
-<li><span class="math inline">\(\sum_{i = 1}^n x_i = x_1 + x_2 + \dots + x_n\)</span></li>
-<li><span class="math inline">\(\sum_{i = 1}^n y_i = y_1 + y_2 + \dots + y_n\)</span></li>
-<li><span class="math inline">\(\sum_{i = 1}^n x_i y_i = x_1 \times y_1 + x_2 \times y_2 + \dots + x_n \times y_n\)</span></li>
-<li><span class="math inline">\(\sum_{i = 1}^n x_i^2 = x_1^2 + x_2^2 + \dots + x_n^2\)</span></li>
-<li><span class="math inline">\(\sum_{i = 1}^n y_i^2 = y_1^2 + y_2^2 + \dots + y_n^2\)</span></li>
+<li><span class="math inline">\(x_i = X_i - \bar{X}\)</span></li>
+<li><span class="math inline">\(y_i = Y_i - \bar{X}\)</span></li>
 </ul>
-<p>Una vez obtenidas estas sumas, las utilizaremos para estimar <span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span>:</p>
-<p><span class="math display" id="eq:beta0">\[\begin{equation}
-      \beta_0 = \frac{ \sum y_i \cdot \sum x_i^2 – \sum x \cdot \sum x_iy_i} {n \cdot \sum x_i^2 – \left(\sum x_i \right)^2} \tag{3.1}
-\end{equation}\]</span></p>
+<p>Y con estas últimas se obtendrán las sumas (operador <span class="math inline">\(\sum\)</span>):</p>
+<ul>
+<li><span class="math inline">\(\sum_{i = 1}^n x_i = \sum x = x_1 + x_2 + \dots + x_n\)</span></li>
+<li><span class="math inline">\(\sum_{i = 1}^n y_i = \sum y = y_1 + y_2 + \dots + y_n\)</span></li>
+<li><span class="math inline">\(\sum_{i = 1}^n x_i y_i = \sum xy = x_1 \times y_1 + x_2 \times y_2 + \dots + x_n \times y_n\)</span></li>
+<li><span class="math inline">\(\sum_{i = 1}^n x_i^2 = \sum x^2 = x_1^2 + x_2^2 + \dots + x_n^2\)</span></li>
+<li><span class="math inline">\(\sum_{i = 1}^n y_i^2 = \sum y^2 = y_1^2 + y_2^2 + \dots + y_n^2\)</span></li>
+</ul>
+<p>Una vez obtenidas estas sumas, las utilizaremos para estimar <span class="math inline">\(\beta_1\)</span>:</p>
 <p><span class="math display" id="eq:beta1">\[\begin{equation}
-      \beta_1 = \frac{n\cdot \sum x_i y_i - \sum x_i \cdot \sum y_i}{n \cdot \sum x_i^2 - \left( \sum x_i \right)^2} \tag{3.2}
+      \beta_1 = \frac{\sum xy}{\sum x^2} \tag{3.1}
+\end{equation}\]</span></p>
+<p>Estimar <span class="math inline">\(\beta_0\)</span> es más sencillo, pues utilizamos el valor estimado de <span class="math inline">\(\beta_1\)</span>:</p>
+<p><span class="math display" id="eq:beta0">\[\begin{equation}
+a = \bar{Y} - \beta_1 \bar{X} \tag{3.2}
 \end{equation}\]</span></p>
 </div>
-<div id="estimación-de-r2" class="section level2">
-<h2><span class="header-section-number">3.2</span> Estimación de <span class="math inline">\(R^2\)</span></h2>
+<div id="estimación-del-coeficiente-de-determinación-r2" class="section level2">
+<h2><span class="header-section-number">3.2</span> Estimación del coeficiente de determinación (<span class="math inline">\(R^2\)</span>)</h2>
 <p>El valor de <span class="math inline">\(R^2\)</span> expresa la proporción de varianza explicada por la regresión lineal, de modo que se obtiene de restar el conciente de la suma de cuadrados del error y la suma de cuadrados totales de la unidad (varianza total):</p>
 <p><span class="math display">\[\begin{equation} R^2 = 1 - \frac{SS_{Error}}{SS_{Totales}} \end{equation}\]</span></p>
 <p><span class="math inline">\(SS_{Error}\)</span> es la varianza de los residuales, es decir, la variabilidad que la regresión no logró explicar, y <span class="math inline">\(SS_{Totales}\)</span> es la varianza cruda:</p>
 <p><span class="math display" id="eq:SS-err">\[\begin{equation}
-   SS_{Error} = \sum y_i^2 - \beta_0 \sum y_i - \beta_1 \sum x_i y_i \tag{3.3}
+   SS_{Error} = \sum y^2 - \beta_0 \sum y - \beta_1 \sum x y \tag{3.3}
 \end{equation}\]</span></p>
 <p><span class="math display" id="eq:SS-tot">\[\begin{equation}
-   SS_{Total} = \sum y_i^2 - \frac{\left( \sum y_i \right)^2}{n} \tag{3.4}
+   SS_{Total} = \sum y^2 - \frac{\left( \sum y \right)^2}{n} \tag{3.4}
 \end{equation}\]</span></p>
 </div>
 <div id="estimación-de-significancia-estadística" class="section level2">
@@ -1672,10 +1678,23 @@ summary(m1)</code></pre>
 <p>O sea que se trata de rechazar la hipótesis de que la variable <span class="math inline">\(x\)</span> no tiene un efecto sobre los valores de <span class="math inline">\(y\)</span>. Para entender esto, podemos ver</p>
 <p><span class="math display">\[ y(x) = \beta_0 + \beta_1 x\]</span>
 que si ambos coeficientes <span class="math inline">\(\beta_0 = 0\)</span> y <span class="math inline">\(\beta_1 = 0\)</span>, no hay ningún cambio de <span class="math inline">\(y\)</span> con respecto de <span class="math inline">\(x\)</span>, pues <span class="math inline">\(0 \times x =0\)</span>, para todos los valores posibles de <span class="math inline">\(x\)</span>, por lo que <span class="math inline">\(y(x)\)</span> formará una línea horizontal</p>
-<p>Para rechazar <span class="math inline">\(H_0\)</span> y <span class="math inline">\(H_1\)</span>, entonces, necesitamos estimar la probabilidad de que estas tengan un valor de <span class="math inline">\(0\)</span>, utilizando el estadístico <span class="math inline">\(t\)</span> (<span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span> tienen una distribución <span class="math inline">\(t\)</span>, similar a la normal). Para estimar este último necesitamos calcular las siguientes cantidades:</p>
+<p>Para poner a prueba <span class="math inline">\(H_0\)</span> y <span class="math inline">\(H_1\)</span>, entonces, necesitamos estimar la probabilidad de que estas tengan un valor de <span class="math inline">\(0\)</span>, utilizando al igual que en ANOVA el estadístico <span class="math inline">\(F\)</span>. Para estimar este último necesitamos:</p>
 <ul>
-<li></li>
+<li>La suma de cuadrados totales: <span class="math inline">\(SS_{Total} = \sum \left( Y_i - \bar{Y} \right) = \sum y^2\)</span></li>
+<li>La suma de cuadrados de la regresión: <span class="math inline">\(SS_{Regresion} = b \sum xy\)</span></li>
+<li>La suma de cuadrados de los residuales (alternativa): <span class="math inline">\(SS_{Residuales} = SS_{Totales} - SS_{Regresión}\)</span></li>
 </ul>
+<p>Estas <span class="math inline">\(SS\)</span> serán utilizadas para calcular sus respectivas medias de cuadrados (<span class="math inline">\(MS\)</span>), el dividirlas por sus grados de libertad, los totales y de la regresión:</p>
+<ul>
+<li><span class="math inline">\(MS_{Totales} = \frac{SS_{Totales}}{DF_{Totales}}\)</span>; <span class="math inline">\(DF_{Totales} = n-1\)</span></li>
+<li><span class="math inline">\(MS_{Regresión} = \frac{SS_{Regresión}}{DF_{Regresión}}\)</span>; <span class="math inline">\(DF_{Regresión} = 1\)</span> (en regresión simple; sería 2, si hubiera dos variables <span class="math inline">\(X\)</span>)</li>
+<li><span class="math inline">\(MS_{Residuales} = \frac{SS_{Residuales}}{DF_{Residuales}}\)</span>; <span class="math inline">\(DF_{Residuales} = DF_{Totales} - DF_{Regresión} = n-2\)</span></li>
+</ul>
+<p>Finalmente:</p>
+<p><span class="math display">\[\begin{equation}
+F = \frac{MS_{Regresión}}{MS_{Residuales}}
+\end{equation}\]</span></p>
+<p>El resto de la prueba de hipótesis transcurre tal como en ANOVA. La implementación en <strong>R</strong> asume que <span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span> tienen una distribución <span class="math inline">\(t\)</span>, por lo que este es el estadístico reportado (columna <code>t value</code> arriba). la prueba de hipótesis para este estadístico se basa en otros cálculos, pero las conclusiones e interpretación son las mismas.</p>
 </div>
 </div>
 <div id="discusión" class="section level1">
