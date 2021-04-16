@@ -177,8 +177,10 @@ El resto de la prueba de hipótesis transcurre tal como en ANOVA. La implementac
 
 # Discusión
 
+Se ha expuesto aquí cuál es la diferencia esencial entre regresión, correlación y ANOVA. Las primeras dos establecen si existe una relación lineal (no causal) entre las variables independientes y dependientes. La regresión, a diferencia de la correlación sirve para medir la tasa de cambio de una con respecto de la otra y, mientras que ambas sirven para medir el *grado de dependencia*. ANOVA, en contraste, sirve como prueba de hipótesis de no diferencias entre grupos de datos, lo cual se hace por medio de cálculos muy similares a la regresión lineal. Para cerrar, la hipótesis que se rechaza en regresión lineal es que la relación entre las variables es horizontal.
 
+# Aplicación del conocimiento
 
-
+Dirígete a classroom para hacer la actividad correspondiente a este módulo.
 
 [Regresar al índice del curso](../index.html)

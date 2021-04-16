@@ -1,0 +1,116 @@
+---
+title: "Correlación"
+author: "Gerardo Martín"
+date: "12/4/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+La correlación a diferecia de la regresión sirve simplemente para medir la proporción de la varianza de una variable explicada por otra. A diferencia de la regresión lineal, donde hay una variable independiente y una dependiente, en correlación no hay tal distinción, los resultados son idénticos si se cambia $x$ por $y$ y viceversa. A pesar de que la correlación, en comparación con la regresión, es más simple y menos informativa sobre las relaciones entre variables, la correlación tiene muchas aplicaciones en estadística avanzada y adaptaciones que la hacen apropiada para otros tipos de datos y relaciones no lineales. Aquí nos centraremos en ver la prueba de correlación de Pearson, la cual está limitada al análisis de dos variables contínuas con relaciones estrictamente lineales.
+
+# Usos y aplicaciones de la correlación
+
+El principal uso que se da a la correlación es la estimación del grado de asociación entre dos variables contínuas. Estimar el grado de asociación es útil para saber, por ejemplo, si dos variables independientes se predicen una a la otra. Cuando dos variables independientes se predicen mutuamente (están correlacionadas) es imposible distinguir sus respectivos efectos en una regresión lineal múltiple, por lo que, de un modelo estadístico, se deben eliminar todas aquellas variables que se predicen mutuamente (son **colineales**). La presencia de variables independientes colineales es equivalente a un diseño ANOVA seriamente no balanceado, por ejemplo cuando en un ANOVA de dos vías con dos factores de dos niveles sólamente se tienen los datos experimentales para dos combinaciones: factor 1, tratamiento A, con factor 2, tratamiento B2. En un ejemplo tan extremo es evidente que no se puede poner a proueba la hipótesis nula de ninguno de los factores (No existen datos para factor 1, tratamiento B, por ejemplo).
+
+Las pruebas de correlación también se utilizan
+
+# La prueba de correlación de Pearson
+
+El resultado de la prueba de correlación de Pearson es el coeficiente de correlación $r$, cuyos valores pueden ser $ - 1 \geq r \leq 1$. Cuando $r = 1$ quiere decir que los valores de la variable $y$  disminuyen con el aumento de los valores de $x$, y que $x$ explica el 100% de la varianza de $y$. En términos geométricos esto quiere decir que los valores de $x$ y $y$ graficados forman una línea recta perfecta con pendiente que no estamos midiendo:
+
+```{r corr-1, echo=F, fig.height=4.7, fig.width=8, fig.align='center', fig.cap="Correlaciones con $r = 1$ (izquierda) y $r=-1$ (derecha)."}
+set.seed(123)
+x <- rnorm(100)
+y <- x * runif(1, 1, 2) + runif(1, 2, 10)
+set.seed(123)
+y2 <- -x * runif(1, 1, 2) + runif(1, 2, 10)
+
+par(mfrow = c(1,2))
+plot(x, y, main = "Positiva"); plot(x, y2, ylab = "y", main = "Negativa")
+```
+
+Un ejemplo de dos variables sin correlación alguna sería:
+
+```{r corr-0, fig.height=4.7, fig.width=4, echo = F, fig.align='center', fig.cap="Correlación con $r=0$."}
+set.seed(123)
+x <- rnorm(1000)
+y <- rnorm(1000, 10, 2)
+plot(x,y)
+```
+
+Para medir la correlación entre dos variables debemos hacer una serie de cálculos entre $x$ y $y$. La fórmula para el coeficiente de correlación es:
+
+\begin{equation}
+r = \frac{\sum xy}{\sqrt{ \sum x^2 \sum y^2}} (\#eq:Pearson)
+\end{equation}
+
+## Estimado $r$ *a mano* en R
+
+Comencemos por simular una serie de variables con diferentes grados de correlación:
+
+```{r}
+set.seed(123)
+x <- rnorm(1000)
+y1 <- x * sample(c(-1, 1), 1) + rnorm(1000, 0, 3)
+y2 <- x * sample(c(-1, 1), 1) + rnorm(1000)
+y3 <- x * sample(c(-1, 1), 1) + rnorm(1000, 0, 0.1)
+```
+
+Primero generamos la variable $x$ con una distribución normal, y las variables $y$, las simulamos a partir de $x$. Con la función `sample` seleccionamos al azar el signo de la correlación `c(-1, 1)`, y con `rnorm(1000)` generamos *ruido* estadístico con una varianza de 1, 0.5 y 0.1 para añadirle a $y$ y generar correlaciones menores. Continuemos entonces por clacular los numeradores de la ecuación \@ref(eq:Pearson):
+
+```{r}
+xy1 <- sum(x * y1)
+xy2 <- sum(x * y2)
+xy3 <- sum(x * y3)
+```
+
+y los denominadores:
+
+```{r}
+den1 <- sqrt(sum(x^2) * sum(y1^2))
+den2 <- sqrt(sum(x^2) * sum(y2^2))
+den3 <- sqrt(sum(x^2) * sum(y3^2))
+```
+
+Y ahora sí, obtengamos los cocientes:
+
+```{r}
+xy1/den1
+xy2/den2
+xy3/den3
+```
+
+Estos valores sugieren que $x$ y $y_1$ tienen una correlación negativa, relativamente débil, mientras que con $y_2$ y $y_3$ son positivas. Esto lo podemos confirmar visualmente:
+
+```{r corrs-ejem, fig.height=5, fig.width=12, fig.align="center", fig.cap="Relaciones entre $x$ y $y_{1, 2, 3}$."}
+par(mfrow = c(1, 3))
+plot(x, y1); plot(x, y2); plot(x, y3)
+```
+
+Podemos entonces verificar si nuestros cálculos están bien hechos con la función de **R** `cor.test`:
+
+```{r}
+cor.test(x, y1)
+cor.test(x, y2)
+cor.test(x, y3)
+```
+
+Podemos ver que los coeficientes que **R** calcula son ligeramente diferentes, pues tienen una serie de ajustes de varianz, pero, como los tamaños de muestra son grandes, los valores de $r$ calculados son bastante similares.
+
+Una vez que aprendimos a estimar el coeficiente de correlación $r$, cabe mencionar que el coeficiente de determinación de una regresión lineal $r^2$ recibe ese nombre porque efectivamente:
+
+$$ \mathrm{Coeficiente\ de\ determinación} = \mathrm{Coeficiente\ de\ correlación}^2$$
+
+## Estimación de significancia estadística
+
+[Regresar al índice del curso](../index.html)
