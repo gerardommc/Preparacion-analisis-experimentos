@@ -132,7 +132,7 @@ m2 <- aov(auto ~ tratamiento / tiempo , auto.l)
 summary(m2)
 ```
 
-Como podemos ver, cuando el modelo esta anidado, no se puede separar el efecto del factor de anidacion del factor anidado, de modo que **SIEMPRE** se estima la interacción, y podemos ver que la conclusió sobre $H_0$ sigue siendo la misma, aunque nos queda por tomar en cuenta al individup, `id`, como efecto aleatorio:
+Como podemos ver, cuando el modelo esta anidado, no se puede separar el efecto del factor de anidacion del factor anidado, de modo que **SIEMPRE** se estima la interacción, y podemos ver que la conclusió sobre $H_0$ sigue siendo la misma, aunque nos queda por tomar en cuenta al individuo, `id`, como efecto aleatorio:
 
 ```{r message = F, warning = F}
 m3 <- aov(auto ~ tratamiento / tiempo + Error(id/tratamiento/tiempo), auto.l)

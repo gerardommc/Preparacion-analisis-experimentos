@@ -111,6 +111,5 @@ Una vez que aprendimos a estimar el coeficiente de correlación $r$, cabe mencio
 
 $$ \mathrm{Coeficiente\ de\ determinación} = \mathrm{Coeficiente\ de\ correlación}^2$$
 
-## Estimación de significancia estadística
 
 [Regresar al índice del curso](../index.html)

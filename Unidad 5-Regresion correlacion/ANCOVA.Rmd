@@ -1,0 +1,21 @@
+---
+title: "Análisis de covarianza"
+author: "Gerardo Martín"
+date: "19/4/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+El análisis de covarianza, también llamado ANCOVA, es un modelo que utiliza para analizar datos con variables contínuas y categóricas, de modo que se requiere para ello de un experimento, cuando menos, de dos vías. ANCOVA también puede ser visto como un modelo híbrido entre ANOVA y regresión lineal, que resulta en la estimación de coeficientes de regresión para cada tratamiento categórico. 
+
+# Ejemplos
+
+[Regresar al índice del curso](../index.html)
