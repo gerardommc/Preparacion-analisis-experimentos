@@ -1805,16 +1805,16 @@ knitr::kable(shap.test, caption = &quot;Resultados de la prueba de Shapiro dentr
 <p>Los resultados sugieren que podemos aceptar la hipótesis nula de no diferencias con una distribución normal.</p>
 <p>Entonces procedamos con el análisis de <code>weightloss</code>. Para comenzar, sabemos que puede haber interacción <code>diet:exercises</code>, por lo que comenzaremos con el modelo más complicado:</p>
 <pre class="r"><code>library(lme4)
-m1 &lt;- lmer(loss ~ (diet * exercises)/time + (1|id), weight.l)
+m1 &lt;- lmer(loss ~ time/(diet * exercises) + (1|id/time), weight.l)
 car::Anova(m1, type = 2)</code></pre>
 <pre><code>## Analysis of Deviance Table (Type II Wald chisquare tests)
 ## 
 ## Response: loss
 ##                        Chisq Df Pr(&gt;Chisq)    
-## diet                  4.0687  1    0.04368 *  
-## exercises            56.6472  1  5.215e-14 ***
-## diet:exercises       26.5860  1  2.521e-07 ***
-## diet:exercises:time 248.3699  8  &lt; 2.2e-16 ***
+## time                168.2687  2  &lt; 2.2e-16 ***
+## time:diet             5.9948  3     0.1119    
+## time:exercises      110.3252  3  &lt; 2.2e-16 ***
+## time:diet:exercises  51.0830  3  4.697e-11 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Esta especificación del modelo, con <code>tiempo</code> anidado en <code>diet</code> y <code>exercises</code> parece tener todos los términos relevantes para los datos, por ahora sólo falta examinar los residuales. Como ya se habrán dado cuenta, las gráficas de diagnóstico del paquete <code>lmer</code> sólo muestran la primera gráfica de <code>aov</code> y <code>lm</code>, pero ésta es suficiente:</p>
