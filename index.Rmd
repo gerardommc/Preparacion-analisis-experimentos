@@ -51,26 +51,24 @@ output:
 
 # Otros diseños frecuentemente usados
 
-1. [Diseños "split-plot" (parcelas divididas)](Unidad 4-Otros disenos/Split-plot.html)
+1. [Diseños "split-plot" y de medidas repetidas](Unidad 4-Otros disenos/Split-medidas.html)
 
-      1.1. [Presentación de split-plot](Unidad 4-Otros disenos/Split-plot-slides.html)
+      1.1. [Split-plot](Unidad 4-Otros disenos/Split-plot.html)
+
+      1.2. [Presentación de split-plot](Unidad 4-Otros disenos/Split-plot-slides.html)
+            
+      1.3. [Medidas repetidas](Unidad 4-Otros disenos/Medidas-repetidas.html)
 
 2. [Cuadrado latino](Unidad 4-Otros disenos/Cuadrado-latino.html)
 
       2.1. [El cuadrado latino-Presentación](Unidad 4-Otros disenos/Cuadrado-vent-lim-slides.html)
 
-3. [Diseño de medidas repetidas](Unidad 4-Otros disenos/Medidas-repetidas.html)
-
-      3.1 [Medidas repetidas y diseños anidados](Unidad 4-Otros disenos/Medidas-slides.html)
-
 # Regresión y correlación
 
 1. [Introducción a regresión y correlación](Unidad 5-Regresion correlacion/Introduccion.html)
 
-1. [Regresión lineal](Unidad 5-Regresion correlacion/Regresion.html)
+2. [Regresión lineal](Unidad 5-Regresion correlacion/Regresion.html)
 
-2. [Regresiones múltiples y polinomiales](Unidad 5-Regresion/Regresion-multiple.html)
+3. [Análisis de covarianza](Unidad 5-Regresion/ANCOVA.html)
 
-4. [Análisis de covarianza](Unidad 5-Regresion/ANCOVA.html)
-
-5. [Correlación](Unidad 5-Regresion/Correlacion.html)
+4. [Correlación](Unidad 5-Regresion/Correlacion.html)

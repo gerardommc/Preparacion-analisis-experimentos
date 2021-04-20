@@ -1,0 +1,25 @@
+---
+title: "Diseños split-plot y de medidas repetidas"
+author: "Gerardo Martín"
+date: "19/4/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+Los diseños split-plot y de medidas repetidas tienen muchas similitudes conceptuales y estadísticas, de ahí que se vean juntos en este curso. En esecia, ambos son casos especiales de un modelo llamao ANOVA anidado. El nombre proviene del hecho de que uno de los tratamientos se confunde con los bloques, potencialmende dando origen a pseudo-replicación. Los diseños split-plot surgieron de la necesidad de combinar tratamientos aplicables a escalas espaciales dispares, mientras que los de medidas repetidas de la necesidad de disminuir la cantidad de unidades experimentales.
+
+En términos prácticos la anidación (grupo de tratamientos contenidos en un tratamiento) es ligeramente diferente en ambos diseños, de modo que el diseño split-plot se considera parcialmente anidado, y el diseño de medidas repetidas se considera totalmente anidado. La anidación tiene consecuencias muy fuertes para el análisis estadístico porque en los diseños completamente anidados no se pueden separar los efectos del tratamiento de anidación de anidado, resultado en modelos que sólo contienen términos de interaccion entre los factores anidados.
+
+Otra característica de ambos diseños es que frecuentemente es necesario incluir efectos aleatorios para medir el error dentro de cada factor de anidación.
+
+[Regresar al índice del curso](../index.html)

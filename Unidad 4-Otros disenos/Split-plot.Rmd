@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-El diseño split-plot, o de parcelas divididas fue diseñado para combinar factores que tienen escalas espaciales dispares. Como la mayoría de métodos de diseño y análisis de experimentos fueron diseñados en agricultura, el ejemplo clásico de este diseño sería la combinación de tipos de suelo y fertilizante. El tipo de suelo es un atributo geográfico que es difícil de manipular, por lo que el diseño más práctico es la identificación de parcelas con cada los tipos de suelo de interés y aplicar los fertilizantes a cada tipo de suelo ([Yates 1935](https://www.jstor.org/stable/2983638?seq=1); figura \@ref(fig:split-plot)).
+El diseño split-plot, o de parcelas divididas fue diseñado para combinar factores que tienen escalas espaciales dispares. Como la mayoría de métodos de diseño y análisis de experimentos fueron diseñados en agricultura, el ejemplo clásico de este diseño sería la combinación de tipos de suelo y fertilizante. El tipo de suelo es un atributo geográfico que es difícil de manipular, por lo que el diseño más práctico es la identificación de parcelas con los tipos de suelo de interés y aplicar los fertilizantes a cada tipo de suelo ([Yates 1935](https://www.jstor.org/stable/2983638?seq=1); figura \@ref(fig:split-plot)).
 
 ```{r split-plot, echo=F, fig.height=4, fig.width=6, fig.align='center', fig.cap="Esquema de un diseño split-plot. Los colores indican los tipos de suelo y las letras los fertilizantes aplicados en cada tipo de suelo. El esquema no muestra ningún tipo de disposición espacial de las unidades experimentales y es meramente ilustrativo del concepto.", message = F}
 source("../Random-functions/Shuffle.R")
@@ -62,7 +62,7 @@ Desde un punto de vista estadístico, la varianza de los datos en el diseño com
 
 ### Diseños *split-plot* con mediciones repetidas
 
-Los experimentos con mediciones repetidas generalmente se consideran como un diseño distinto al split-plot, aunque en esencia y estadísticamente son equivalentes. Las mediciones repetidas sobre la misma unidad experimental pueden ocurrir tanto con el objetivo de registrar el efecto del tiempo de exposición al tratamiento, como con el objetivo de reducir costos.
+Los experimentos con mediciones repetidas generalmente se consideran como un diseño distinto al split-plot, aunque en esencia y estadísticamente son equivalentes. Las mediciones repetidas sobre la misma unidad experimental pueden ocurrir tanto con el objetivo de registrar el efecto del tiempo de exposición al tratamiento, como con el objetivo de reducir costos, utilizando las unidades para aplicar tratamientos de manera subsecuente.
 
 #### Efecto del tiempo de exposición al tratamiento
 
