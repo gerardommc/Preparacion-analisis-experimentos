@@ -66,7 +66,7 @@ Entonces procedamos con el análisis de `weightloss`. Para comenzar, sabemos que
 
 ```{r message = F, warning = F}
 library(lme4)
-m1 <- lmer(loss ~ time/(diet * exercises) + (1|id/time), weight.l)
+m1 <- lmer(loss ~ diet/time * exercises/time + (1|id/exercises/time) + (1|id/diet/time), weight.l)
 car::Anova(m1, type = 2)
 ```
 Esta especificación del modelo, con `tiempo` anidado en `diet` y `exercises` parece tener todos los términos relevantes para los datos, por ahora sólo falta examinar los residuales. Como ya se habrán dado cuenta, las gráficas de diagnóstico del paquete `lmer` sólo muestran la primera gráfica de `aov` y `lm`, pero ésta es suficiente:
@@ -78,7 +78,7 @@ plot(m1)
 Con este diagnóstico, podemos entonces rechazar todas las hipótesis nulas. Para ver rápidamente los efectos, podemos ahora sí, ver los grupos experimentales de `loss`:
 
 ```{r cajas-weight, fig.height=4, fig.width=8, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Gráfico de cajas de `loss` en cada grupo experimental."}
-boxplot(loss ~ diet:exercises:time, weight.l)
+boxplot(loss ~ diet + exercises + time, weight.l)
 ```
 
 Lo que sugiere que los efectos de dieta, ejercicio y tiempo, son todos positivos, es decir, que la dieta, ejercicio y tiempo sobre la pérdida de peso dependen de que todos estén presentes para que haya una mayor pérdida de peso.

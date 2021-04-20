@@ -97,12 +97,12 @@ knitr::kable(df.2, caption = "Comparación de análisis estadístico de ambos di
       
       1.2. Anidación se especifica con operador `/`:
       
-`x1/x2 = x1 + x1:x2`
+`x1/x2/x3 = x1 + x1:x2 + x1/x2/x3`
 
 2. En Wissinger et al. (1996):
 
 ```{r echo = TRUE, eval=FALSE}
-m <- aov(Reclutamiento ~ Regimen / Densidad + Error(Densidad/Bloque),
+m <- aov(Reclutamiento ~ Regimen / Densidad + Error(Bloque/Régimen/Densidad),
               data = Wissinger)
 ```
 
@@ -183,16 +183,12 @@ Tenemos que espeficicar cómo los factores están contenidos --anidados-- en los
 summary(m2)
 ```
 
-## Conclusión
+## Lección
 
-1. Los resultados cambian radicalmente
-
-      1.1. Variabilidad del valor de autoestima entre individuos enmascara efectos para cada individuo
+1. Variabilidad de autoestima entre individuos no permite medir el efecto dentro de cada individuo
       
-      1.2. Tomar en cuenta anidamiento, revela que la dieta y el tiempo de consumo sí afectan autoestima
+2. Representar anidamiento, permite analizar las tendencias dentro de las unidades experimentales
       
-      1.3. Para ver los efectos expecíficos, hay que ver las medias de `auto` en cada grupo experimental ([ver lección](Split-plot.html))
-
 ## Notas precautorias
 
 - Análisis de diseños anidados es controversial

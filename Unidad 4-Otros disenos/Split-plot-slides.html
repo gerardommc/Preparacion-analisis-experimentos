@@ -3313,13 +3313,13 @@ Diseño alternativo completamente aleatorizado
 <p>1.2. Anidación se especifica con operador <code>/</code>:</p></li>
 </ol>
 
-<p><code>x1/x2 = x1 + x1:x2</code></p>
+<p><code>x1/x2/x3 = x1 + x1:x2 + x1/x2/x3</code></p>
 
 <ol>
 <li>En Wissinger et al. (1996):</li>
 </ol>
 
-<pre class = 'prettyprint lang-r'>m &lt;- aov(Reclutamiento ~ Regimen / Densidad + Error(Densidad/Bloque),
+<pre class = 'prettyprint lang-r'>m &lt;- aov(Reclutamiento ~ Regimen / Densidad + Error(Bloque/Régimen/Densidad),
               data = Wissinger)</pre>
 
 </article></slide><slide class=""><hgroup><h2>Análisis de <code>selfesteem2</code></h2></hgroup><article  id="análisis-de-selfesteem2">
@@ -3421,16 +3421,11 @@ summary(m1)</pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</pre>
 
-</article></slide><slide class=""><hgroup><h2>Conclusión</h2></hgroup><article  id="conclusión">
+</article></slide><slide class=""><hgroup><h2>Lección</h2></hgroup><article  id="lección">
 
 <ol>
-<li><p>Los resultados cambian radicalmente</p>
-
-<p>1.1. Variabilidad del valor de autoestima entre individuos enmascara efectos para cada individuo</p>
-
-<p>1.2. Tomar en cuenta anidamiento, revela que la dieta y el tiempo de consumo sí afectan autoestima</p>
-
-<p>1.3. Para ver los efectos expecíficos, hay que ver las medias de <code>auto</code> en cada grupo experimental (<a href='Split-plot.html' title=''>ver lección</a>)</p></li>
+<li><p>Variabilidad de autoestima entre individuos no permite medir el efecto dentro de cada individuo</p></li>
+<li><p>Representar anidamiento, permite analizar las tendencias dentro de las unidades experimentales</p></li>
 </ol>
 
 </article></slide><slide class=""><hgroup><h2>Notas precautorias</h2></hgroup><article  id="notas-precautorias">
