@@ -66,9 +66,15 @@ Entonces procedamos con el análisis de `weightloss`. Para comenzar, sabemos que
 
 ```{r message = F, warning = F}
 library(lme4)
-m1 <- lmer(loss ~ diet/time * exercises/time + (1|id/exercises/time) + (1|id/diet/time), weight.l)
+m1 <- lmer(loss ~ (diet/time) * (exercises/time) + (1|id/exercises/time) + (1|id/diet/time), weight.l)
 car::Anova(m1, type = 2)
 ```
+
+```{r}
+summary(m1)
+```
+
+
 Esta especificación del modelo, con `tiempo` anidado en `diet` y `exercises` parece tener todos los términos relevantes para los datos, por ahora sólo falta examinar los residuales. Como ya se habrán dado cuenta, las gráficas de diagnóstico del paquete `lmer` sólo muestran la primera gráfica de `aov` y `lm`, pero ésta es suficiente:
 
 ```{r}
