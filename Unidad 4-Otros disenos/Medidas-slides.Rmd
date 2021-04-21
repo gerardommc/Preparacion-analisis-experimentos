@@ -46,6 +46,8 @@ knitr::include_graphics("Selfeseem2.png")
 - Medidas repetidas
 
       - Estrictamente anidado
+         
+            -Hay excepciones
       
       - Especificación de modelo: `y ~ x1/x2/x3 + Error(bloque/x1/x2/x3)`
       
@@ -86,7 +88,7 @@ knitr::include_graphics("Weightloss.png")
 Efectos fijos:
 
 ```{r echo = T, eval=F}
-diet/time * exercises/time
+(diet/time) * (exercises/time)
 ```
 
 Efectos aleatorios-hay dos porque dieta y ejercicio está anidados por separado (hay que usar lmer, a fuerzas):
