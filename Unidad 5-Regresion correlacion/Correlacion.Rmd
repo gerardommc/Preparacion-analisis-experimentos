@@ -16,17 +16,27 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-La correlación a diferecia de la regresión sirve simplemente para medir la proporción de la varianza de una variable explicada por otra. A diferencia de la regresión lineal, donde hay una variable independiente y una dependiente, en correlación no hay tal distinción, los resultados son idénticos si se cambia $x$ por $y$ y viceversa. A pesar de que la correlación, en comparación con la regresión, es más simple y menos informativa sobre las relaciones entre variables, la correlación tiene muchas aplicaciones en estadística avanzada y adaptaciones que la hacen apropiada para otros tipos de datos y relaciones no lineales. Aquí nos centraremos en ver la prueba de correlación de Pearson, la cual está limitada al análisis de dos variables contínuas con relaciones estrictamente lineales.
+La correlación sirve principalmente para medir la asociación lineal entre dos variables, o la proporción de la varianza de una variable explicada por otra. A diferencia de análisis previos en correlación no hay una distinción entre variable dependiente e independiente, por lo que los resultados son idénticos si se cambia $x$ por $y$ y viceversa. A pesar de que la correlación, es un análisis simple tiene muchas aplicaciones en estadística avanzada y adaptaciones que la hacen apropiada para distintos tipos de datos y relaciones no lineales. Aquí nos centraremos en ver la prueba de **correlación de Pearson**, la cual asumen que las dos variables son contínuas y están relacionadas de manera estrictamente lineal.
 
 # Usos y aplicaciones de la correlación
 
-El principal uso que se da a la correlación es la estimación del grado de asociación entre dos variables contínuas. Estimar el grado de asociación es útil para saber, por ejemplo, si dos variables independientes se predicen una a la otra. Cuando dos variables independientes se predicen mutuamente (están correlacionadas) es imposible distinguir sus respectivos efectos en una regresión lineal múltiple, por lo que, de un modelo estadístico, se deben eliminar todas aquellas variables que se predicen mutuamente (son **colineales**). La presencia de variables independientes colineales es equivalente a un diseño ANOVA seriamente no balanceado, por ejemplo cuando en un ANOVA de dos vías con dos factores de dos niveles sólamente se tienen los datos experimentales para dos combinaciones: factor 1, tratamiento A, con factor 2, tratamiento B2. En un ejemplo tan extremo es evidente que no se puede poner a proueba la hipótesis nula de ninguno de los factores (No existen datos para factor 1, tratamiento B, por ejemplo).
+El principal uso que se da a la correlación es la estimación del grado de asociación, el cual es útil para saber si dos variables independientes se predicen una a la otra. Cuando dos variables independientes se predicen mutuamente (están correlacionadas) es imposible distinguir sus respectivos efectos en una regresión lineal múltiple, por lo que, se deben eliminar todas aquellas variables que se predicen mutuamente en un modelo estadístico. La presencia de variables independientes colineales es equivalente a un diseño ANOVA seriamente fuera de balance, por ejemplo cuando en un ANOVA de dos vías con dos factores de dos niveles, sólamente se tienen los datos experimentales para dos combinaciones: factor 1, tratamiento A, con factor 2, tratamiento B2. En un ejemplo tan extremo es evidente que no se puede poner a prueba la hipótesis nula de ninguno de los factores (No existen datos para factor 1, tratamiento B, por ejemplo).
 
-Las pruebas de correlación también se utilizan
+Las pruebas de correlación también se utilizan para medir la dependencia entre observaciones de la variable dependiente. Por ejemplo, en los experimentos de medidas repetidas, las mediciones en $t_1$ estarán correlacionadas con las mediciones en $t_2$ y así sucesivamente. De hecho, la correlación dentro de la variable es la principal razón por la cual las mediciones repetidas resultan en pseudo-replicación. Es evidente entonces, que la correlación nos puede ayudar a medir el grado de pseudo-replicación en un caso como el descrito.
+
+## Limitaciones de la correlación de Pearson
+
+Desafortunadamente, la prueba de correlación de Pearson es muy sensible a la naturaleza de la relación entre las variables. La figura \@ref(fig:pear-prob) muestra una serie de relaciones entre $x$ y $y$ y los coeficientes de Pearson resultantes. Es evidente que en muchos casos no lineales, $x$ explica cierta variabilidad de $y$ (última fila).
+
+```{r pear-prob, echo = F, fig.cap="Relaciones entre variables con su respectivo coeficiente de correlación de Pearson. Imágen de [Wikipedia](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)", fig.align='center', out.width="100%"}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/0/02/Correlation_examples.png")
+```
+
+La prueba de correlación de Spearman, soluciona algunos problemas asociados al supuesto de linealidad de la prueba de Pearson, aunque aquí nos centraremos en esta última.
 
 # La prueba de correlación de Pearson
 
-El resultado de la prueba de correlación de Pearson es el coeficiente de correlación $r$, cuyos valores pueden ser $ - 1 \geq r \leq 1$. Cuando $r = 1$ quiere decir que los valores de la variable $y$  disminuyen con el aumento de los valores de $x$, y que $x$ explica el 100% de la varianza de $y$. En términos geométricos esto quiere decir que los valores de $x$ y $y$ graficados forman una línea recta perfecta con pendiente que no estamos midiendo:
+El resultado de la prueba de correlación de Pearson es el coeficiente de correlación $r$, cuyos valores pueden ser $ - 1 \geq r \leq 1$. Cuando $r = 1$ quiere decir que los valores de la variable $y$  disminuyen con el aumento de los valores de $x$, y que $x$ explica el 100% de la varianza de $y$. En términos geométricos esto quiere decir que los valores de $x$ y $y$ graficados forman una línea recta perfecta con una pendiente arbitraria distinta de 0 y de $\infty$:
 
 ```{r corr-1, echo=F, fig.height=4.7, fig.width=8, fig.align='center', fig.cap="Correlaciones con $r = 1$ (izquierda) y $r=-1$ (derecha)."}
 set.seed(123)
@@ -39,7 +49,7 @@ par(mfrow = c(1,2))
 plot(x, y, main = "Positiva"); plot(x, y2, ylab = "y", main = "Negativa")
 ```
 
-Un ejemplo de dos variables sin correlación alguna sería:
+Un ejemplo de dos variables sin correlación alguna ($r=0$) sería:
 
 ```{r corr-0, fig.height=4.7, fig.width=4, echo = F, fig.align='center', fig.cap="Correlación con $r=0$."}
 set.seed(123)
@@ -105,7 +115,7 @@ cor.test(x, y2)
 cor.test(x, y3)
 ```
 
-Podemos ver que los coeficientes que **R** calcula son ligeramente diferentes, pues tienen una serie de ajustes de varianz, pero, como los tamaños de muestra son grandes, los valores de $r$ calculados son bastante similares.
+Podemos ver que los coeficientes que **R** calcula son ligeramente diferentes, pues tienen una serie de ajustes de varianza, pero, como los tamaños de muestra son grandes, los valores de $r$ calculados son bastante similares.
 
 Una vez que aprendimos a estimar el coeficiente de correlación $r$, cabe mencionar que el coeficiente de determinación de una regresión lineal $r^2$ recibe ese nombre porque efectivamente:
 

@@ -69,8 +69,15 @@ output:
 
 1. [Introducción a regresión y correlación](Unidad 5-Regresion correlacion/Introduccion.html)
 
-2. [Regresión lineal](Unidad 5-Regresion correlacion/Regresion.html)
+      1.1. [Presentación de Introducción a regresión y correlación](Unidad 5-Regresion correlacion/Introduccion-slides.html)
+      
+2. [Correlación](Unidad 5-Regresion correlacion/Correlacion.html)
 
-3. [Análisis de covarianza](Unidad 5-Regresion/ANCOVA.html)
+3. [Regresión lineal](Unidad 5-Regresion correlacion/Regresion.html)
 
-4. [Correlación](Unidad 5-Regresion/Correlacion.html)
+      3.1. [Tutorial de regresión lineal simple, múltiple y polinomial](Unidad 5-Regresion correlacion/Tutorial-regresion.html)
+      
+4. [Análisis de covarianza](Unidad 5-Regresion correlacion/ANCOVA.html)
+
+      4.1. [Tutorial de ANCOVA](Unidad 5-Regresion/Tutorial-ANCOVA.html)
+

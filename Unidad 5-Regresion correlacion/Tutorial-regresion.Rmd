@@ -1,0 +1,155 @@
+---
+title: "Tutorial de regresión lineal simple, múltiple y polinomial"
+author: "Gerardo Martín"
+date: "21/4/2021"
+output:
+      bookdown::html_document2:
+            toc: true 
+            number_sections: true
+            toc_float: true
+            theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Extensiones de la regresión lineal
+
+En la clase introductoria a la regresión vimos cómo se ajusta un modelo de regresión lineal simple:
+
+\begin{equation}
+      y(x) = \beta_0 + \beta_1 x (\#eq:simple)
+\end{equation}
+
+donde $y(x)$ es la variable dependiente, $x$ es la indepentiente y $\beta_0$ y $\beta_1$  son los coeficientes de regresión estimados. Es difícil, sin embargo encontrar un modelo del mundo real, que pueda ser descrito por una ecuación tan sencilla, pues la mayoría de los fenómenos son resultado de muchos factores. Es por eso que la regresión lineal puede ser generalizada para incluir más variables independientes, de modo que se ajusta un modelo de **Regresión lineal múltiple**:
+
+\begin{equation}
+      y(x_1, x_2, \dots, x_n) = \beta_0 + \beta_1 x_1  + \beta_2 x_2 + \dots + \beta_n x_n (\#eq:multiple)
+\end{equation}
+
+Además de la existencia de múltiples factores que afectan las variables dependientes, estas pueden tener relaciones no-lineales con las variables independientes. Aunque la regresión lineal sólo sirve para estimar efectos lineales como $\beta_i x_i$, no existe ningún tipo de limitación sobre la forma de $x_i$, lo que permite estimar parámetros para variables independientes transformadas como $x_i' = x_i^2, x_i'' = x_i^3$. Este tipo de trasformaciones permite estimar los efectos $\beta_i$ para ecuaciones polinomiales de cualquier grado para representar relaciones que difieren mucho de la línea recta:
+
+\begin{equation}
+      y(x_1, x_2) = \beta_0 + \beta_1 x_1 + \beta_1' x_1^2 + \beta_2 x_2 + \beta_2' x_2^2 (\#eq:polinom)
+\end{equation}
+
+# Representación visual
+
+Como bien sabemos, la regresión lineal simple representa la relación graficada en el plano cartesiano entre dos variables como una recta con inclicación $\beta_1$ (Figura \@ref(fig:lin)).
+
+$$
+y(x) = \beta_0 + \beta_1 x
+$$
+
+```{r echo = F}
+set.seed(12345)
+x1 <- rnorm(1000)
+x2 <- rnorm(1000, mean = 2, sd = 2)
+y.lin <- x1 * runif(1, 2, 4) + rnorm(1000, mean = 0, sd = 1)
+y.mult <- x1 * runif(1, 2, 4) + x2 * runif(1, 2, 4) + x1 * x2 * runif(1, -4, 4) + rnorm(1000, mean = 0, sd = 3)
+y.poli <- x1 * runif(1, -4, 4)  + x1^2 * runif(1, -4, -2) + x1^3 * runif(1, -4, 4) + rnorm(1000, mean = 10, sd = 10)
+
+lin.rels <- data.frame(x1, x2, y.lin, y.mult, y.poli)
+```
+
+```{r lin, echo=F, fig.height=4, fig.width=4, message=FALSE, warning=FALSE, fig.align="center", fig.cap="Regresión lineal simple."}
+library(ggplot2)
+
+ggplot(lin.rels) + geom_point(aes(x = x1, y = y.lin)) + 
+      geom_smooth(aes(x = x1, y = y.lin), method = "lm") +
+      labs(x = "x", y = "y")+ 
+      theme_bw()
+```
+
+En ocasiones, los datos de una variable $y$, pueden tomar formas que no son lineales, por lo que se pueden representar con una ecuación polinomial. La figura \@ref(fig:poli), por ejemplo fue generada con la siguiente ecuación:
+
+$$
+y(x) = \beta_0 + \beta_1 x + \beta_1' x^2 + \beta_1'' x^3
+$$
+```{r poli, echo=F, fig.height=4, fig.width=4, fig.align="center", fig.cap="Regresión lineal polinomial", message = F, warning = F}
+ggplot(lin.rels) + geom_point(aes(x = x1, y = y.poli)) + 
+      geom_smooth(aes(x = x1, y = y.poli), method = "gam")+
+      labs(x = "x", y = "y") + 
+      theme_bw()
+```
+
+Un ejemplo más generalizable, que aquellos representados por las figuras \@ref(fig:lin) y \@ref(fig:poli), es aquel de variables dependientes que dependen de más de una variable independiente, siendo posible incluso las interacciones entre variables (\@ref(fig:mult)):
+
+$$ 
+y(x_1, x_2) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2
+$$
+
+```{r mult, echo = F, fig.height=4, fig.width=4, fig.align="center", fig.cap="Regresión lineal múltiple, el eje vertical representa la variable de respuesta."}
+library(plot3D)
+
+mult <- lm(y.mult ~ x1 + x2 + x1 * x2, lin.rels)
+
+new.data <- expand.grid(x1 = seq(min(lin.rels$x1), max(lin.rels$x1), len = 20),
+                        x2 = seq(min(lin.rels$x2), max(lin.rels$x2), len = 20))
+
+mult.preds <- predict(mult, newdata = new.data)
+mult.preds.m <- matrix(mult.preds, 20, 20)
+
+with(lin.rels,
+     scatter3D(x = x1, y = x2, z = y.mult,
+               colkey = NULL,
+               col = "black", pch = 20, alpha = 0.1,
+               xlab = "x1", ylab = "x2", zlab = "y"))
+with(new.data, persp3D(x = seq(min(lin.rels$x1), max(lin.rels$x1), len = 20),
+                       y = seq(min(lin.rels$x2), max(lin.rels$x2), len = 20), 
+                       z = mult.preds.m, type = "l",
+                         colkey = NULL,
+                         col = "blue", add = T, alpha = 0.3))
+```
+
+# Ajustando regresiones lineales en **R**
+
+La función por default para hacer regresión lineal en **R** es `lm`. Pongamos entonces en práctica esta función que hemos utilizado anteriormente para ANOVA, en regresión lineal. Para ello trataremos de estimar los coeficientes $\beta$ que generaron las figuras \@ref(fig:lin), \@ref(fig:poli) y \@ref(fig:mult). El código utilizado para generarlas es:
+
+```{r echo = T, eval=F}
+set.seed(12345) # Semilla
+x1 <- rnorm(1000) 
+x2 <- rnorm(1000, mean = 2, sd = 2)
+y.lin <- x1 * runif(1, 2, 4) + rnorm(1000, mean = 0, sd = 1) # Simple
+y.mult <- x1 * runif(1, 2, 4) + x2 * runif(1, 2, 4) + x1 * x2 * runif(1, -4, 4) + rnorm(1000, mean = 0, sd = 3) #multiple
+y.poli <- x1 * runif(1, -4, 4)  + x1^2 * runif(1, -4, -2) + x1^3 * runif(1, -4, 4) +  rnorm(1000, mean = 10, sd = 10) # polinomial
+
+lin.rels <- data.frame(x1, x2, y.lin, y.mult, y.poli)
+```
+
+El proceso de selección de un modelo es complicado, sobretodo cuando desconocemos si existen o no asociaciones entre variables contínuas independientes y la dependiente. Por esta razón, es mucho más sencillo comenzar con datos cuyo origen conocemos.
+
+Las variables con asociación estrictamente lineal son `y.lin` y `x1`, de modo que el modelo lineal lo ajustamos con:
+
+```{r}
+m.simp <- lm(y.lin ~ x1, lin.rels)
+```
+
+Y para tener acceso a los coeficientes $\beta_0$, $\beta_1$ y el de determinación $R^2$:
+
+```{r}
+summary(m.simp)
+```
+
+Los coeficientes estimados están en la columna `Estimate`. La información para $\beta_0$ en la fila `(Intercept)` y para $\beta_1$ en la fila `x1`. Recordemos que la hipótesis nula para $\beta_1$ dice que $y$ no cambia con respecto de $x$. En este caso, podemos rechazarla, por lo que es muy probable que $\beta_1 \neq 0$. Podemos ver, al final del `summary` el coeficiente de determinación `Adjusted R-squared:  0.8657`, que es bastante alto. 
+
+La intepretación de las pruebas de hipótesis es igual en **regresión múltiple**, así que podemos continuar con este modelo. Como de antemano sabemos que hay una interacción la fórmula del modelo será `x1 * x2 = x1 + x2 + x1 : x2`:
+
+```{r}
+m.mult <- lm(y.mult ~  x1 * x2, lin.rels)
+summary(m.mult)
+```
+
+Como es evidente, podemos rechazar todas las hipótessis con respecto a los efectos de `x1` y `x2` y `x1:x2`. Para estos datos, $R^2$ fue un poco más bajo. 
+
+Veamos por último la regresión polinomial. La especificación aquí, es un poco diferente a lo que hemos visto antes, porque tenemos que decirle a **R** que cada término $x$ del modelo es sobre la misma variable $x$ especificada sin ninguna potencia con la función `I()` (por identical):
+
+```{r}
+m.poli <- lm(y.poli ~ x1 + I(x1^2) + I(x1^3), lin.rels)
+summary(m.poli)
+```
+
+I la interpretación de los coeficientes es la misma que anteriormente. Para cerrar, podemos ver que $R^2$ es bastante más bajo que para los ejemplos anteriores, y esto se debe a `rnorm(1000, mean = 10, sd = 10)`, lo cual también se ve reflejado en el intercepto del modelo, con una media de 10.3130.
+
+[Regresar al índice del curso](../index.html)
