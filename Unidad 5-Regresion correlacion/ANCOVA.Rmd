@@ -1,5 +1,5 @@
 ---
-title: "Análisis de covarianza"
+title: "ANCOVA --Análisis de covarianza"
 author: "Gerardo Martín"
 date: "19/4/2021"
 output:
@@ -14,8 +14,131 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-El análisis de covarianza, también llamado ANCOVA, es un modelo que utiliza para analizar datos con variables contínuas y categóricas, de modo que se requiere para ello de un experimento, cuando menos, de dos vías. ANCOVA también puede ser visto como un modelo híbrido entre ANOVA y regresión lineal, que resulta en la estimación de coeficientes de regresión para cada tratamiento categórico. 
+# Introducción
 
-# Ejemplos
+El análisis de covarianza, también llamado ANCOVA, es un modelo que para combinar variables independientes contínuas con categóricas, de modo que se requiere para ello de un experimento, cuando menos, de dos vías. ANCOVA también puede ser visto como un modelo híbrido entre ANOVA y regresión lineal. Ejemplos de dieños con variables contínuas y categóricas son:
+
+1. Medición del crecimiento de animales de producción de diferentes razas bajo regímenes nutricionales con diferentes concentraciones de proteínas.
+
+2. Producción de alfalfa en dos tipos de suelo (categórica) con diferentes frecuencia de riego (contínua).
+
+3. Reclutamiento de larvas de dos especies de tricópteros (categórica) en función del hidroperiodo (categórica) y seis niveles de densidad poblacional (contínua).
+
+## Tipos de interacciones en ANCOVA
+
+Cuando de ajusta un modelo ANCOVA existen muchas posibilidades de interacciones entre las variables contínuas y categóricas. Los diferentes tipos de interacciones dependen de los efectos que los tratamientos categóricos y contínuos tengan sobre la variable de respuesta. Para entender esto, recordemos cómo es un modelo lineal simple:
+
+\begin{equation}
+y(x) = \beta_0 + \beta_1 x (\#eq:lin)
+\end{equation}
+
+En el caso de sólo tener datos contínuos para explicar el comportamiento de $y(x)$, sólo se estiman $\beta_0$ y $\beta_1$. Sin embargo en ANCOVA, se puede estimar los coeficientes $\beta_{0, i}$ y/o $\beta_{1, i}$ para cada tratamiento categórico $i$. En otras palabras, los tratamientos categóricos pueden afectar el intercepto ($\beta_0$), la pendiente ($\beta_1$) o ambos. Cuando las variables categóricas sólo afectan el intercepto se interpreta que no hay interacción entre la variable categórica y la contínua (el efecto de la variable contínua no depende de la presencia de la categórica). Cuando las pendientes $\beta_1$ son diferentes (incluso por el signo), hay interacciones entre los factores contínuos y categóricos.  A continuación se muestra la representación gráfica.
+
+**Caso 1** Los tratamientos sólo afecta el intercepto $\beta_0$, es decir, solo hay efecto aditivo
+
+```{r noint, echo=F, fig.height=4, fig.width=4.5, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Modelo ANCOVA donde el tratamiento categórico sólo afecta al intercepto (el valor de $y(0)$ es diferente para el tratamiento $A$ y $B$)."}
+library(ggplot2)
+set.seed(123)
+x <- rnorm(100)
+beta1 <- rnorm(1, mean = 2, sd = 1)
+y1 <- x * beta1 + rnorm(100, 10, sd = 4)
+y2 <- x * beta1 + rnorm(100, 2, sd = 4)
+
+noint <- data.frame(x1 = c(x,x), x2 = rep(c("A", "B"), each = 100), y = c(y1, y2))
+
+ggplot(noint) + geom_point(aes(x = x1, y = y, colour = x2), alpha = 0.3) +
+      geom_smooth(aes(x = x1, y = y, colour = x2, fill = x2), alpha = 0.5, method = "lm") +
+      labs(x = expression(x[1]), 
+           colour = expression(x[2]),
+           fill = expression(x[2])) + 
+      theme_bw()
+```
+
+Matemáticamente el modelo corresponde a:
+
+$$
+            y(x_1, A) = \beta_{0, A}+ \beta_1 x_1
+$$
+$$
+            y(x_2, B) = \beta_{0, B} + \beta_1 x_1
+$$
+Y en **R**, este modelo se especifica como:
+
+```{r eval = F}
+y ~ x1 + x2
+```
+
+**Caso 2** Los tratamientos sólo afectan la pendiente, es decir sólo hay interacción
+
+```{r int, echo=F, fig.height=4, fig.width=4.5, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Modelo ANCOVA donde el tratamiento categórico  afecta la pendiente, y el valor de ambas es el mismo en $y(0)$."}
+x <- rnorm(100, mean = 10, sd = 7)
+beta1 <- rnorm(1, mean = 2, sd = 1)
+beta2 <- rnorm(1, mean = 4, sd = 1)
+y1 <- x * beta1 + rnorm(100, 10, sd = 2)
+y2 <- x * beta2 + rnorm(100, 10, sd = 2)
+
+int <- data.frame(x1 = c(x,x), x2 = rep(c("A", "B"), each = 100), y = c(y1, y2))
+
+ggplot(int) + geom_point(aes(x = x1, y = y, colour = x2), alpha = 0.3) +
+      geom_smooth(aes(x = x1, y = y, colour = x2, fill = x2), alpha = 0.5, method = "lm") +
+      labs(x = expression(x[1]), 
+           colour = expression(x[2]),
+           fill = expression(x[2])) + 
+      theme_bw()
+```
+
+Matemáticamente:
+
+$$
+y(x_1, A) = \beta_0 + \beta_{1, A} x_1
+$$
+$$
+y(x_1, B) = \beta_0 + \beta_{1, B} x_1
+$$
+En *R*
+```{r eval = F}
+y ~ x1 : x2
+```
+
+**Caso 3** Los tratamientos afectan la pendiente y al intercepto, es decir hay interacción y efecto aditivo
+
+```{r int-adit, echo=F, fig.height=4, fig.width=4.5, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Modelo ANCOVA donde el tratamiento categórico  afecta la pendiente, y al intercepto (el valor de y(0) es diferente para el tratamiento $A$ y $B$)."}
+x <- rnorm(100, mean = 10, sd = 7)
+beta1 <- rnorm(1, mean = 3, sd = 1)
+beta2 <- rnorm(1, mean = 1, sd = 1)
+y1 <- x * beta1 + rnorm(100, 10, sd = 5)
+y2 <- x * beta2 + rnorm(100, 5, sd = 5)
+
+int <- data.frame(x1 = c(x,x), x2 = rep(c("A", "B"), each = 100), y = c(y1, y2))
+
+ggplot(int) + geom_point(aes(x = x1, y = y, colour = x2), alpha = 0.3) +
+      geom_smooth(aes(x = x1, y = y, colour = x2, fill = x2), alpha = 0.5, method = "lm") +
+      labs(x = expression(x[1]), 
+           colour = expression(x[2]),
+           fill = expression(x[2])) + 
+      theme_bw()
+```
+
+Matemáticamente:
+
+$$
+y(x1, A) = \beta_{0, A} + \beta_{1, A} x_1
+$$
+$$
+y(x_1, B) = \beta_{0, B} + \beta_{1, B} x_1
+$$
+En **R**
+
+```{r eval = F}
+y ~ x1 * x2
+```
+
+Nota que en este último caso, `x1 * x2 = x1 + x2 + x1 : x2`, lo cual es una peculiaridad de **R** que resulta en la estimación de un intercepto global, y otro para el primer tratamiento de referencia ($A$), sin embargo, en términos prácticos es enteramente equivalente a tener una línea regresión para el grupo de datos $A$ y otra para el grupo de datos $B$. Para forzar a que **R** imprima sólo los coeficientes $\beta_{0 (A, B)}$ y$\beta_{1(A, B)}$ se debe ajustar un modelo de intercepto aleatorio:
+
+```{r eval = F}
+y ~ 0 + x2 + x2:x1
+```
+
+ que como se mencionó es idéntico estadísticamente, pero los efectos se evaluarán en relación a los interceptos de cada tratamiento.
 
 [Regresar al índice del curso](../index.html)
