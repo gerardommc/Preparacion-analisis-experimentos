@@ -14,22 +14,127 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+Debido a que ANCOVA es un modelo híbrido entre regresión lineal y ANOVA, la función de **R** para hacerlo es `lm`. En [clase introductoria de ANCOVA](ANCOVA.html) vimos las maneras de especificar el modelo, los significados de cada tipo de especificación y la representación visual. En este tutorial analizaremos la base de datos `stress` del paquete `datarium`. 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+La base `stress` contiene datos de un experimento clínico sobre los efectos de un tratamiento farmaceutico, ejercicio físico y la edad sobre los niveles de estrés. El análisis comenzará entonces con una revisión rápida de la base de datos y la medición de las características estadísticas de las variables. 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+estres <- datarium::stress
+str(estres)
 ```
 
-## Including Plots
+Con la función `str` (structure) podemos dar un vistazo al nombre y tipo de variables contenidas en cada columna. La base `estrés` contiene cinco columnas, cuyos nombres aparecen después del operador `$` junto con el *tipo*. La columna `score` contiene es la variable de respuesta y consiste de la medición de los niveles de estrés, mientras que las demás contienen las variables independientes categóricas (`treatment` y `exercise`) y contínuas (`age`).
 
-You can also embed plots, for example:
+Debido a la presencia de tres variables independientes podemos intuir que se trata de un experimento de tres vías, y debido a que no hay mediciones repetidas o bloques experimentales se tratará de un análisis con efectos fijos únicamente. En esta ocasión nos saltaremos la evaluación previa de la distribución estadística de `age`, y comenzaremos por verificar aspectos pertinentes a un ANCOVA:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+1. Potenciales diferencias entre los interceptos ($\beta_0$) de cada grupo (`treatment` y `exercise`).
+2. Potenciales diferencies entre las pendientes ($\beta_1$) de cada grupo en relación al factor contínuo (`age`).
+
+## Análisis exploratorio
+
+Antes de continuar con el análisis visual de las asociaciones entre las diferentes variables, discutamos brevemente el primer punto. Sabemos que el intercepto es el valor de $y$ cuando $x=0$, y debido a que `age` tiene valores de ~45 - 75, es poco probable que logremos verificar esto visualmente. Sin embargo, sabemos que si las líneas de regresión para `treatment:yes` y `treatment:no` son paralelas habrá un efecto de `treatment` sobre el intercepto únicamente. Y, si las líneas no son paralelas pero se cruzan en un punto donde $ x \neq 0$ también hay un efecto de `treatment` (o `exercise` en su defecto) sobre el intercepto.
+
+```{r treatment, echo=T, fig.height=4, fig.width=5, message=FALSE, warning=FALSE, fig.align="center", fig.cap="Efectos de edad y tratamiento."}
+library(ggplot2)
+
+ggplot(estres) + geom_point(aes(x = age, y = score, colour = treatment)) + 
+      geom_smooth(aes(x = age, y = score, colour = treatment, fill = treatment), alpha = 0.3, method = "lm") + 
+      theme_bw()
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Las líneas de regresión no son paralelas y se cruzan en un punto donde $x \neq 0$, por lo tanto podemos inferir que `treatment` sí afectará al intercepto. Y con respecto a `exercise`:
+
+```{r exercise, fig.height=4, fig.width=5, fig.align='center', fig.cap="Efectos de edad y ejercicio", warning = F, message = F}
+ggplot(estres) + geom_point(aes(x = age, y = score, colour = exercise)) + 
+      geom_smooth(aes(x = age, y = score, colour = exercise, fill = exercise), alpha = 0.3, method = "lm") + 
+      theme_bw()
+```
+
+Observamos efectos diferentes, para comenzar las líneas de regresión de `exercise:moderate` y `exercise:high`  tienen pendientes muy similares (están prácticamente paralelas), y la línea de `exercise:low` cruza con la línea de `exercise:moderate` en un punto donde $x \neq 0$. Para resumir, en el caso de `exercise` podemos también inferir que hay efectos del ejercicio sobre el intercepto ($\beta_0$).
+
+En cuanto a las interacciones, queda más claro que `treatment` sí interactúa con `age`, mientras que tal efecto para `exercise` es menos claro. Queda entonces por explorar si hay una posible interacción `treatment * exercise`, hagamos para ello las siguientes gráficas de cajas con `ggplot2`:
+
+```{r exer-treat-1, fig.height=4, fig.width=8, fig.cap = "Interacción tratamiento-ejercicio.", fig.align='center'}
+ggplot(estres) + geom_boxplot(aes(x = treatment, y = score, colour = exercise, fill = exercise), alpha = 0.3) + 
+      facet_wrap(~exercise) +
+      theme_bw()
+```
+
+Las gráficas de cajas sugieren que los niveles de estrés son más bajos cuando hay tratamiento farmacológico que cuando no lo hay y que además los niveles de estrés son menores cuano el tratamiento se combina con ejercicios de mayor intensidad, lo cual sugiere que sí hay interacción entre ambos factores. Con base en esto propongo comenzar en análisis con el modelo más complicado posible:
+
+```{r eval = F}
+age ~ treatment * exercise * age
+```
+
+y posteriormente mediante el análisis de los efectos estimados y las sumas de cuadrados de cada término podremos decidir si se elimina dicho término de un modelo subsecuente.
+
+## Ajustando los modelos
+
+```{r}
+m1 <- lm(score ~ treatment * exercise * age, estres)
+summary(m1)
+```
+El modelo es demasiado complicado y ningún término con excepción del intercepto es significativo, por lo que debemos comenzar a tomar decisiones. Para ello, nos ayudaremos de la tabla ANOVA del modelo y veremos qué términos explicaron mayor variabilidad:
+
+```{r}
+anova(m1)
+```
+Como bien intuimos al principio, hay poca evidencia de la interacción `exercise:age`, y por ende de la itneracción `treatment:exercise:age`, por lo que podemos proponer el modelo simplificado sin esas interacciones. Originalmente, sospechábamos de la posible interaccción `treatment:age`, así que la dejaremos para ver qué pasa con su efecto una vez que eliminemos las otras interacciones en el modelo:
+
+```{r}
+m2 <- lm(score ~ treatment * (exercise + age), estres)
+summary(m2)
+```
+
+Aquí comenzamos a ver que sí hay coeficientes significativos, lo cual es buena noticia. Veamos entonces si hay más términos que debemos eliminar del modelo:
+
+```{r}
+anova(m2)
+```
+El único término que, aparentemente deberíamos eliminar es la interacción `treatment:age`, así que tendremos un modelo con interacción y efectos aditivos entre `treatment` y `exerceise`. Ahora, veamos directamente la tabla ANOVA:
+
+```{r}
+m3 <- lm(score ~ treatment * exercise + age, estres)
+anova(m3)
+```
+Y podemos confirmar nuestra selección de modelo comparado los tres:
+
+```{r}
+anova(m1, m2, m3)
+```
+
+Vemos que la suma de cuadrados de los residualtes es mayor en el tercer modelo, es que elegimos como el más adecuado. Esto es debido a que un modelo más complicado siempre va a tender a explicar mayor variabilidad que otro modelo más sencillo. Necesitamos entonces una manera de tomar en cuenta la complejidad del modelo en la comparación, y una manera estándar de hacerlo en estadística es con el **Criterio de Información de Akaike**, (AIC , por sus siglas en inglés), cuya fórmula es:
+
+$$ \mathrm{AIC} = 2 n \ln{\mathcal{L}}$$
+donde $n$ es el número de parámetros o coeficientes estimados por el modelo (medida de complejidad), y $\mathcal{L}$ es la *verosimilitud*. En modelos lineales (regresión, ANOVA y ANCOVA), la verosimilitud es la suma de cuadrados del modelo, de modo que un AIC más pequeño es **mejor** (hay excepciones, pues AIC no sustituye al análisis posterior). Para calcular el AIC de un modelo en **R**, hacemos:
+
+```{r}
+AIC(m1, m2, m3)
+```
+
+Y podemos ver que `m3`, con base en este criterio, es mejor que `m1`. Este proceso de selección del modelo lo terminaremos con el diagnóstico de los residuales.
+
+## Diagnóstico posterior
+
+El diangóstico de modelos ANCOVA es igual que para modelos de regresión lineal y ANOVA:
+
+```{r diag, fig.height=7, fig.width=7, fig.align='center', fig.cap='Gráficas de diagnóstico de `m3`.'}
+par(mfrow = c(2,2))
+plot(m3)
+```
+
+Basándonos en las gráficas de la primera fila, podemos suponer que los residuales están bien contenidos, con la pequeña execpción de los residuales para el `score = 95`. Y para ver si esta desviación podría resultar en problemas para probar las hipótesis veamos la distribución de los residuales:
+
+```{r}
+shapiro.test(residuals(m3))
+```
+
+Y vemos que si es posible confiar, con base en los supuestos estadísticos del modelo ANCOVA en las pruebas de hipótesis pertinentes a `m3`:
+
+1. El efecto del tratamiento depende de que se practique ejercicio (interacción)
+2. La edad tenderá a incrementar los niveles de estrés, independientemente del tratamiento y ejercicio (efecto aditivo)
+
+[Regresar al índice del curso](../index.html)
+
+
+
