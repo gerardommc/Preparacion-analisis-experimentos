@@ -79,5 +79,5 @@ output:
       
 4. [Análisis de covarianza](Unidad 5-Regresion correlacion/ANCOVA.html)
 
-      4.1. [Tutorial de ANCOVA](Unidad 5-Regresion/Tutorial-ANCOVA.html)
+      4.1. [Tutorial de ANCOVA](Unidad 5-Regresion correlacion/Tutorial-ANCOVA.html)
 
