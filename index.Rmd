@@ -1,5 +1,5 @@
 ---
-title: "Preparación y análisis de experimentos"
+title: "Planeación y análisis de experimentos"
 description: "Licenciatura en Manejo Sustentable de la Zona Costera"
 author: "Gerardo Martín"
 output:
