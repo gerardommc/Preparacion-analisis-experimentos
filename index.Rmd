@@ -3,8 +3,9 @@ title: "Planeación y análisis de experimentos"
 description: "Licenciatura en Manejo Sustentable de la Zona Costera"
 author: "Gerardo Martín"
 output:
-      distill::distill_article:
-            self_contained: false
+   prettydoc::html_pretty:
+      theme: hpstr
+      highlight: github
 ---
 
 # Introducción al diseño experimental
@@ -81,3 +82,6 @@ output:
 
       4.1. [Tutorial de ANCOVA](Unidad 5-Regresion correlacion/Tutorial-ANCOVA.html)
 
+# Conclusión del curso
+
+[Reflexiones finales](Reflexiones.html)

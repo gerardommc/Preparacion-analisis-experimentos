@@ -1,0 +1,28 @@
+---
+title: "Reflexiones finales"
+author: "Gerardo Martín"
+date: "13/5/2021"
+output: 
+   prettydoc::html_pretty:
+      theme: hpstr
+      highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+En este curso vimos algunas de las muchas maneras en que podemos diseñar experimentos para contestar ciertas preguntas biológicas. La manera en que decidimos arreglar las unidades experimentales, los tratamientos y cómo los agrupamos en los espacios disponibles (laboratorios, invernaderos, sitios en el paisaje, etc.) determinan en buena medida los métodos analíticos que deberemos utilizar para poner a prueba las hipótesis estadísticas relativas a nuestra pregunta biológica. Vimos también cómo algunos diseños experimentales, como el split-plot y de medidas repetidas, nos pueden ayudar a disminuir el número de unidades experimentales cuando así lo permita la biología.
+
+Este curso, junto con sus experiencias previas en estadística representan las herramientas más populares y básicas que se deben tener a la mano, y que también son esenciales para entender herramientas más avanzadas. Por lo general, las herramienta más avanzadas son modificaciones de los métodos que utilizamos en este curso para poder probar el mismo tipo de hipótesis sobre tratamientos o efectos lineales para variables que no cumplen con los supuestos de normalidad. Algunas de las alternativas más populares con que tal vez se encuentren son los modelos lineales generalizados. Estos permiten modelar variables con las distribuciones:
+
+- **Poisson** Variables discretas, con números estrictamente positivos como los conteos (¡números naturales!)
+
+- **Binomial** Variables con valores restringidos a ceros o unos (volados)
+
+- **Gamma** Variables contínuas con valores estrictamente positivos (tiempo transcurrido hasta que ocurre un evento)
+
+La utilización de estos métodos en **R** es muy similar a lo que ya hemos visto, de modo que a estas alturas están en capacidad de continuar explorando estas alternativas. Los contenidos de este curso estarán disponibles a perpetuidad para tod@s quienes hayan cursado esta materia y deseen utilizarlos a conveniencia. 
+
+[$\pi$](index.html)
+
