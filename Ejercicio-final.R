@@ -27,11 +27,13 @@ y <- data.frame(y)
 names(y) <- c("y1", "y2", "y3")
 
 df.1 <- data.frame(x1 = x1, x2 = x2, x3 = x3, x4 = x4, y)
+df.1 <- round(df.1, 1)
 
 df.mel <- reshape2::melt(df.1, id.vars = c("x1", "x2", "x3", "x4"))
 names(df.mel) <- c("x1", "x2", "x3", "x4", "Tratamiento", "y")
 
 df.mel$y <- with(df.mel, (y + min(y))/(max(y) - min(y)))
+levels(df.mel$Tratamiento) <- c("A", "B", "C")
 
 library(ggplot2)
 
@@ -39,7 +41,7 @@ ggplot(df.mel) + geom_point(aes(x = x2 , y = y, colour = Tratamiento))
 
 ggplot(df.mel) + geom_point(aes(x = x1, y = x4, colour = Tratamiento))
 
-write.csv(df.1, "Unidad 5-Regresion correlacion/Ejercicio-Regresion-ANCOVA.csv")
+write.csv(df.mel, "Unidad 5-Regresion correlacion/Ejercicio-Regresion-ANCOVA.csv")
 
 saveRDS(list(beta.0 = beta.0, 
              beta.1.1 = beta.1.1,
