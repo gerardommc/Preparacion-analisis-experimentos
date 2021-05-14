@@ -35,9 +35,9 @@ df.mel$y <- with(df.mel, (y + min(y))/(max(y) - min(y)))
 
 library(ggplot2)
 
-ggplot(df.mel) + geom_point(aes(x = x2, y = y, colour = Tratamiento))
+ggplot(df.mel) + geom_point(aes(x = x2 , y = y, colour = Tratamiento))
 
-ggplot(df.mel) + geom_point(aes(x = x1, y = x4))
+ggplot(df.mel) + geom_point(aes(x = x1, y = x4, colour = Tratamiento))
 
 write.csv(df.1, "Unidad 5-Regresion correlacion/Ejercicio-Regresion-ANCOVA.csv")
 
