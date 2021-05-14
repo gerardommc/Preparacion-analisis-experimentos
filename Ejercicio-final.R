@@ -41,7 +41,7 @@ ggplot(df.mel) + geom_point(aes(x = x2 , y = y, colour = Tratamiento))
 
 ggplot(df.mel) + geom_point(aes(x = x1, y = x4, colour = Tratamiento))
 
-write.csv(df.mel, "Unidad 5-Regresion correlacion/Ejercicio-Regresion-ANCOVA.csv")
+write.csv(df.mel, "Unidad 5-Regresion correlacion/Ejercicio-Regresion-ANCOVA.csv", row.names = F)
 
 saveRDS(list(beta.0 = beta.0, 
              beta.1.1 = beta.1.1,
