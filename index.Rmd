@@ -99,11 +99,3 @@ Para reportar errores y responder dudas contáctame por correo electrónico:
 ## Conclusión del curso
 
 [Reflexiones finales](Reflexiones.html)
-
-
-
-
-```{r echo = F, fig.align='right', out.width="30%"}
-knitr::include_graphics("enes-logo.png")
-```
-
