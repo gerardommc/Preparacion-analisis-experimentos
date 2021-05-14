@@ -8,7 +8,18 @@ output:
       highlight: github
 ---
 
-# Introducción al diseño experimental
+# Sobre este curso
+
+Este es el sitio del curso *Planeación y análisis de experimentos* del $4^o$ semestre de la Licenciatura en Manejo Sustentable de la Zona Costera de la [ENES Mérida](http://enesmerida.unam.mx/), en modalidad a distancia por la contingencia sanitaria por COVID-19. Los contenidos de cada una de las unidades y sus temas fueron producidos con RMarkdown. Todo el código para generarlos está disponible libremente [en este respositorio](https://www.github.com/gerardommc/Preparacion-analisis-experimentos) para quien deseé entender cómo se simularon algunas de las bases de datos y para aprender a utilizar RMarkdown en general.
+
+Mis otros proyectos de desarrollo los puedes encontrar y seguir en:
+
+[![](github-logo.png)/gerardommc](https://www.github.com/gerardommc)
+
+
+# El programa
+
+## Introducción al diseño experimental
 
 1. [Tipos de experimentos y observaciones](Unidad 1-Introducción/Tipo-exper-observ.html)
 
@@ -20,7 +31,7 @@ output:
 
 5. [Bloques y balance](Unidad 1-Introducción/Bloques-balance.html)
 
-# El modelo ANOVA de una vía
+## El modelo ANOVA de una vía
 
 1. [Introducción a ANOVA](Unidad 2-ANOVA I/ANOVA-I.html)
 
@@ -36,7 +47,7 @@ output:
 
 5. [Pruebas equivalentes para datos ordenados por rango](Unidad 2-ANOVA I/Kruskal-Wallis.html)
 
-# El modelo ANOVA con dos o más criterios de clasificación
+## El modelo ANOVA con dos o más criterios de clasificación
 
 1. [Introducción al modelo ANOVA de dos vías](Unidad 3-ANOVA II/ANOVA-II.html)
 
@@ -50,7 +61,7 @@ output:
 
 6. [Generalización a modelos con más criterios de clasificación](Unidad 3-ANOVA II/Generalizacion-disenos-factoriales.html)
 
-# Otros diseños frecuentemente usados
+## Otros diseños frecuentemente usados
 
 1. [Diseños "split-plot" y de medidas repetidas](Unidad 4-Otros disenos/Split-medidas.html)
 
@@ -66,7 +77,7 @@ output:
 
       2.1. [Presentación de cuadrado latino](Unidad 4-Otros disenos/Cuadrado-vent-lim-slides.html)
 
-# Regresión y correlación
+## Regresión y correlación
 
 1. [Introducción a regresión y correlación](Unidad 5-Regresion correlacion/Introduccion.html)
 
@@ -82,6 +93,14 @@ output:
 
       4.1. [Tutorial de ANCOVA](Unidad 5-Regresion correlacion/Tutorial-ANCOVA.html)
 
-# Conclusión del curso
+## Conclusión del curso
 
 [Reflexiones finales](Reflexiones.html)
+
+
+
+
+```{r echo = F, fig.align='center', out.width="30%"}
+knitr::include_graphics("enes-logo.png")
+```
+
