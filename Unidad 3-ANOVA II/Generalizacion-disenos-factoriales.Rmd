@@ -93,14 +93,14 @@ boxplot(cholesterol ~ gender + risk + drug, colesterol)
 
 Parece que en este caso también tenemos razones para sospechar que `colesterol`, dentro de cada grupo experimental no es normal. Entonces revisaremos con `shapiro.test` dentro de cada grupo. Vamos a utilizar un método que nos permitirá hacer la prueba con sólo un [comando](https://www.datanovia.com/en/lessons/anova-in-r/#summary-statistics-1):
 
-```{r }
+ ```{r message=FALSE, warning=FALSE}
 library(tidyverse); library(rstatix)
 shap.test <- colesterol %>%
    group_by(gender, risk, drug) %>%
    shapiro_test(cholesterol)
 knitr::kable(shap.test, caption = "Resultados de la prueba de Shapiro dentro de cada grupo experimental.")
 ```
-Podemos ver que sólo hay uhn grupo (`female, high, A`) que no cumple con el supuesto de normalidad. Veamos entonces si este grupo solo puede afectar la validez de toda la prueba. Haremos ANOVA con `lm` ya que no hay ningún factor de agrupación de tratamientos experimentales (bloques).
+Podemos ver que sólo hay un grupo (`female, high, A`) que no cumple con el supuesto de normalidad. Veamos entonces si este grupo solo puede afectar la validez de toda la prueba. Haremos ANOVA con `lm` ya que no hay ningún factor de agrupación de tratamientos experimentales (bloques).
 
 ```{r}
 m1 <- lm(cholesterol ~ gender * risk * drug, data = colesterol)
