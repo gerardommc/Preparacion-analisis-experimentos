@@ -14,8 +14,11 @@ Este es el sitio del curso *Planeación y análisis de experimentos* del $4^o$ s
 
 Mis otros proyectos de desarrollo los puedes encontrar y seguir en:
 
-[![](github-logo.png)/gerardommc](https://www.github.com/gerardommc)
+- [![](github-logo.png)/gerardommc](https://www.github.com/gerardommc)
 
+Para reportar errores y responder dudas contáctame por correo electrónico:
+
+- [gerardo.mmc@enesmerida.unam.mx](mailto:gerardo.mmc@enesmerida.unam.mx)
 
 # El programa
 
@@ -100,7 +103,7 @@ Mis otros proyectos de desarrollo los puedes encontrar y seguir en:
 
 
 
-```{r echo = F, fig.align='center', out.width="30%"}
+```{r echo = F, fig.align='right', out.width="30%"}
 knitr::include_graphics("enes-logo.png")
 ```
 
