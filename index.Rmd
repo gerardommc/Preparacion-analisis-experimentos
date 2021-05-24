@@ -10,17 +10,11 @@ output:
 
 # Sobre este curso
 
-Este es el sitio del curso *Planeación y análisis de experimentos* del $4^o$ semestre de la Licenciatura en Manejo Sustentable de la Zona Costera de la [ENES Mérida](http://enesmerida.unam.mx/), en modalidad a distancia por la contingencia sanitaria por COVID-19. Los contenidos de cada una de las unidades y sus temas fueron producidos con RMarkdown. Todo el código para generarlos está disponible libremente [en este respositorio](https://www.github.com/gerardommc/Preparacion-analisis-experimentos) para quien deseé entender cómo se simularon algunas de las bases de datos y para aprender a utilizar RMarkdown en general.
+El curso *Planeación y análisis de experimentos* pertenece al $4^o$ semestre de la Licenciatura en Manejo Sustentable de la Zona Costera de la [ENES Mérida](http://enesmerida.unam.mx/). Los contenidos de este sitio fueron desarrollados para la modalidad a distancia por la contingencia sanitaria por COVID-19. Todo el material aquí ofrecido fue desarrollado con RMarkdown, y el código está disponible libremente [en el respositorio github](https://www.github.com/gerardommc/Preparacion-analisis-experimentos), para quien deseé ver cómo se simularon las bases de datos o aprender a utilizar RMarkdown en general.
 
-Mis otros proyectos de desarrollo los puedes encontrar y seguir en:
+Más información sobre mis labores académicas la puedes encontrar en mi [sitio personal](https://gerardommc.github.io). Para reportar errores y responder dudas contáctame por [correo electrónico](mailto:gerardo.mmc@enesmerida.unam.mx).
 
-- [![](github-logo.png)/gerardommc](https://www.github.com/gerardommc)
-
-Para reportar errores y responder dudas contáctame por correo electrónico:
-
-- [gerardo.mmc@enesmerida.unam.mx](mailto:gerardo.mmc@enesmerida.unam.mx)
-
-# El programa
+# Programa del curso
 
 ## Introducción al diseño experimental
 
