@@ -149,7 +149,6 @@ Veamos por último la regresión polinomial. La especificación aquí, es un poc
 m.poli <- lm(y.poli ~ x1 + I(x1^2) + I(x1^3), lin.rels)
 summary(m.poli)
 ```
-
 I la interpretación de los coeficientes es la misma que anteriormente. Para cerrar, podemos ver que $R^2$ es bastante más bajo que para los ejemplos anteriores, y esto se debe a `rnorm(1000, mean = 10, sd = 10)`, lo cual también se ve reflejado en el intercepto del modelo, con una media de 10.3130.
 
 [Regresar al índice del curso](../index.html)
