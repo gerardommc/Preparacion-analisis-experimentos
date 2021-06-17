@@ -134,6 +134,8 @@ Y vemos que sí es posible confiar, con base en los supuestos estadísticos del 
 1. El efecto del tratamiento depende de que se practique ejercicio (interacción)
 2. La edad tenderá a incrementar los niveles de estrés, independientemente del tratamiento y ejercicio (efecto aditivo)
 
+El script [`ANCOVA-selección.R`](ANCOVA-selección.R) tiene ejemplos de código para combinar los tipos de modelos vistos en esta unidad.
+
 [Regresar al índice del curso](../index.html)
 
 

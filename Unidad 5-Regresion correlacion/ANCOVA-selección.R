@@ -58,6 +58,7 @@ pairs(df.x)
 
 ## Pruebas de correlación
 cor.test(x1, x2, data = df.x)
+cor.test(x1, x4, data = df.x)
 cor.test(x3, x4, data = df.x)
 
 # Análisis exploratorio de la relación con la variable dependiente 
@@ -88,8 +89,8 @@ anova(m3)
 
 plot(m3)
 
-anova(m1, m2, m3)
-AIC(m1, m2, m3)
+anova(m1, m3)
+AIC(m1, m3)
 
 # Porbaremos x4 en lugar de x3
 m4 <- lm(y ~ Tratamiento*(x1 + I(x1^2) + x4), df.mel)
@@ -123,3 +124,9 @@ anova(m1, m1.1)
 AIC(m1, m1.1)
 
 plot(m1.1)
+
+m1.2 <- lm(y ~ Tratamiento * (x1 + I(x1^2)), df.mel)
+anova(m1.2)
+summary(m1.2)
+
+AIC(m1.2, m1)
